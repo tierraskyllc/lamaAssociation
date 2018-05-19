@@ -1,0 +1,8 @@
+{
+  "name": "lamaAssociation",
+  "app_id": "e3845dc3",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
