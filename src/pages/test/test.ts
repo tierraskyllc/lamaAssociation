@@ -21,7 +21,7 @@ export class TestPage {
   submitAttempt: boolean = false;
 
   params: any = {};
-  username: string;
+  email: string;
 
   constructor(public formBuilder: FormBuilder,private http: Http,private shareProvider: ShareProvider) {
     this.data.response = "";
@@ -34,13 +34,14 @@ export class TestPage {
     this.data.usachapters = [];
     this.data.countries = [];
     this.data.intlchapters = [];
+
   }
 
   ionViewWillLoad() {
     this.registrationForm = this.formBuilder.group({
       firstName: ["", Validators.compose([Validators.required,Validators.maxLength(16),Validators.pattern("[a-zA-Z ]*")])],
       lastName: ["",Validators.compose([Validators.required,Validators.maxLength(16),Validators.pattern("[a-zA-Z ]*")])],
-      userName: new FormControl("",Validators.compose([Validators.required,Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")])),
+      email: new FormControl("",Validators.compose([Validators.required,Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")])),
       password: ["",Validators.compose([Validators.required,Validators.minLength(8),Validators.maxLength(16),Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,16}")])],
       confirmPassword: [""],
       selection: ["", Validators.compose([Validators.required])],
@@ -56,20 +57,20 @@ export class TestPage {
   validation_messages = {
     firstName: [{ type: "required", message: "First Name is required." }],
     lastName: [{ type: "required", message: "First Name is required." }],
-    userName: [
+    email: [
       { type: "required", message: "Email is required." },
       { type: "pattern", message: "Enter a valid email." }
     ],
     password: [
-      { type: "required", message: "Email is required." },
-      { type: "pattern", message: "Enter a valid email." }
+      { type: "required", message: "Password is required." },
+      { type: "pattern", message: "Enter a valid password." }
     ],
     confirmPassword: [
       { type: "required", message: "Confirmation is required." }
     ]
   };
 
-  selectUSA() {
+  selectNational() {
     this.data.usaSelected = true;
     this.data.intlSelected = false;
     this.registrationForm.get("country").setValidators([]);
@@ -111,7 +112,7 @@ export class TestPage {
       var body = new FormData();
       var json_encoded_response = "";
       var decoded_response = "";
-      body.append("userName", this.registrationForm.controls.username.value);
+      body.append("email", this.registrationForm.controls.email.value);
       body.append("firstName", this.registrationForm.controls.firstname.value);
       body.append("lastName", this.registrationForm.controls.lastname.value);
       body.append("password", this.registrationForm.controls.password.value);

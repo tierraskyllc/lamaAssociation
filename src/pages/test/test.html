@@ -57,10 +57,10 @@
               <ion-item no-padding color="accent">
                 <ion-label floating>
                   <ion-icon name="mail"></ion-icon>Email</ion-label>
-                <ion-input formControlName="userName" type="text"></ion-input>
+                <ion-input formControlName="email" type="text"></ion-input>
               </ion-item>
-              <ng-container *ngFor="let validation of validation_messages.userName">
-                <div class="error-message" *ngIf="registrationForm.get('userName').hasError(validation.type) && (registrationForm.get('userName').dirty || registrationForm.get('userName').touched)">
+              <ng-container *ngFor="let validation of validation_messages.email">
+                <div class="error-message" *ngIf="registrationForm.get('email').hasError(validation.type) && (registrationForm.get('email').dirty || registrationForm.get('email').touched)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -96,24 +96,34 @@
           </ion-col>
         </ion-row>
 
+        <!-- <ion-list> -->
+          <ion-row>
+            <ion-col width="100%" align="center">
+              <ion-label>Please select a chapter association</ion-label>
+            </ion-col>
+          </ion-row>
+
         <ion-list radio-group formControlName="selection" padding-top no-lines>
           <ion-row>
             <ion-col>
               <ion-item>
-                <ion-label>USA</ion-label>
+                <ion-label>National</ion-label>
                 <!-- <ion-radio float-right value="usa" (click)="selectUSA()"></ion-radio> -->
-                <ion-checkbox float-right value="usa" (click)="selectUSA()"></ion-checkbox>
+                <ion-radio float-right value="usa" (click)="selectNational()"></ion-radio>
               </ion-item>
             </ion-col>
+
+            <!---  -->
+            <ion-col align="center"><ion-label>OR</ion-label></ion-col>
 
             <ion-col>
               <ion-item>
                 <ion-label>International</ion-label>
-                <ion-checkbox value="international" (click)="selectInternational()"></ion-checkbox>
+                <ion-radio value="international" (click)="selectInternational()"></ion-radio>
               </ion-item>
             </ion-col>
           </ion-row>
-          <p class="invalidmsg" class="invalidmsg" *ngIf="(submitAttempt && !registrationForm.controls.selection.valid)">Are you signing up for a USA chapter or an International chapter?</p>
+          <p class="invalidmsg" *ngIf="(submitAttempt && !registrationForm.controls.selection.valid)">Are you signing up for a USA chapter or an International chapter?</p>
         </ion-list><!---  -->
 
         <div id="usainfo" *ngIf="data.usaSelected">
