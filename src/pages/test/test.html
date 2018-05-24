@@ -1,0 +1,175 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>test</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row wrap padding>
+      <ion-col col-12 col-sm-12 col-md-12 offset-lg-3 col-lg-6 offset-xl-3 col-xl-6>
+        <!--Logo-->
+        <div class="logo">
+          <ion-thumbnail>
+            <img src="assets/images/logo/lamaHandsRoundCornersLogo.png">
+          </ion-thumbnail>
+        </div>
+        <!--End logo-->
+      </ion-col>
+    </ion-row>
+
+    <div class="form">
+      <!--Form-->
+      <form [formGroup]="registrationForm">
+
+        <ion-row>
+          <ion-col>
+            <div>
+              <!---Input field firstName-->
+              <ion-item no-padding color="accent">
+                <ion-label floating>
+                  <ion-icon name="person"></ion-icon>First Name</ion-label>
+                <ion-input formControlName="firstName" type="text"></ion-input>
+              </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.firstName">
+                <div class="error-message" *ngIf="registrationForm.get('firstName').hasError(validation.type) && (registrationForm.get('firstName').dirty || registrationForm.get('firstName').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+            <div>
+              <!---Input field lastName-->
+              <ion-item no-padding color="accent">
+                <ion-label floating>
+                  Last Name</ion-label>
+                <ion-input formControlName="lastName" type="text"></ion-input>
+              </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.lastName">
+                <div class="error-message" *ngIf="registrationForm.get('lastName').hasError(validation.type) && (registrationForm.get('lastName').dirty || registrationForm.get('lastName').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+            <div>
+              <!---Input field Email-->
+              <ion-item no-padding color="accent">
+                <ion-label floating>
+                  <ion-icon name="mail"></ion-icon>Email</ion-label>
+                <ion-input formControlName="userName" type="text"></ion-input>
+              </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.userName">
+                <div class="error-message" *ngIf="registrationForm.get('userName').hasError(validation.type) && (registrationForm.get('userName').dirty || registrationForm.get('userName').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+            <div>
+              <!---Input field Password-->
+              <ion-item no-padding color="accent">
+                <ion-label floating>
+                  <ion-icon name="key"></ion-icon>Password</ion-label>
+                <ion-input formControlName="password" type="password"></ion-input>
+              </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.password">
+                <div class="error-message" *ngIf="registrationForm.get('password').hasError(validation.type) && (registrationForm.get('password').dirty || registrationForm.get('password').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+
+            <div>
+              <!---Input field confirmPassword-->
+              <ion-item no-padding color="accent">
+                <ion-label floating>
+                  <ion-icon name="checkmark"></ion-icon>Confirm Password</ion-label>
+                <ion-input formControlName="password" type="confirmPassword"></ion-input>
+              </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.confirmPassword">
+                <div class="error-message" *ngIf="registrationForm.get('confirmPassword').hasError(validation.type) && (registrationForm.get('confirmPassword').dirty || registrationForm.get('confirmPassword').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-list radio-group formControlName="selection" padding-top no-lines>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label>USA</ion-label>
+                <!-- <ion-radio float-right value="usa" (click)="selectUSA()"></ion-radio> -->
+                <ion-checkbox float-right value="usa" (click)="selectUSA()"></ion-checkbox>
+              </ion-item>
+            </ion-col>
+
+            <ion-col>
+              <ion-item>
+                <ion-label>International</ion-label>
+                <ion-checkbox value="international" (click)="selectInternational()"></ion-checkbox>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <p class="invalidmsg" class="invalidmsg" *ngIf="(submitAttempt && !registrationForm.controls.selection.valid)">Are you signing up for a USA chapter or an International chapter?</p>
+        </ion-list><!---  -->
+
+        <div id="usainfo" *ngIf="data.usaSelected">
+          <ion-list>
+            <ion-item [class.invalid]="!registrationForm.controls.region.valid && (registrationForm.get('region').dirty || submitAttempt)">
+              <ion-label>Region</ion-label>
+              <ion-select formControlName="region" interface=popover>
+                <ion-option (ionSelect)="populateUSAStatesByRegion()" *ngFor="let curregion of data.usaregions" [value]="curregion.id">{{curregion.name}}</ion-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-item [class.invalid]="!registrationForm.controls.state.valid && (registrationForm.get('state').dirty || submitAttempt)">
+              <ion-label>State</ion-label>
+              <ion-select formControlName="state" interface=popover>
+                <ion-option (ionSelect)="populateUSAChaptersByState()" *ngFor="let curstate of data.usastates" [value]="curstate.id">{{curstate.name}}</ion-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-item [class.invalid]="!registrationForm.controls.chapter.valid && (registrationForm.get('chapter').dirty || submitAttempt)">
+              <ion-label>Chapter</ion-label>
+              <ion-select formControlName="chapter" interface=popover>
+                <ion-option *ngFor="let curchap of data.usachapters" [value]="curchap.id">{{curchap.name}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </div>
+
+        <div id="intlinfo" *ngIf="data.intlSelected">
+          <ion-list>
+            <ion-item [class.invalid]="!registrationForm.controls.country.valid && (registrationForm.get('country').dirty || submitAttempt)">
+              <ion-label>Country</ion-label>
+              <ion-select formControlName="country" interface=popover>
+                <ion-option (ionSelect)="populateIntlChaptersByReg()" *ngFor="let curcountry of data.countries" [value]="curcountry.id">{{curcountry.name}}</ion-option>
+              </ion-select>
+            </ion-item>
+
+            <ion-item [class.invalid]="!registrationForm.controls.intlchapter.valid && (registrationForm.get('intlchapter').dirty || submitAttempt)">
+              <ion-label>Chapter</ion-label>
+              <ion-select formControlName="intlchapter" interface=popover>
+                <ion-option *ngFor="let curintlchap of data.intlchapters" [value]="curintlchap.id">{{curintlchap.name}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </div>
+
+        <ion-row>
+          <ion-col width="100%" align="center">
+            <button ion-button small round (click)="submit()">Sign UP</button>
+          </ion-col>
+        </ion-row>
+
+      </form>
+    </div>
+    <!---Register button-->
+    <!-- <button ion-button float-right clear button-clear (click)="onEvent('onRegister')">{{data.submit}}</button> -->
+
+  </ion-grid>
+
+</ion-content>

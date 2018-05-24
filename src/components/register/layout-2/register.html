@@ -8,6 +8,7 @@
         <img [src]="data.logo" >
         </ion-thumbnail>
       </div><!--End logo-->
+
       <!--Form-->
       <div class="form">
         <ion-item no-padding color="accent">
@@ -15,10 +16,12 @@
           <ion-icon item-start>
             <i icon-small class="icon {{data.iconAccount}}"></i>
           </ion-icon>
+
           <!---Input field username-->
           <ion-label floating>{{data.username}}</ion-label>
           <ion-input required type="text" [(ngModel)]="username"></ion-input>
         </ion-item>
+        
         <ion-item no-padding color="accent">
           <!--Icon for password-->
           <ion-icon item-start>

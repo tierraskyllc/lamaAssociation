@@ -28,4 +28,9 @@ export class LoginLayout1 {
   goToRegisterPage() {
     this.navCtrl.push('RegisterPage')
   }
+
+  goToTestPage() {
+    this.navCtrl.push('TestPage')
+  }
+
 }
