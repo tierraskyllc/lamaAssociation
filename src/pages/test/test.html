@@ -97,14 +97,15 @@
         </ion-row>
 
         <!-- <ion-list> -->
-          <ion-row>
-            <ion-col width="100%" align="center">
-              <ion-label>Please select a chapter association</ion-label>
-            </ion-col>
-          </ion-row>
+        <ion-row>
+          <ion-col width="100%" align="center">
+            <ion-label>Please select a chapter association</ion-label>
+          </ion-col>
+        </ion-row>
 
         <ion-list radio-group formControlName="selection" padding-top no-lines>
-          <ion-row>
+
+          <ion-row nowrap justify-content: center>
             <ion-col>
               <ion-item>
                 <ion-label>National</ion-label>
@@ -114,7 +115,7 @@
             </ion-col>
 
             <!---  -->
-            <ion-col align="center"><ion-label>OR</ion-label></ion-col>
+            <ion-col><ion-label>OR</ion-label></ion-col>
 
             <ion-col>
               <ion-item>
@@ -124,7 +125,8 @@
             </ion-col>
           </ion-row>
           <p class="invalidmsg" *ngIf="(submitAttempt && !registrationForm.controls.selection.valid)">Are you signing up for a USA chapter or an International chapter?</p>
-        </ion-list><!---  -->
+        </ion-list>
+        <!---  -->
 
         <div id="usainfo" *ngIf="data.usaSelected">
           <ion-list>
