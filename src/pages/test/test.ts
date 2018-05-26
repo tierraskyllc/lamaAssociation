@@ -43,7 +43,7 @@ export class TestPage {
       lastName: ["",Validators.compose([Validators.required,Validators.maxLength(16),Validators.pattern("[a-zA-Z ]*")])],
       email: new FormControl("",Validators.compose([Validators.required,Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")])),
       password: ["",Validators.compose([Validators.required,Validators.minLength(8),Validators.maxLength(16),Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,16}")])],
-      confirmPassword: [""],
+      confirmPassword: ["", Validators.required],
       selection: ["", Validators.compose([Validators.required])],
       region: ['', Validators.compose([Validators.required])],
  		  state: ['', Validators.compose([Validators.required, Validators.minLength(1)])],
@@ -56,7 +56,7 @@ export class TestPage {
 
   validation_messages = {
     firstName: [{ type: "required", message: "First Name is required." }],
-    lastName: [{ type: "required", message: "First Name is required." }],
+    lastName: [{ type: "required", message: "Last Name is required." }],
     email: [
       { type: "required", message: "Email is required." },
       { type: "pattern", message: "Enter a valid email." }
