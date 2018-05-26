@@ -27,7 +27,7 @@ export class TestPage {
     this.data.response = "";
     this.data.error = "";
 
-    this.data.usaSelected = false;
+    this.data.nationalSelected = false;
     this.data.intlSelected = false;
     this.data.usaregions = [];
     this.data.usastates = [];
@@ -71,7 +71,7 @@ export class TestPage {
   };
 
   selectNational() {
-    this.data.usaSelected = true;
+    this.data.nationalSelected = true;
     this.data.intlSelected = false;
     this.registrationForm.get("country").setValidators([]);
     this.registrationForm.get("country").updateValueAndValidity();
@@ -91,7 +91,7 @@ export class TestPage {
 
   selectInternational() {
     this.data.intlSelected = true;
-    this.data.usaSelected = false;
+    this.data.nationalSelected = false;
     this.registrationForm.get("country").setValidators([Validators.required]);
     this.registrationForm.get("country").updateValueAndValidity();
     this.registrationForm

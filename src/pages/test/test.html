@@ -4,15 +4,16 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <ion-grid>
-    <ion-row wrap padding>
+    <ion-row>
       <ion-col col-12 col-sm-12 col-md-12 offset-lg-3 col-lg-6 offset-xl-3 col-xl-6>
         <!--Logo-->
         <div class="logo">
-          <ion-thumbnail>
+          <!-- <ion-thumbnail>
             <img src="assets/images/logo/lamaHandsRoundCornersLogo.png">
-          </ion-thumbnail>
+          </ion-thumbnail> -->
+          <img src="assets/images/logo/lamaHandsRoundCornersLogo.png">
         </div>
         <!--End logo-->
       </ion-col>
@@ -109,7 +110,6 @@
             <ion-col>
               <ion-item>
                 <ion-label>National</ion-label>
-                <!-- <ion-radio float-right value="usa" (click)="selectUSA()"></ion-radio> -->
                 <ion-radio float-right value="usa" (click)="selectNational()"></ion-radio>
               </ion-item>
             </ion-col>
@@ -124,11 +124,11 @@
               </ion-item>
             </ion-col>
           </ion-row>
-          <p class="invalidmsg" *ngIf="(submitAttempt && !registrationForm.controls.selection.valid)">Are you signing up for a USA chapter or an International chapter?</p>
+          <p class="invalidmsg" *ngIf="(submitAttempt && !registrationForm.controls.selection.valid)">Are you signing up for a National chapter or an International chapter?</p>
         </ion-list>
         <!---  -->
 
-        <div id="usainfo" *ngIf="data.usaSelected">
+        <div id="usainfo" *ngIf="data.nationalSelected">
           <ion-list>
             <ion-item [class.invalid]="!registrationForm.controls.region.valid && (registrationForm.get('region').dirty || submitAttempt)">
               <ion-label>Region</ion-label>
