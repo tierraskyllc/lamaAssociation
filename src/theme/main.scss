@@ -98,7 +98,7 @@ $palettes: (
         secondary: #FEFEFE, // Used for text colors in: buttons, header-title, subitem-title, subitem-subtitle
         accent:   #ffffff, // Used for text colors in: header-title, header-subtitle
         danger: #e91536,
-        
+
 
     ),
     blendModes: ( // Used for blend modes
@@ -410,6 +410,28 @@ $item-md-sliding-content-background: theme-colors('mainColors', 'primary');
 [parallax-subtitle]{
   color: theme-colors('textColors', 'primary');
   font-size: $h4-font-size !important;
+}
+
+// Radio Button Radio Group
+  // Settings for Android
+$radio-md-color-on: theme-colors('mainColors', 'secondary');
+$radio-md-color-off: theme-colors('mainColors', 'secondary');
+
+  // Settings for Ios
+$radio-ios-color-on: theme-colors('mainColors', 'accent');
+$radio-ios-color-off: theme-colors('mainColors', 'accent');
+
+.select-text {
+  color: theme-colors('textColors', 'primary') !important;
+}
+.select-md .select-icon .select-icon-inner,
+ .select-ios .select-icon .select-icon-inner,{
+  color: theme-colors('textColors', 'primary') !important;
+}
+
+// Please change color
+.item-radio .label {
+  color: #fff;
 }
 
 // Checkbox
