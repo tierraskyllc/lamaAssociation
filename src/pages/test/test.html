@@ -86,7 +86,7 @@
               <ion-item no-padding color="accent">
                 <ion-label floating>
                   <ion-icon name="checkmark"></ion-icon>Confirm Password</ion-label>
-                <ion-input formControlName="confirmPassword" type="confirmPassword"></ion-input>
+                <ion-input formControlName="confirmPassword" type="password"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.confirmPassword">
                 <div class="error-message" *ngIf="registrationForm.get('confirmPassword').hasError(validation.type) && (registrationForm.get('confirmPassword').dirty || registrationForm.get('confirmPassword').touched)">
