@@ -1,29 +1,23 @@
 import { Component } from "@angular/core";
 import { IonicPage } from "ionic-angular";
-import {
-  Validators,
-  FormBuilder,
-  FormGroup,
-  FormControl,
-  FormArray
-} from "@angular/forms";
+import { Validators, FormBuilder, FormGroup, FormControl, FormArray } from "@angular/forms";
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
 
 @IonicPage()
 @Component({
-  selector: "page-test",
-  templateUrl: "test.html"
+  selector: "page-joinus",
+  templateUrl: "joinus.html"
 })
-export class TestPage {
+export class JoinUsPage {
   data: any = {};
-  registrationForm: FormGroup;
+  joinUsForm: FormGroup;
   submitAttempt: boolean = false;
 
   params: any = {};
   email: string;
 
-  constructor(public formBuilder: FormBuilder,private http: Http,private shareProvider: ShareProvider) {
+  constructor(public formBuilder: FormBuilder, private http: Http, private shareProvider: ShareProvider) {
     this.data.response = "";
     this.data.error = "";
 
@@ -34,23 +28,55 @@ export class TestPage {
     this.data.usachapters = [];
     this.data.countries = [];
     this.data.intlchapters = [];
-
   }
 
   ionViewWillLoad() {
-    this.registrationForm = this.formBuilder.group({
-      firstName: ["", Validators.compose([Validators.required,Validators.maxLength(16),Validators.pattern("[a-zA-Z ]*")])],
-      lastName: ["",Validators.compose([Validators.required,Validators.maxLength(16),Validators.pattern("[a-zA-Z ]*")])],
-      email: new FormControl("",Validators.compose([Validators.required,Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")])),
-      password: ["",Validators.compose([Validators.required,Validators.minLength(8),Validators.maxLength(16),Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,16}")])],
+    this.joinUsForm = this.formBuilder.group({
+      firstName: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.maxLength(16),
+          Validators.pattern("[a-zA-Z ]*")
+        ])
+      ],
+      lastName: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.maxLength(16),
+          Validators.pattern("[a-zA-Z ]*")
+        ])
+      ],
+      email: new FormControl(
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")
+        ])
+      ),
+      password: [
+        "",
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(16),
+          Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,16}")
+        ])
+      ],
       confirmPassword: ["", Validators.required],
       selection: ["", Validators.compose([Validators.required])],
-      region: ['', Validators.compose([Validators.required])],
- 		  state: ['', Validators.compose([Validators.required, Validators.minLength(1)])],
- 		  chapter: ['', Validators.compose([Validators.required, Validators.minLength(1)])],
-      country: ['', Validators.compose([Validators.required])],
-      intlchapter: ['', Validators.compose([Validators.required])]
-
+      region: ["", Validators.compose([Validators.required])],
+      state: [
+        "",
+        Validators.compose([Validators.required, Validators.minLength(1)])
+      ],
+      chapter: [
+        "",
+        Validators.compose([Validators.required, Validators.minLength(1)])
+      ],
+      country: ["", Validators.compose([Validators.required])],
+      intlchapter: ["", Validators.compose([Validators.required])]
     });
   }
 
@@ -73,54 +99,54 @@ export class TestPage {
   selectNational() {
     this.data.nationalSelected = true;
     this.data.intlSelected = false;
-    this.registrationForm.get("country").setValidators([]);
-    this.registrationForm.get("country").updateValueAndValidity();
-    this.registrationForm.get("intlchapter").setValidators([]);
-    this.registrationForm.get("intlchapter").updateValueAndValidity();
-    this.registrationForm.get("region").setValidators([Validators.required]);
-    this.registrationForm.get("region").updateValueAndValidity();
-    this.registrationForm
+    this.joinUsForm.get("country").setValidators([]);
+    this.joinUsForm.get("country").updateValueAndValidity();
+    this.joinUsForm.get("intlchapter").setValidators([]);
+    this.joinUsForm.get("intlchapter").updateValueAndValidity();
+    this.joinUsForm.get("region").setValidators([Validators.required]);
+    this.joinUsForm.get("region").updateValueAndValidity();
+    this.joinUsForm
       .get("state")
       .setValidators([Validators.required, Validators.minLength(1)]);
-    this.registrationForm.get("state").updateValueAndValidity();
-    this.registrationForm
+    this.joinUsForm.get("state").updateValueAndValidity();
+    this.joinUsForm
       .get("chapter")
       .setValidators([Validators.required, Validators.minLength(1)]);
-    this.registrationForm.get("chapter").updateValueAndValidity();
+    this.joinUsForm.get("chapter").updateValueAndValidity();
   }
 
   selectInternational() {
     this.data.intlSelected = true;
     this.data.nationalSelected = false;
-    this.registrationForm.get("country").setValidators([Validators.required]);
-    this.registrationForm.get("country").updateValueAndValidity();
-    this.registrationForm
+    this.joinUsForm.get("country").setValidators([Validators.required]);
+    this.joinUsForm.get("country").updateValueAndValidity();
+    this.joinUsForm
       .get("intlchapter")
       .setValidators([Validators.required]);
-    this.registrationForm.get("intlchapter").updateValueAndValidity();
-    this.registrationForm.get("region").setValidators([]);
-    this.registrationForm.get("region").updateValueAndValidity();
-    this.registrationForm.get("state").setValidators([]);
-    this.registrationForm.get("state").updateValueAndValidity();
-    this.registrationForm.get("chapter").setValidators([]);
-    this.registrationForm.get("chapter").updateValueAndValidity();
+    this.joinUsForm.get("intlchapter").updateValueAndValidity();
+    this.joinUsForm.get("region").setValidators([]);
+    this.joinUsForm.get("region").updateValueAndValidity();
+    this.joinUsForm.get("state").setValidators([]);
+    this.joinUsForm.get("state").updateValueAndValidity();
+    this.joinUsForm.get("chapter").setValidators([]);
+    this.joinUsForm.get("chapter").updateValueAndValidity();
   }
 
   submit() {
     this.submitAttempt = true;
-    if (this.registrationForm.valid) {
+    if (this.joinUsForm.valid) {
       var body = new FormData();
       var json_encoded_response = "";
       var decoded_response = "";
-      body.append("email", this.registrationForm.controls.email.value);
-      body.append("firstName", this.registrationForm.controls.firstname.value);
-      body.append("lastName", this.registrationForm.controls.lastname.value);
-      body.append("password", this.registrationForm.controls.password.value);
-      body.append("selection", this.registrationForm.controls.selection.value);
-      body.append("chapter", this.registrationForm.controls.chapter.value);
+      body.append("email", this.joinUsForm.controls.email.value);
+      body.append("firstName", this.joinUsForm.controls.firstname.value);
+      body.append("lastName", this.joinUsForm.controls.lastname.value);
+      body.append("password", this.joinUsForm.controls.password.value);
+      body.append("selection", this.joinUsForm.controls.selection.value);
+      body.append("chapter", this.joinUsForm.controls.chapter.value);
       body.append(
         "intlchapter",
-        this.registrationForm.controls.intlchapter.value
+        this.joinUsForm.controls.intlchapter.value
       );
       this.http
         .post(this.shareProvider.server + "signup/signup.php", body)
@@ -166,7 +192,7 @@ export class TestPage {
   }
 
   populateUSARegions() {
-    this.registrationForm.patchValue({ state: "", chapter: "" });
+    this.joinUsForm.patchValue({ state: "", chapter: "" });
     this.data.usastates = [];
     this.data.usachapters = [];
     var decoded_response = "";
@@ -185,28 +211,28 @@ export class TestPage {
         }
       );
 
-    this.registrationForm.get("country").setValidators([]);
-    this.registrationForm.get("country").updateValueAndValidity();
-    this.registrationForm.get("intlchapter").setValidators([]);
-    this.registrationForm.get("intlchapter").updateValueAndValidity();
-    this.registrationForm.get("region").setValidators([Validators.required]);
-    this.registrationForm.get("region").updateValueAndValidity();
-    this.registrationForm
+    this.joinUsForm.get("country").setValidators([]);
+    this.joinUsForm.get("country").updateValueAndValidity();
+    this.joinUsForm.get("intlchapter").setValidators([]);
+    this.joinUsForm.get("intlchapter").updateValueAndValidity();
+    this.joinUsForm.get("region").setValidators([Validators.required]);
+    this.joinUsForm.get("region").updateValueAndValidity();
+    this.joinUsForm
       .get("state")
       .setValidators([Validators.required, Validators.minLength(1)]);
-    this.registrationForm.get("state").updateValueAndValidity();
-    this.registrationForm
+    this.joinUsForm.get("state").updateValueAndValidity();
+    this.joinUsForm
       .get("chapter")
       .setValidators([Validators.required, Validators.minLength(1)]);
-    this.registrationForm.get("chapter").updateValueAndValidity();
+    this.joinUsForm.get("chapter").updateValueAndValidity();
   }
 
   populateUSAStatesByRegion() {
-    this.registrationForm.patchValue({ state: "", chapter: "" });
+    this.joinUsForm.patchValue({ state: "", chapter: "" });
     this.data.usachapters = [];
     var decoded_response = "";
     var body = new FormData();
-    var regionid = this.registrationForm.controls.region.value;
+    var regionid = this.joinUsForm.controls.region.value;
     body.append("regionid", regionid);
     this.http
       .post(this.shareProvider.server + "usastatesbyregion.php", body)
@@ -222,27 +248,27 @@ export class TestPage {
         }
       );
 
-    this.registrationForm.get("country").setValidators([]);
-    this.registrationForm.get("country").updateValueAndValidity();
-    this.registrationForm.get("intlchapter").setValidators([]);
-    this.registrationForm.get("intlchapter").updateValueAndValidity();
-    this.registrationForm.get("region").setValidators([Validators.required]);
-    this.registrationForm.get("region").updateValueAndValidity();
-    this.registrationForm
+    this.joinUsForm.get("country").setValidators([]);
+    this.joinUsForm.get("country").updateValueAndValidity();
+    this.joinUsForm.get("intlchapter").setValidators([]);
+    this.joinUsForm.get("intlchapter").updateValueAndValidity();
+    this.joinUsForm.get("region").setValidators([Validators.required]);
+    this.joinUsForm.get("region").updateValueAndValidity();
+    this.joinUsForm
       .get("state")
       .setValidators([Validators.required, Validators.minLength(1)]);
-    this.registrationForm.get("state").updateValueAndValidity();
-    this.registrationForm
+    this.joinUsForm.get("state").updateValueAndValidity();
+    this.joinUsForm
       .get("chapter")
       .setValidators([Validators.required, Validators.minLength(1)]);
-    this.registrationForm.get("chapter").updateValueAndValidity();
+    this.joinUsForm.get("chapter").updateValueAndValidity();
   }
 
   populateUSAChaptersByState() {
-    this.registrationForm.patchValue({ chapter: "" });
+    this.joinUsForm.patchValue({ chapter: "" });
     var decoded_response = "";
     var body = new FormData();
-    var stateid = this.registrationForm.controls.state.value;
+    var stateid = this.joinUsForm.controls.state.value;
     body.append("stateid", stateid);
     this.http
       .post(this.shareProvider.server + "usachaptersbystate.php", body)
@@ -258,24 +284,24 @@ export class TestPage {
         }
       );
 
-    this.registrationForm.get("country").setValidators([]);
-    this.registrationForm.get("country").updateValueAndValidity();
-    this.registrationForm.get("intlchapter").setValidators([]);
-    this.registrationForm.get("intlchapter").updateValueAndValidity();
-    this.registrationForm.get("region").setValidators([Validators.required]);
-    this.registrationForm.get("region").updateValueAndValidity();
-    this.registrationForm
+    this.joinUsForm.get("country").setValidators([]);
+    this.joinUsForm.get("country").updateValueAndValidity();
+    this.joinUsForm.get("intlchapter").setValidators([]);
+    this.joinUsForm.get("intlchapter").updateValueAndValidity();
+    this.joinUsForm.get("region").setValidators([Validators.required]);
+    this.joinUsForm.get("region").updateValueAndValidity();
+    this.joinUsForm
       .get("state")
       .setValidators([Validators.required, Validators.minLength(1)]);
-    this.registrationForm.get("state").updateValueAndValidity();
-    this.registrationForm
+    this.joinUsForm.get("state").updateValueAndValidity();
+    this.joinUsForm
       .get("chapter")
       .setValidators([Validators.required, Validators.minLength(1)]);
-    this.registrationForm.get("chapter").updateValueAndValidity();
+    this.joinUsForm.get("chapter").updateValueAndValidity();
   }
 
   populateCountries() {
-    this.registrationForm.patchValue({ country: "", intlchapter: "" });
+    this.joinUsForm.patchValue({ country: "", intlchapter: "" });
     this.data.intlchapters = [];
     var decoded_response = "";
     var body = new FormData();
@@ -293,25 +319,25 @@ export class TestPage {
       }
     );
 
-    this.registrationForm.get("country").setValidators([Validators.required]);
-    this.registrationForm.get("country").updateValueAndValidity();
-    this.registrationForm
+    this.joinUsForm.get("country").setValidators([Validators.required]);
+    this.joinUsForm.get("country").updateValueAndValidity();
+    this.joinUsForm
       .get("intlchapter")
       .setValidators([Validators.required]);
-    this.registrationForm.get("intlchapter").updateValueAndValidity();
-    this.registrationForm.get("region").setValidators([]);
-    this.registrationForm.get("region").updateValueAndValidity();
-    this.registrationForm.get("state").setValidators([]);
-    this.registrationForm.get("state").updateValueAndValidity();
-    this.registrationForm.get("chapter").setValidators([]);
-    this.registrationForm.get("chapter").updateValueAndValidity();
+    this.joinUsForm.get("intlchapter").updateValueAndValidity();
+    this.joinUsForm.get("region").setValidators([]);
+    this.joinUsForm.get("region").updateValueAndValidity();
+    this.joinUsForm.get("state").setValidators([]);
+    this.joinUsForm.get("state").updateValueAndValidity();
+    this.joinUsForm.get("chapter").setValidators([]);
+    this.joinUsForm.get("chapter").updateValueAndValidity();
   }
 
   populateIntlChaptersByReg() {
-    this.registrationForm.patchValue({ intlchapter: "" });
+    this.joinUsForm.patchValue({ intlchapter: "" });
     var decoded_response = "";
     var body = new FormData();
-    var countryid = this.registrationForm.controls.country.value;
+    var countryid = this.joinUsForm.controls.country.value;
     body.append("countryid", countryid);
     this.http
       .post(this.shareProvider.server + "intlchaptersbyreg.php", body)
@@ -327,23 +353,23 @@ export class TestPage {
         }
       );
 
-    this.registrationForm.get("country").setValidators([Validators.required]);
-    this.registrationForm.get("country").updateValueAndValidity();
-    this.registrationForm
+    this.joinUsForm.get("country").setValidators([Validators.required]);
+    this.joinUsForm.get("country").updateValueAndValidity();
+    this.joinUsForm
       .get("intlchapter")
       .setValidators([Validators.required]);
-    this.registrationForm.get("intlchapter").updateValueAndValidity();
-    this.registrationForm.get("region").setValidators([]);
-    this.registrationForm.get("region").updateValueAndValidity();
-    this.registrationForm.get("state").setValidators([]);
-    this.registrationForm.get("state").updateValueAndValidity();
-    this.registrationForm.get("chapter").setValidators([]);
-    this.registrationForm.get("chapter").updateValueAndValidity();
+    this.joinUsForm.get("intlchapter").updateValueAndValidity();
+    this.joinUsForm.get("region").setValidators([]);
+    this.joinUsForm.get("region").updateValueAndValidity();
+    this.joinUsForm.get("state").setValidators([]);
+    this.joinUsForm.get("state").updateValueAndValidity();
+    this.joinUsForm.get("chapter").setValidators([]);
+    this.joinUsForm.get("chapter").updateValueAndValidity();
   }
 
   ionViewDidLoad() {
     this.populateUSARegions();
     this.populateCountries();
-    console.log("ionViewDidLoad TestPage");
+    console.log("ionViewDidLoad JoinUsPage");
   }
 }

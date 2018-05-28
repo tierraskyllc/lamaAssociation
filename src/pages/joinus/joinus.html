@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>test</ion-title>
+    <ion-title>Welcome</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -10,9 +10,6 @@
       <ion-col col-12 col-sm-12 col-md-12 offset-lg-3 col-lg-6 offset-xl-3 col-xl-6>
         <!--Logo-->
         <div class="logo">
-          <!-- <ion-thumbnail>
-            <img src="assets/images/logo/lamaHandsRoundCornersLogo.png">
-          </ion-thumbnail> -->
           <img src="assets/images/logo/lamaHandsRoundCornersLogo.png">
         </div>
         <!--End logo-->
@@ -21,7 +18,7 @@
 
     <div class="form">
       <!--Form-->
-      <form [formGroup]="registrationForm">
+      <form [formGroup]="joinUsForm">
 
         <ion-row>
           <ion-col>
@@ -33,7 +30,7 @@
                 <ion-input formControlName="firstName" type="text"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.firstName">
-                <div class="error-message" *ngIf="registrationForm.get('firstName').hasError(validation.type) && (registrationForm.get('firstName').dirty || registrationForm.get('firstName').touched)">
+                <div class="error-message" *ngIf="joinUsForm.get('firstName').hasError(validation.type) && (joinUsForm.get('firstName').dirty || joinUsForm.get('firstName').touched)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -47,7 +44,7 @@
                 <ion-input formControlName="lastName" type="text"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.lastName">
-                <div class="error-message" *ngIf="registrationForm.get('lastName').hasError(validation.type) && (registrationForm.get('lastName').dirty || registrationForm.get('lastName').touched)">
+                <div class="error-message" *ngIf="joinUsForm.get('lastName').hasError(validation.type) && (joinUsForm.get('lastName').dirty || joinUsForm.get('lastName').touched)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -61,7 +58,7 @@
                 <ion-input formControlName="email" type="text"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.email">
-                <div class="error-message" *ngIf="registrationForm.get('email').hasError(validation.type) && (registrationForm.get('email').dirty || registrationForm.get('email').touched)">
+                <div class="error-message" *ngIf="joinUsForm.get('email').hasError(validation.type) && (joinUsForm.get('email').dirty || joinUsForm.get('email').touched)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -75,7 +72,7 @@
                 <ion-input formControlName="password" type="password"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.password">
-                <div class="error-message" *ngIf="registrationForm.get('password').hasError(validation.type) && (registrationForm.get('password').dirty || registrationForm.get('password').touched)">
+                <div class="error-message" *ngIf="joinUsForm.get('password').hasError(validation.type) && (joinUsForm.get('password').dirty || joinUsForm.get('password').touched)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -89,7 +86,7 @@
                 <ion-input formControlName="confirmPassword" type="password"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.confirmPassword">
-                <div class="error-message" *ngIf="registrationForm.get('confirmPassword').hasError(validation.type) && (registrationForm.get('confirmPassword').dirty || registrationForm.get('confirmPassword').touched)">
+                <div class="error-message" *ngIf="joinUsForm.get('confirmPassword').hasError(validation.type) && (joinUsForm.get('confirmPassword').dirty || joinUsForm.get('confirmPassword').touched)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -115,7 +112,9 @@
             </ion-col>
 
             <!---  -->
-            <ion-col width="100%" align="center"><ion-label>OR</ion-label></ion-col>
+            <ion-col width="100%" align="center">
+              <ion-label>OR</ion-label>
+            </ion-col>
 
             <ion-col>
               <ion-item>
@@ -124,27 +123,27 @@
               </ion-item>
             </ion-col>
           </ion-row>
-          <p class="invalidmsg" *ngIf="(submitAttempt && !registrationForm.controls.selection.valid)">Are you signing up for a National chapter or an International chapter?</p>
+          <p class="invalidmsg" *ngIf="(submitAttempt && !joinUsForm.controls.selection.valid)">Are you signing up for a National chapter or an International chapter?</p>
         </ion-list>
         <!---  -->
 
         <div id="usainfo" *ngIf="data.nationalSelected">
           <ion-list>
-            <ion-item [class.invalid]="!registrationForm.controls.region.valid && (registrationForm.get('region').dirty || submitAttempt)">
+            <ion-item [class.invalid]="!joinUsForm.controls.region.valid && (joinUsForm.get('region').dirty || submitAttempt)">
               <ion-label>Region</ion-label>
               <ion-select formControlName="region" interface=popover>
                 <ion-option (ionSelect)="populateUSAStatesByRegion()" *ngFor="let curregion of data.usaregions" [value]="curregion.id">{{curregion.name}}</ion-option>
               </ion-select>
             </ion-item>
 
-            <ion-item [class.invalid]="!registrationForm.controls.state.valid && (registrationForm.get('state').dirty || submitAttempt)">
+            <ion-item [class.invalid]="!joinUsForm.controls.state.valid && (joinUsForm.get('state').dirty || submitAttempt)">
               <ion-label>State</ion-label>
               <ion-select formControlName="state" interface=popover>
                 <ion-option (ionSelect)="populateUSAChaptersByState()" *ngFor="let curstate of data.usastates" [value]="curstate.id">{{curstate.name}}</ion-option>
               </ion-select>
             </ion-item>
 
-            <ion-item [class.invalid]="!registrationForm.controls.chapter.valid && (registrationForm.get('chapter').dirty || submitAttempt)">
+            <ion-item [class.invalid]="!joinUsForm.controls.chapter.valid && (joinUsForm.get('chapter').dirty || submitAttempt)">
               <ion-label>Chapter</ion-label>
               <ion-select formControlName="chapter" interface=popover>
                 <ion-option *ngFor="let curchap of data.usachapters" [value]="curchap.id">{{curchap.name}}</ion-option>
@@ -155,14 +154,14 @@
 
         <div id="intlinfo" *ngIf="data.intlSelected">
           <ion-list>
-            <ion-item [class.invalid]="!registrationForm.controls.country.valid && (registrationForm.get('country').dirty || submitAttempt)">
+            <ion-item [class.invalid]="!joinUsForm.controls.country.valid && (joinUsForm.get('country').dirty || submitAttempt)">
               <ion-label>Country</ion-label>
               <ion-select formControlName="country" interface=popover>
                 <ion-option (ionSelect)="populateIntlChaptersByReg()" *ngFor="let curcountry of data.countries" [value]="curcountry.id">{{curcountry.name}}</ion-option>
               </ion-select>
             </ion-item>
 
-            <ion-item [class.invalid]="!registrationForm.controls.intlchapter.valid && (registrationForm.get('intlchapter').dirty || submitAttempt)">
+            <ion-item [class.invalid]="!joinUsForm.controls.intlchapter.valid && (joinUsForm.get('intlchapter').dirty || submitAttempt)">
               <ion-label>Chapter</ion-label>
               <ion-select formControlName="intlchapter" interface=popover>
                 <ion-option *ngFor="let curintlchap of data.intlchapters" [value]="curintlchap.id">{{curintlchap.name}}</ion-option>
