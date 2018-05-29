@@ -36,22 +36,13 @@ export class ProfilePage {
       timestamp: "11h ago"
     },
     {
-      postImageUrl: "assets/img/background/background-3.jpg",
+      postImageUrl: "assets/images/background/background-3.jpg",
       text:
         "Do not go where the path may lead, go instead where there is no path and leave a trail.",
       date: "October 23, 2016",
       likes: 30,
       comments: 64,
       timestamp: "30d ago"
-    },
-    {
-      postImageUrl: "assets/img/background/background-4.jpg",
-      date: "June 28, 2016",
-      likes: 46,
-      text: `Hope is the thing with feathers that perches in the soul
-             and sings the tune without the words And never stops at all.`,
-      comments: 66,
-      timestamp: "4mo ago"
     }
   ];
 
