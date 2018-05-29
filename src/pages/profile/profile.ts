@@ -10,7 +10,7 @@ import { ToastService } from "../../services/toast.service";
 export class ProfilePage {
   following = false;
   signingIn = false;
-  memberPhoto = true;
+  underConstruction = true;
   member = {
     name: "Paula Bolliger",
     profileImage: "assets/images/avatar/girl-avatar.png",
