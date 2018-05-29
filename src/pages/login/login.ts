@@ -16,8 +16,8 @@ import { ShareProvider } from "../../services/share";
   templateUrl: "login.html"
 })
 export class LoginPage {
-  data: any = {};
   loginForm: FormGroup;
+  data: any = {};
   submitAttempt: boolean = false;
 
   params: any = {};
@@ -112,8 +112,12 @@ export class LoginPage {
     this.navCtrl.push("JoinUsPage");
   }
 
-  ProfilePage() {
+  profilePage() {
     this.navCtrl.push("ProfilePage")
+  }
+
+  applicationPage() {
+    this.navCtrl.push("ApplicationPage")
   }
 
   ionViewDidLoad() {
