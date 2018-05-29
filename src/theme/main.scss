@@ -411,8 +411,29 @@ $item-md-sliding-content-background: theme-colors('mainColors', 'primary');
   color: theme-colors('textColors', 'primary');
   font-size: $h4-font-size !important;
 }
+//// I  experimenting
+// Settings for Android
+$card-content-md-color-on: theme-colors('mainColors', 'secondary');
+$card-content-md-color-off: theme-colors('mainColors', 'secondary');
 
-// Radio Button Radio Group
+  // Settings for Ios
+$card-content-ios-color-on: theme-colors('mainColors', 'accent');
+$card-content-ios-color-off: theme-colors('mainColors', 'accent');
+
+.select-text {
+  color: theme-colors('textColors', 'primary') !important;
+}
+.select-md .select-icon .select-icon-inner,
+ .select-ios .select-icon .select-icon-inner,{
+  color: theme-colors('textColors', 'primary') !important;
+}
+
+// Please change color
+.item-radio .label {
+  color: #fff;
+}
+//// I  experimenting
+/// Radio Button Radio Group
   // Settings for Android
 $radio-md-color-on: theme-colors('mainColors', 'secondary');
 $radio-md-color-off: theme-colors('mainColors', 'secondary');

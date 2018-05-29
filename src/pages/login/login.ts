@@ -112,6 +112,10 @@ export class LoginPage {
     this.navCtrl.push("JoinUsPage");
   }
 
+  ProfilePage() {
+    this.navCtrl.push("ProfilePage")
+  }
+
   ionViewDidLoad() {
     console.log("ionViewDidLoad LoginPage");
   }
