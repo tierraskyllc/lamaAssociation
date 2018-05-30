@@ -16,6 +16,12 @@ import emailMask from 'text-mask-addons/dist/emailMask';
 })
 export class ApplicationPage {
 
+  mockMember = {
+    firstName : "John",
+    lastName : "Doe",
+    email: "john.doe@whatever.com"
+  };
+
   applicationForm: FormGroup;
   country_phone_group: FormGroup;
 
