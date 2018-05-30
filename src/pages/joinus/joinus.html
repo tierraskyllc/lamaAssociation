@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Welcome</ion-title>
+    <ion-title>Welcome join us</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -39,8 +39,7 @@
             <div>
               <!---Input field lastName-->
               <ion-item no-padding color="accent">
-                <ion-label floating>
-                  Last Name</ion-label>
+                <ion-label floating>Last Name</ion-label>
                 <ion-input formControlName="lastName" type="text"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.lastName">
@@ -53,8 +52,7 @@
             <div>
               <!---Input field Email-->
               <ion-item no-padding color="accent">
-                <ion-label floating>
-                  <ion-icon name="mail"></ion-icon>Email</ion-label>
+                <ion-label floating><ion-icon name="mail"></ion-icon>Email</ion-label>
                 <ion-input formControlName="email" type="text"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.email">
@@ -64,33 +62,45 @@
               </ng-container>
             </div>
 
-            <div>
+            <div formGroupName="matching_passwords">
               <!---Input field Password-->
               <ion-item no-padding color="accent">
-                <ion-label floating>
-                  <ion-icon name="key"></ion-icon>Password</ion-label>
-                <ion-input formControlName="password" type="password"></ion-input>
+                  <ion-label floating><ion-icon name="key"></ion-icon>Password</ion-label>
+                <ion-input type="password" formControlName="password"></ion-input>
               </ion-item>
-              <ng-container *ngFor="let validation of validation_messages.password">
-                <div class="error-message" *ngIf="joinUsForm.get('password').hasError(validation.type) && (joinUsForm.get('password').dirty || joinUsForm.get('password').touched)">
-                  {{ validation.message }}
-                </div>
-              </ng-container>
+              <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.password">
+                  <div class="error-message" *ngIf="joinUsForm.get('matching_passwords').get('password').hasError(validation.type) && (joinUsForm.get('matching_passwords').get('password').dirty || joinUsForm.get('matching_passwords').get('password').touched)">
+                    {{ validation.message }}
+                  </div>
+                </ng-container>
+              </div>
+
+              <!---Input field Confirm Password-->
+              <ion-item no-padding color="accent">
+                  <ion-label floating><ion-icon name="checkmark"></ion-icon>Confirm Password</ion-label>
+                <ion-input type="password" formControlName="confirm_password"></ion-input>
+              </ion-item>
+              <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.confirm_password">
+                  <div class="error-message" *ngIf="joinUsForm.get('matching_passwords').get('confirm_password').hasError(validation.type) && (joinUsForm.get('matching_passwords').get('confirm_password').dirty || joinUsForm.get('matching_passwords').get('confirm_password').touched)">
+                    {{ validation.message }}
+                  </div>
+                </ng-container>
+              </div>
             </div>
 
-            <div>
-              <!---Input field confirmPassword-->
-              <ion-item no-padding color="accent">
-                <ion-label floating>
-                  <ion-icon name="checkmark"></ion-icon>Confirm Password</ion-label>
-                <ion-input formControlName="confirmPassword" type="password"></ion-input>
-              </ion-item>
-              <ng-container *ngFor="let validation of validation_messages.confirmPassword">
-                <div class="error-message" *ngIf="joinUsForm.get('confirmPassword').hasError(validation.type) && (joinUsForm.get('confirmPassword').dirty || joinUsForm.get('confirmPassword').touched)">
-                  {{ validation.message }}
-                </div>
-              </ng-container>
+            <!-- These validations are for the form group -->
+            <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.matching_passwords">
+                  <div class="error-message" *ngIf="joinUsForm.get('matching_passwords').hasError(validation.type) && (joinUsForm.get('matching_passwords').get('confirm_password').dirty || joinUsForm.get('matching_passwords').get('confirm_password').touched)">
+                    {{ validation.message }}
+                  </div>
+                </ng-container>
             </div>
+
+
+            <!---  53018-->
           </ion-col>
         </ion-row>
 

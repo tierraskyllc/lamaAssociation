@@ -3,6 +3,7 @@ import { IonicPage } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup, FormControl, FormArray } from "@angular/forms";
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
+import { PasswordValidator } from './../../validators/password.validator';
 
 @IonicPage()
 @Component({
@@ -10,8 +11,11 @@ import { ShareProvider } from "../../services/share";
   templateUrl: "joinus.html"
 })
 export class JoinUsPage {
-  data: any = {};
+
   joinUsForm: FormGroup;
+  matching_passwords_group: FormGroup;
+  data: any = {};
+
   submitAttempt: boolean = false;
 
   params: any = {};
@@ -31,69 +35,48 @@ export class JoinUsPage {
   }
 
   ionViewWillLoad() {
+
+    this.matching_passwords_group = new FormGroup({
+      password: new FormControl('', Validators.compose([Validators.minLength(5), Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')])),
+      confirm_password: new FormControl('', Validators.required)},
+      (formGroup: FormGroup) => {return PasswordValidator.areEqual(formGroup);
+    });
+
     this.joinUsForm = this.formBuilder.group({
-      firstName: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.maxLength(16),
-          Validators.pattern("[a-zA-Z ]*")
-        ])
-      ],
-      lastName: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.maxLength(16),
-          Validators.pattern("[a-zA-Z ]*")
-        ])
-      ],
-      email: new FormControl(
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")
-        ])
-      ),
-      password: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(16),
-          Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,16}")
-        ])
-      ],
-      confirmPassword: ["", Validators.required],
+      firstName: ["", Validators.compose([Validators.required, Validators.maxLength(16), Validators.pattern("[a-zA-Z ]*")])],
+      lastName: ["", Validators.compose([Validators.required, Validators.maxLength(16), Validators.pattern("[a-zA-Z ]*")])],
+      email: new FormControl("", Validators.compose([Validators.required, Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")])),
+      matching_passwords: this.matching_passwords_group,
       selection: ["", Validators.compose([Validators.required])],
       region: ["", Validators.compose([Validators.required])],
-      state: [
-        "",
-        Validators.compose([Validators.required, Validators.minLength(1)])
-      ],
-      chapter: [
-        "",
-        Validators.compose([Validators.required, Validators.minLength(1)])
-      ],
+      state: ["", Validators.compose([Validators.required, Validators.minLength(1)])],
+      chapter: ["", Validators.compose([Validators.required, Validators.minLength(1)])],
       country: ["", Validators.compose([Validators.required])],
       intlchapter: ["", Validators.compose([Validators.required])]
     });
+
+
+
   }
 
   validation_messages = {
-    firstName: [{ type: "required", message: "First Name is required." }],
+    'firstName': [{ type: "required", message: "First Name is required." }],
     lastName: [{ type: "required", message: "Last Name is required." }],
     email: [
       { type: "required", message: "Email is required." },
       { type: "pattern", message: "Enter a valid email." }
     ],
     password: [
-      { type: "required", message: "Password is required." },
-      { type: "pattern", message: "Enter a valid password." }
+      { type: 'required', message: 'Password is required.' },
+      { type: 'minlength', message: 'Password must be at least 5 characters long.' },
+      { type: 'pattern', message: 'Your password must contain at least one uppercase, one lowercase, and one number.' }
     ],
-    confirmPassword: [
-      { type: "required", message: "Confirmation is required." }
-    ]
+    'confirm_password': [
+      { type: 'required', message: 'Confirm password is required' }
+    ],
+    'matching_passwords': [
+      { type: 'areEqual', message: 'Password mismatch' }
+    ],
   };
 
   selectNational() {
