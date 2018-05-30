@@ -34,7 +34,7 @@
         <!-- </div> -->
         <ion-row>
           <ion-col>
-            <div>
+
               <ion-item no-padding color="accent">
                 <ion-label floating>Address</ion-label>
                 <ion-input type="text" formControlName="address"></ion-input>
@@ -44,12 +44,12 @@
                   {{ validation.message }}
                 </div>
               </ng-container>
-            </div>
+
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <div>
+
               <ion-item no-padding color="accent">
                 <ion-label floating>City</ion-label>
                 <ion-input type="text" formControlName="city"></ion-input>
@@ -59,12 +59,12 @@
                   {{ validation.message }}
                 </div>
               </ng-container>
-            </div>
+
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <div>
+
               <ion-item no-padding color="accent">
                 <ion-label floating>State</ion-label>
                 <ion-input type="text" formControlName="state"></ion-input>
@@ -74,12 +74,12 @@
                   {{ validation.message }}
                 </div>
               </ng-container>
-            </div>
+
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <div>
+
               <ion-item no-padding color="accent">
                 <ion-label floating>Zip Code</ion-label>
                 <ion-input type="text" formControlName="zipCode"></ion-input>
@@ -89,7 +89,7 @@
                   {{ validation.message }}
                 </div>
               </ng-container>
-            </div>
+
           </ion-col>
         </ion-row>
 
@@ -116,6 +116,7 @@
             </div>
           </ion-col>
         </ion-row>
+        
         <ion-row>
           <ion-col>
               <div>
@@ -160,7 +161,7 @@
           <ion-col>
               <div>
                   <ion-item no-padding color="accent">
-                    <ion-label floating >Place of Birth</ion-label>
+                    <ion-label floating>Place of Birth</ion-label>
                     <ion-input type="text" formControlName="placeOfBirth"></ion-input>
                   </ion-item>
                   <ng-container *ngFor="let validation of validation_messages.placeOfBirth">
@@ -174,8 +175,8 @@
         <ion-row>
           <ion-col>
               <div>
-                  <ion-item>
-                    <ion-label fixed color="primary">License?</ion-label>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>License?</ion-label>
                     <ion-select formControlName="haveMotorcycleLicense" interface="popover" cancelText="Cancel" okText="OK">
                       <ion-option *ngFor="let haveMotorcycleLicense of yesOrNo" [value]="haveMotorcycleLicense">{{ haveMotorcycleLicense }}</ion-option>
                     </ion-select>
@@ -186,8 +187,8 @@
         <ion-row>
           <ion-col>
               <div>
-                  <ion-item>
-                    <ion-label fixed color="primary">Years Riding</ion-label>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>Years Riding</ion-label>
                     <ion-input formControlName="yearsRiding" type="number"></ion-input>
                   </ion-item>
                   <ng-container *ngFor="let validation of validation_messages.yearsRiding">
@@ -365,8 +366,8 @@
         <ion-row>
           <ion-col>
               <div>
-                  <ion-item>
-                    <ion-label fixed color="primary">Highest Education</ion-label>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>Highest Education</ion-label>
                     <ion-select formControlName="highestEducation" cancelText="Cancel" okText="OK">
                       <ion-option *ngFor="let highestEducation of highestEducation" [value]="highestEducation">{{ highestEducation }}</ion-option>
                     </ion-select>
@@ -381,7 +382,74 @@
         </ion-row>
         <ion-row>
           <ion-col>
+              <div>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>Skills & Pastimes</ion-label>
+                    <ion-input type="text" formControlName="skillsPastimes"></ion-input>
+                  </ion-item>
+                  <ng-container *ngFor="let validation of validation_messages.skillsPastimes">
+                    <div class="error-message" *ngIf="applicationForm.get('skillsPastimes').hasError(validation.type) && (applicationForm.get('skillsPastimes').dirty || applicationForm.get('skillsPastimes').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
 
+                <div>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>Blood Type</ion-label>
+                    <ion-select formControlName="bloodType" interface="popover" cancelText="Cancel" okText="OK">
+                      <ion-option *ngFor="let bloodType of bloodTypes" [value]="bloodType">{{ bloodType }}</ion-option>
+                    </ion-select>
+                  </ion-item>
+                </div>
+
+                <div>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>Allergies</ion-label>
+                    <ion-input type="text" formControlName="allergies"></ion-input>
+                  </ion-item>
+                  <ng-container *ngFor="let validation of validation_messages.allergies">
+                    <div class="error-message" *ngIf="applicationForm.get('allergies').hasError(validation.type) && (applicationForm.get('allergies').dirty || applicationForm.get('allergies').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+                <div>
+                    <ion-item no-padding color="accent">
+                      <ion-label floating>Organ donor</ion-label>
+                      <ion-select formControlName="organDonar" interface="popover" cancelText="Cancel" okText="OK">
+                        <ion-option *ngFor="let organDonar of yesOrNo" [value]="organDonar">{{ organDonar }}</ion-option>
+                      </ion-select>
+                    </ion-item>
+                  </div>
+
+                  <!-- <h6>Misc Info. . .</h6> START -->
+                  <div>
+                    <ion-item no-padding color="accent">
+                      <ion-label floating>Member's Title</ion-label>
+                      <ion-select formControlName="memberTitle" cancelText="Cancel" okText="OK">
+                        <ion-option *ngFor="let memberTitle of memberTitles" [value]="memberTitle">{{ memberTitle }}</ion-option>
+                      </ion-select>
+                    </ion-item>
+                  </div>
+
+                  <div>
+                    <ion-item no-padding color="accent">
+                      <ion-label floating>Type of Membership</ion-label>
+                      <ion-select formControlName="typeOfMembership" cancelText="Cancel" okText="OK">
+                        <ion-option *ngFor="let typeOfMembership of typeOfMemberships" [value]="typeOfMembership">{{ typeOfMembership }}</ion-option>
+                      </ion-select>
+                    </ion-item>
+                  </div>
+
+                  <div>
+                    <ion-item no-padding color="accent">
+                      <ion-label floating>Type of typeOfChapter</ion-label>
+                      <ion-select formControlName="typeOfChapter" cancelText="Cancel" okText="OK">
+                        <ion-option *ngFor="let typeOfChapter of typeOfChapters" [value]="typeOfChapter">{{ typeOfChapter }}</ion-option>
+                      </ion-select>
+                    </ion-item>
+                  </div>
           </ion-col>
         </ion-row>
         <ion-row>
@@ -389,21 +457,7 @@
 
           </ion-col>
         </ion-row>
-        <ion-row>
-          <ion-col>
 
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-
-          </ion-col>
-        </ion-row>
       </form>
     </div>
   </ion-grid>
