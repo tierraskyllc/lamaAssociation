@@ -118,7 +118,265 @@
         </ion-row>
         <ion-row>
           <ion-col>
+              <div>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>Gender</ion-label>
+                    <ion-select formControlName="gender" interface=popover cancelText="Cancel" okText="OK">
+                      <ion-option *ngFor="let gender of genders" [value]="gender">{{ gender }}</ion-option>
+                    </ion-select>
+                  </ion-item>
+                  <ng-container *ngFor="let validation of validation_messages.gender">
+                    <div class="error-message" *ngIf="!(applicationForm.get('gender').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+          </ion-col>
+          <ion-col>
+              <div>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>Age</ion-label>
+                    <ion-input formControlName="age" type="number"></ion-input>
+                  </ion-item>
+                  <ng-container *ngFor="let validation of validation_messages.age">
+                    <div class="error-message" *ngIf="applicationForm.get('age').hasError(validation.type) && (applicationForm.get('age').dirty || applicationForm.get('age').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+              <div>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>Date of Birth</ion-label>
+                    <ion-datetime></ion-datetime>
+                  </ion-item>
+                </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+              <div>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating >Place of Birth</ion-label>
+                    <ion-input type="text" formControlName="placeOfBirth"></ion-input>
+                  </ion-item>
+                  <ng-container *ngFor="let validation of validation_messages.placeOfBirth">
+                    <div class="error-message" *ngIf="applicationForm.get('placeOfBirth').hasError(validation.type) && (applicationForm.get('placeOfBirth').dirty || applicationForm.get('placeOfBirth').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+              <div>
+                  <ion-item>
+                    <ion-label fixed color="primary">License?</ion-label>
+                    <ion-select formControlName="haveMotorcycleLicense" interface="popover" cancelText="Cancel" okText="OK">
+                      <ion-option *ngFor="let haveMotorcycleLicense of yesOrNo" [value]="haveMotorcycleLicense">{{ haveMotorcycleLicense }}</ion-option>
+                    </ion-select>
+                  </ion-item>
+                </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+              <div>
+                  <ion-item>
+                    <ion-label fixed color="primary">Years Riding</ion-label>
+                    <ion-input formControlName="yearsRiding" type="number"></ion-input>
+                  </ion-item>
+                  <ng-container *ngFor="let validation of validation_messages.yearsRiding">
+                    <div class="error-message" *ngIf="applicationForm.get('yearsRiding').hasError(validation.type) && (applicationForm.get('yearsRiding').dirty || applicationForm.get('yearsRiding').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+          </ion-col>
+        </ion-row>
+        <ion-row><!---->
+          <ion-col>
+            <!-- Add Motorcycle Information -->
 
+            <ion-card-header>Motorcycle Information</ion-card-header><hr>
+            <ion-list>
+              <ion-list formArrayName="motorcycles" no-lines>
+                <div *ngFor="let applicationForm of applicationForm.controls.motorcycles.controls; let i=index">
+                  <div [formGroupName]="i">
+                    <ion-card-header>Motorcycle #{{ i + 1 }}
+                      <ion-buttons end>
+                        <button ion-button outline (click)="removeMotorcycle(i)" color="danger" type="button">
+                          <ion-icon name="trash"></ion-icon>
+                        </button>
+                      </ion-buttons>
+                    </ion-card-header>
+
+                        <ion-row>
+                          <ion-col>
+                            <ion-item no-padding color="accent">
+                              <ion-label>Year</ion-label>
+                              <ion-input type="text" formControlName="year" required placeholder="1999"></ion-input>
+                            </ion-item>
+                          </ion-col>
+                          <ion-col>
+                            <ion-item no-padding color="accent">
+                              <ion-label>Color</ion-label>
+                              <ion-input type="text" formControlName="color" required placeholder="Black"></ion-input>
+                            </ion-item>
+                          </ion-col>
+                        </ion-row>
+
+                    <ion-item no-padding color="accent">
+                      <ion-input type="text" formControlName="make" required placeholder="Honda"></ion-input>
+                    </ion-item>
+                    <ion-item no-padding color="accent">
+                      <ion-input type="text" formControlName="model" required placeholder="Goldwing"></ion-input>
+                    </ion-item>
+                    <ion-item no-padding color="accent">
+                        <ion-input type="text" formControlName="licensePlate" required placeholder="TYF-832"></ion-input>
+                      </ion-item>
+                    <ion-item no-padding color="accent">
+                      <ion-input type="number" formControlName="currentMileage" placeholder="Current Mileage"></ion-input>
+                    </ion-item>
+                  </div>
+                </div>
+                <button ion-button small (click)="addMotorcycle()" color="dark" type="button">Add Motorcycle</button>
+              </ion-list>
+            </ion-list>
+
+          <!-- Add Motorcycle Information -->
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+              <div>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>Other Club?</ion-label>
+                    <ion-select formControlName="anyOtherClub" interface="popover" cancelText="Cancel" okText="OK">
+                      <ion-option *ngFor="let anyOtherClub of yesOrNo" [value]="anyOtherClub">{{ anyOtherClub }}</ion-option>
+                    </ion-select>
+                  </ion-item>
+                </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+              <div>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>Name of other Club</ion-label>
+                    <ion-input type="text" formControlName="nameOfOtherClub"></ion-input>
+                  </ion-item>
+                  <ng-container *ngFor="let validation of validation_messages.nameOfOtherClub">
+                    <div class="error-message" *ngIf="applicationForm.get('nameOfOtherClub').hasError(validation.type) && (applicationForm.get('nameOfOtherClub').dirty || applicationForm.get('nameOfOtherClub').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col width="100%" align="center">
+            <ion-label>Personal Information</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+              <div>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>Marital Status</ion-label>
+                    <ion-select formControlName="maritalStatus" interface="popover" cancelText="Cancel" okText="OK">
+                      <ion-option *ngFor="let maritalStatus of maritalStatus" [value]="maritalStatus">{{ maritalStatus }}</ion-option>
+                    </ion-select>
+                  </ion-item>
+                </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+              <div>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>How many children?</ion-label>
+                    <ion-input formControlName="numberOfChildren" type="number"></ion-input>
+                  </ion-item>
+                </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+              <div>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>Employer</ion-label>
+                    <ion-input type="text" formControlName="nameOfEmployer"></ion-input>
+                  </ion-item>
+                  <ng-container *ngFor="let validation of validation_messages.nameOfEmployer">
+                    <div class="error-message" *ngIf="applicationForm.get('nameOfEmployer').hasError(validation.type) && (applicationForm.get('nameOfEmployer').dirty || applicationForm.get('nameOfEmployer').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+              <div>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>Years Employed</ion-label>
+                    <ion-input formControlName="yearsEmployed" type="number"></ion-input>
+                  </ion-item>
+                  <ng-container *ngFor="let validation of validation_messages.yearsEmployed">
+                    <div class="error-message" *ngIf="applicationForm.get('yearsEmployed').hasError(validation.type) && (applicationForm.get('yearsEmployed').dirty || applicationForm.get('yearsEmployed').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+              <div>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>Occupation</ion-label>
+                    <ion-input type="text" formControlName="occupation"></ion-input>
+                  </ion-item>
+                  <ng-container *ngFor="let validation of validation_messages.occupation">
+                    <div class="error-message" *ngIf="applicationForm.get('occupation').hasError(validation.type) && (applicationForm.get('occupation').dirty || applicationForm.get('occupation').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+              <div>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>Annual Salary</ion-label>
+                    <ion-select formControlName="annualSalary" cancelText="Cancel" okText="OK">
+                      <ion-option *ngFor="let annualSalary of annualSalary" [value]="annualSalary">{{ annualSalary }}</ion-option>
+                    </ion-select>
+                  </ion-item>
+                </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+              <div>
+                  <ion-item>
+                    <ion-label fixed color="primary">Highest Education</ion-label>
+                    <ion-select formControlName="highestEducation" cancelText="Cancel" okText="OK">
+                      <ion-option *ngFor="let highestEducation of highestEducation" [value]="highestEducation">{{ highestEducation }}</ion-option>
+                    </ion-select>
+                  </ion-item>
+                </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col width="100%" align="center">
+            <ion-label>Miscellaneous Information</ion-label>
           </ion-col>
         </ion-row>
         <ion-row>
@@ -141,7 +399,11 @@
 
           </ion-col>
         </ion-row>
+        <ion-row>
+          <ion-col>
 
+          </ion-col>
+        </ion-row>
       </form>
     </div>
   </ion-grid>
