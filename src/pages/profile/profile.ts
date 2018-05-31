@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { NavController, IonicPage } from "ionic-angular";
+import { NavController, IonicPage, ModalController } from "ionic-angular";
 import { ToastService } from "../../services/toast.service";
 
 @IonicPage()
@@ -46,7 +46,20 @@ export class ProfilePage {
     }
   ];
 
-  constructor(public navCtrl: NavController, public toastCtrl: ToastService) {}
+  constructor(
+    public navCtrl: NavController,
+    public toastCtrl: ToastService,
+    public modalCtrl: ModalController,
+  ) { }
+
+  openQrCodeModal() {
+    this.openModal('QrCodeModalPage');
+  }
+
+  openModal(pageName) {
+    this.modalCtrl.create(pageName, null, { cssClass: 'inset-modal' })
+                  .present();
+  }
 
   ionViewDidLoad() {
     console.log("Hello ProfileFour Page");
