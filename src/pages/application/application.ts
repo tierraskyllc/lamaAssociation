@@ -19,6 +19,8 @@ export class ApplicationPage {
   mockMember = {
     firstName : "John",
     lastName : "Doe",
+    title: "Propect",
+    chapter: "Newark",
     email: "john.doe@whatever.com"
   };
 
@@ -44,9 +46,7 @@ export class ApplicationPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public formBuilder: FormBuilder) {
-      //   bio: ['']
-  }
+    public formBuilder: FormBuilder) {}
 
   save(){
    }
@@ -62,16 +62,16 @@ export class ApplicationPage {
       new Country('AR', 'Argentina')
     ];
 
-    this.genders = ["Male", "Female"];
-    this.yesOrNo = ["Yes", "No"];
-    this.modelOfMotorcycles = ["Harley", "Honda", "Suzuki", "Kawasaki", "BMW", "Yamaha"];
-    this.maritalStatus = ["Married", "Single", "Divorced", "Widowed" ];
-    this.annualSalary = ["Retired", "$20,000 ~ $40,000", "$50,000 ~ $70,000", "$80,000 +", "UnEmployed"];
-    this.highestEducation = ["Self Taught", "Home Schooled", "High School", "Vocational School", "College"];
-    this.bloodTypes = ["O+", "A+", "B+", "AB+", "O-", "A-", "B-", "AB-"];
-    this.memberTitles = ["No Title", "President", "Vice President", "Treasurer", "Secretary", "Business Manager", "Motor Touring Officer", "Sgt of Arms", "Road Captain", "Retired"];
-    this.typeOfMemberships = ["Full Color Member", "DAMA", "Spousal/Pareja", "Prospect", "Probate", "Associate/Asociado"];
-    this.typeOfChapters = ["Organized Chapter/Capitulo", "Establishing Chapter/Capitulo Estableciendo", "Brother Chapter/Capítulo hermano"];
+    this.genders = ["-Select-","Male", "Female"];
+    this.yesOrNo = ["-Select-","Yes", "No"];
+    this.modelOfMotorcycles = ["-Select-","Harley", "Honda", "Suzuki", "Kawasaki", "BMW", "Yamaha"];
+    this.maritalStatus = ["-Select-","Married", "Single", "Divorced", "Widowed" ];
+    this.annualSalary = ["-Select-","Retired", "$20,000 ~ $40,000", "$50,000 ~ $70,000", "$80,000 +", "UnEmployed"];
+    this.highestEducation = ["-Select-","Self Taught", "Home Schooled", "High School", "Vocational School", "College"];
+    this.bloodTypes = ["-Select-","O+", "A+", "B+", "AB+", "O-", "A-", "B-", "AB-"];
+    this.memberTitles = ["-Select-","No Title", "President", "Vice President", "Treasurer", "Secretary", "Business Manager", "Motor Touring Officer", "Sgt of Arms", "Road Captain", "Retired"];
+    this.typeOfMemberships = ["-Select-","Full Color Member", "DAMA", "Spousal/Pareja", "Prospect", "Probate", "Associate/Asociado"];
+    this.typeOfChapters = ["-Select-","Organized Chapter/Capitulo", "Establishing Chapter/Capitulo Estableciendo", "Brother Chapter/Capítulo hermano"];
 
     let country = new FormControl(this.countries[0], Validators.required);
     let phone = new FormControl('', Validators.compose([Validators.required, PhoneValidator.validCountryPhone(country)]));
@@ -90,7 +90,8 @@ export class ApplicationPage {
       state: ['', Validators.compose([Validators.maxLength(16), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
       zipCode: ['', Validators.compose([Validators.maxLength(10), Validators.pattern('[0-9 ]*'), Validators.required])],
       country_phone: this.country_phone_group,
-      gender: [(this.genders[0], Validators.required)],
+      // gender: [(this.genders[0], Validators.required)],
+      gender: new FormControl(this.genders[0], Validators.required),
       age: ['', Validators.required],
       placeOfBirth: ['', Validators.compose([Validators.required, Validators.maxLength(16), Validators.pattern('[a-zA-Z ]*')])],
       yearsRiding: ['', Validators.required],
@@ -111,11 +112,12 @@ export class ApplicationPage {
       annualSalary: new FormControl(this.annualSalary[0], Validators.required),
       highestEducation: new FormControl(this.highestEducation[0], Validators.required),
       skillsPastimes: ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.pattern('[a-zA-Z ]*')])],
-      bloodType: ['', new FormControl(this.bloodTypes[0], Validators.required)],
+      // bloodType: ['', new FormControl(this.bloodTypes[0], Validators.required)],
+      bloodType: new FormControl(this.bloodTypes[0], Validators.required),
       allergies: ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.pattern('[a-zA-Z ]*')])],
       organDonar: new FormControl(this.yesOrNo[0], Validators.required),
-      memberTitle: [(this.memberTitles[0], Validators.required)],
-      typeOfMembership: [(this.typeOfMemberships[0], Validators.required)],
+      memberTitle: new FormControl(this.memberTitles[0], Validators.required),
+      typeOfMembership: new FormControl(this.typeOfMemberships[0], Validators.required),
       typeOfChapter: [(this.typeOfChapters[0], Validators.required)],
       motorcycles: this.formBuilder.array([
         this.getInitialMotorcycle()
