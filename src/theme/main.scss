@@ -387,6 +387,10 @@ $icon-size:(
   font-size: $text-font-size;
 }
 
+[card-header]{
+  color: theme-colors('textColors', 'primary') !important;
+  font-size: $h2-font-size !important;
+}
 // Swipe Item
 // [swiped-item-bcg]{
 //   background-color: theme-colors('mainColors', 'primary', 'opacity60')!important;

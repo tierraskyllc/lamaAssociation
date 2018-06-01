@@ -25,26 +25,30 @@
       <h3 id="profile-name">{{member.name}}</h3>
       <p>{{member.chapter}} Chapter &bull; {{member.status}}</p>
       <p class="profile-description">{{member.title}}</p>
-      <ion-row nowrap>
+
+      <!-- Buttons  -->
+      <ion-row nowrap justify-content-center>
+
         <button ion-button *ngIf="!following" small color="purple">Events</button>
         <!-- <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()">Following<ion-icon name="checkmark"></ion-icon></button> -->
-
         <button ion-button [disabled]="underConstruction" *ngIf="!following" small color="purple" (click)="follow()">Garage</button>
         <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()">Following
           <ion-icon name="checkmark"></ion-icon>
         </button>
-
         <!-- <button ion-button [disabled]="underConstruction"*ngIf="!following" small color="purple" (click)="follow()">Follow</button>
-      <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()">Following<ion-icon name="checkmark"></ion-icon></button> -->
-
+        <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()">Following<ion-icon name="checkmark"></ion-icon></button> -->
         <button ion-button *ngIf="!signingIn" small color="purple" (click)="signIn()">Sign In</button>
         <button ion-button *ngIf="signingIn" class="follow-button" small color="purple" (click)="signIn()">Signing In
           <ion-icon name="checkmark"></ion-icon>
         </button>
+
       </ion-row>
 
-      <button ion-button block (click)="openQrCodeModal()"><ion-icon name="finger-print">Here To Sign-In</ion-icon></button>
-
+      <ion-row>
+        <button ion-button block (click)="openQrCodeModal()">
+          <ion-icon name="finger-print">Here To Sign-In</ion-icon>
+        </button>
+      </ion-row>
     </div>
     <hr/>
 

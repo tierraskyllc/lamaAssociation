@@ -78,7 +78,7 @@ page-profile {
   hr {
     border: 0;
     height: 1px;
-    background: #444;
+    background: rgb(68, 68, 68);
     background: -webkit-linear-gradient(left, hsla(0, 0%, 0%, 0) 0%, rgb(188, 198, 214) 50%, hsla(0, 0%, 0%, 0) 100%);
   }
   // Posts feed
@@ -87,34 +87,34 @@ page-profile {
   }
 
   // The following pertains to the QrCode Modal
-  ion-modal,
-  .show-page {
-    // transparent black background overlay
-    background-color: rgba(0, 0, 0, .5) !important;
-    padding: 50px !important;
-  }
+  // ion-modal,
+  // .show-page {
+  //   // transparent black background overlay
+  //   background-color: rgba(0, 0, 0, .5) !important;
+  //   padding: 50px !important;
+  // }
 
-  .toolbar-background {
-    color: red !important;
-  }
+  // .toolbar-background {
+  //   color: red !important;
+  // }
 
-  ion-modal.modal-wrapper {
-    transform: translateY(30%) !important;
-  }
+  // ion-modal.modal-wrapper {
+  //   transform: translateY(30%) !important;
+  // }
 
-  ion-page.modal {
-    padding: 30px;
-    background: rgba(0, 0, 0, 0.5);
-  }
+  // ion-page.modal {
+  //   padding: 30px;
+  //   background: rgba(0, 0, 0, 0.5);
+  // }
 
-  .modal-backdrop-bg {
-    background-color: #000;
-    opacity: 0;
-  }
+  // .modal-backdrop-bg {
+  //   background-color: #000;
+  //   opacity: 0;
+  // }
 
-  .active .modal-backdrop-bg {
-    opacity: 0.5;
-  }
+  // .active .modal-backdrop-bg {
+  //   opacity: 0.5;
+  // }
 }
 
 // QrCode Modal

@@ -16,6 +16,9 @@ import emailMask from 'text-mask-addons/dist/emailMask';
 })
 export class ApplicationPage {
 
+  events: any;
+  data: any;
+
   mockMember = {
     firstName : "John",
     lastName : "Doe",
@@ -170,5 +173,16 @@ export class ApplicationPage {
     'skillsPastimes': [{type: 'required', message: 'skillsPastimes is required.'}],
     'allergies': [{type: 'required', message: 'allergies is required.'}],
   }
+
+
+  onEvent(event: string, item: any, e: any) {
+    if (e) {
+        e.stopPropagation();
+    }
+    if (this.events[event]) {
+        this.events[event](item);
+    }
+}
+
 
 }
