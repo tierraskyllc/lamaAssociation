@@ -120,6 +120,10 @@ export class LoginPage {
     this.navCtrl.push("ApplicationPage")
   }
 
+  eventsPage() {
+    this.navCtrl.push("EventsPage")
+  }
+
   ionViewDidLoad() {
     console.log("ionViewDidLoad LoginPage");
   }
