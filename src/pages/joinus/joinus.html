@@ -19,30 +19,30 @@
     <div class="form">
       <!--Form-->
       <form [formGroup]="joinUsForm">
-
+        <ion-label class="invalidmsg">{{data.error}}</ion-label>
         <ion-row>
           <ion-col>
             <div>
-              <!---Input field firstName-->
+              <!---Input field firstname-->
               <ion-item no-padding color="accent">
                 <ion-label floating><ion-icon name="person"></ion-icon>First Name</ion-label>
-                <ion-input formControlName="firstName" type="text"></ion-input>
+                <ion-input formControlName="firstname" type="text"></ion-input>
               </ion-item>
-              <ng-container *ngFor="let validation of validation_messages.firstName">
-                <div class="error-message" *ngIf="joinUsForm.get('firstName').hasError(validation.type) && (joinUsForm.get('firstName').dirty || joinUsForm.get('firstName').touched)">
+              <ng-container *ngFor="let validation of validation_messages.firstname">
+                <div class="error-message" *ngIf="joinUsForm.get('firstname').hasError(validation.type) && (joinUsForm.get('firstname').dirty || joinUsForm.get('firstname').touched)">
                   {{ validation.message }}
                 </div>
               </ng-container>
             </div>
 
             <div>
-              <!---Input field lastName-->
+              <!---Input field lastname-->
               <ion-item no-padding color="accent">
                 <ion-label floating>Last Name</ion-label>
-                <ion-input formControlName="lastName" type="text"></ion-input>
+                <ion-input formControlName="lastname" type="text"></ion-input>
               </ion-item>
-              <ng-container *ngFor="let validation of validation_messages.lastName">
-                <div class="error-message" *ngIf="joinUsForm.get('lastName').hasError(validation.type) && (joinUsForm.get('lastName').dirty || joinUsForm.get('lastName').touched)">
+              <ng-container *ngFor="let validation of validation_messages.lastname">
+                <div class="error-message" *ngIf="joinUsForm.get('lastname').hasError(validation.type) && (joinUsForm.get('lastname').dirty || joinUsForm.get('lastname').touched)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -184,7 +184,6 @@
             <button ion-button small round (click)="submit()">Sign UP</button>
           </ion-col>
         </ion-row>
-
       </form>
     </div>
     <!---Register button-->

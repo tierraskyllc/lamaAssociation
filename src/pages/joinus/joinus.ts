@@ -43,8 +43,8 @@ export class JoinUsPage {
     });
 
     this.joinUsForm = this.formBuilder.group({
-      firstName: ["", Validators.compose([Validators.required, Validators.maxLength(16), Validators.pattern("[a-zA-Z ]*")])],
-      lastName: ["", Validators.compose([Validators.required, Validators.maxLength(16), Validators.pattern("[a-zA-Z ]*")])],
+      firstname: ["", Validators.compose([Validators.required, Validators.maxLength(16), Validators.pattern("[a-zA-Z ]*")])],
+      lastname: ["", Validators.compose([Validators.required, Validators.maxLength(16), Validators.pattern("[a-zA-Z ]*")])],
       email: new FormControl("", Validators.compose([Validators.required, Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")])),
       matching_passwords: this.matching_passwords_group,
       selection: ["", Validators.compose([Validators.required])],
@@ -60,8 +60,8 @@ export class JoinUsPage {
   }
 
   validation_messages = {
-    'firstName': [{ type: "required", message: "First Name is required." }],
-    lastName: [{ type: "required", message: "Last Name is required." }],
+    'firstname': [{ type: "required", message: "First Name is required." }],
+    lastname: [{ type: "required", message: "Last Name is required." }],
     email: [
       { type: "required", message: "Email is required." },
       { type: "pattern", message: "Enter a valid email." }
@@ -122,15 +122,12 @@ export class JoinUsPage {
       var json_encoded_response = "";
       var decoded_response = "";
       body.append("email", this.joinUsForm.controls.email.value);
-      body.append("firstName", this.joinUsForm.controls.firstname.value);
-      body.append("lastName", this.joinUsForm.controls.lastname.value);
-      body.append("password", this.joinUsForm.controls.password.value);
+      body.append("firstname", this.joinUsForm.controls.firstname.value);
+      body.append("lastname", this.joinUsForm.controls.lastname.value);
+      body.append("password", this.matching_passwords_group.controls.password.value);
       body.append("selection", this.joinUsForm.controls.selection.value);
       body.append("chapter", this.joinUsForm.controls.chapter.value);
-      body.append(
-        "intlchapter",
-        this.joinUsForm.controls.intlchapter.value
-      );
+      body.append("intlchapter", this.joinUsForm.controls.intlchapter.value);
       this.http
         .post(this.shareProvider.server + "signup/signup.php", body)
         .subscribe(
