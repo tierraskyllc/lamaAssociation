@@ -168,6 +168,14 @@
             </div>
           </ion-col>
         </ion-row>
+
+        <ion-row>
+            <ion-col width="100%" align="center">
+              <ion-label>Motorcycle Information</ion-label>
+            </ion-col>
+          </ion-row>
+        <ion-row card-background-page>
+
         <ion-row>
           <ion-col>
             <div>
@@ -195,12 +203,7 @@
             </div>
           </ion-col>
         </ion-row>
-        <ion-row>
-          <ion-col width="100%" align="center">
-            <ion-label>Motorcycle Information</ion-label>
-          </ion-col>
-        </ion-row>
-        <ion-row card-background-page>
+
           <ion-col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12>
             <ion-list formArrayName="motorcycles" no-lines>
               <div *ngFor="let applicationForm of applicationForm.controls.motorcycles.controls; let i=index">
@@ -239,11 +242,6 @@
                       <ion-item no-padding color="accent">
                         <ion-input type="number" formControlName="currentMileage" placeholder="Current Mileage"></ion-input>
                       </ion-item>
-                      <!-- <ion-card-title no-padding><h2 card-title>Motorcycle #{{ i + 1 }}</h2></ion-card-title> -->
-                      <!-- <h3 card-subtitle>222</h3>
-                      <h3 card-subtitle>333</h3>
-                      <p card-body-text>444</p> -->
-                      <!---Social share-->
                     </ion-card-content>
                   </ion-card>
                 </div>
@@ -256,7 +254,7 @@
             <ion-col width="100%" align="center">
               <button ion-button small (click)="addMotorcycle()" color="dark" type="button">Add Motorcycle</button>
             </ion-col>
-          </ion-row>
+        </ion-row>
 
 
         <!-- Add Motorcycle Information 5/31/2018 -->

@@ -138,7 +138,7 @@ export class JoinUsPage {
               this.data.error = decoded_response[1];
             } else {
               if (decoded_response[0]) {
-                this.shareProvider.curentpage = "SignupsuccessPage";
+                this.shareProvider.curentpage = "SignUpSuccessPage";
               } else if (!decoded_response[0]) {
                 this.data.error = decoded_response[2];
               } else {
@@ -146,21 +146,7 @@ export class JoinUsPage {
                   "Problem signing up for LAMA.  Please check your internet connection.  Contact administrator if problem persists.";
               }
             }
-            /*=====
-          if(decoded_response[0] == true) {
-            this.shareProvider.curentpage = 'SignupsuccessPage';
-          }
-          else if(decoded_response[0] == false) {
-            this.data.error = decoded_response[2];
-          }
-          else if(decoded_response[0] == "error") {
-            this.data.error = decoded_response[1];
-          }
-          else {
-            this.data.error = "Problem signing up for LAMA.  Please check your internet connection.  Contact administrator if problem persists.";
-            //console.log("Oooops!");
-          }
-          =====*/
+
           },
           error => {
             this.data.error =

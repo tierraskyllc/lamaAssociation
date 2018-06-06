@@ -124,7 +124,12 @@ export class LoginPage {
     this.navCtrl.push("EventsPage")
   }
 
+  signUpSuccessPage() {
+    this.navCtrl.push("SignUpSuccessPage")
+  }
+
   ionViewDidLoad() {
     console.log("ionViewDidLoad LoginPage");
   }
 }
+
