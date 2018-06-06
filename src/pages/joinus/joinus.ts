@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { IonicPage } from "ionic-angular";
+import { IonicPage, NavController } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup, FormControl, FormArray } from "@angular/forms";
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
@@ -21,7 +21,7 @@ export class JoinUsPage {
   params: any = {};
   email: string;
 
-  constructor(public formBuilder: FormBuilder, private http: Http, private shareProvider: ShareProvider) {
+  constructor(public formBuilder: FormBuilder, private http: Http, private shareProvider: ShareProvider, public navCtrl: NavController) {
     this.data.response = "";
     this.data.error = "";
 
@@ -37,7 +37,7 @@ export class JoinUsPage {
   ionViewWillLoad() {
 
     this.matching_passwords_group = new FormGroup({
-      password: new FormControl('', Validators.compose([Validators.minLength(5), Validators.required, Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')])),
+      password: new FormControl('', Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(16), Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{5,16}')])),
       confirm_password: new FormControl('', Validators.required)},
       (formGroup: FormGroup) => {return PasswordValidator.areEqual(formGroup);
     });
@@ -139,6 +139,7 @@ export class JoinUsPage {
             } else {
               if (decoded_response[0]) {
                 this.shareProvider.curentpage = "SignUpSuccessPage";
+                this.navCtrl.push("SignUpSuccessPage");
               } else if (!decoded_response[0]) {
                 this.data.error = decoded_response[2];
               } else {
@@ -146,7 +147,21 @@ export class JoinUsPage {
                   "Problem signing up for LAMA.  Please check your internet connection.  Contact administrator if problem persists.";
               }
             }
-
+            /*=====
+          if(decoded_response[0] == true) {
+            this.shareProvider.curentpage = 'SignupsuccessPage';
+          }
+          else if(decoded_response[0] == false) {
+            this.data.error = decoded_response[2];
+          }
+          else if(decoded_response[0] == "error") {
+            this.data.error = decoded_response[1];
+          }
+          else {
+            this.data.error = "Problem signing up for LAMA.  Please check your internet connection.  Contact administrator if problem persists.";
+            //console.log("Oooops!");
+          }
+          =====*/
           },
           error => {
             this.data.error =
