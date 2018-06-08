@@ -29,14 +29,18 @@
       <!-- Buttons  -->
       <ion-row nowrap justify-content-center>
 
-        <button ion-button *ngIf="!following" small color="purple">Events</button>
+        <button ion-button small (click)="eventsPage()">Events</button>
         <!-- <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()">Following<ion-icon name="checkmark"></ion-icon></button> -->
         <button ion-button [disabled]="underConstruction" *ngIf="!following" small color="purple" (click)="follow()">Garage</button>
-        <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()">Following<ion-icon name="checkmark"></ion-icon></button>
+        <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()">Following
+          <ion-icon name="checkmark"></ion-icon>
+        </button>
         <!-- <button ion-button [disabled]="underConstruction"*ngIf="!following" small color="purple" (click)="follow()">Follow</button>
         <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()">Following<ion-icon name="checkmark"></ion-icon></button> -->
         <button ion-button *ngIf="!signingIn" small color="purple" (click)="signIn()">Sign In</button>
-        <button ion-button *ngIf="signingIn" class="follow-button" small color="purple" (click)="signIn()">Signing In<ion-icon name="checkmark"></ion-icon></button>
+        <button ion-button *ngIf="signingIn" class="follow-button" small color="purple" (click)="signIn()">Signing In
+          <ion-icon name="checkmark"></ion-icon>
+        </button>
 
       </ion-row>
 

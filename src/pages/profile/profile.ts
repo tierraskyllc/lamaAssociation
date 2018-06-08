@@ -52,6 +52,10 @@ export class ProfilePage {
     public modalCtrl: ModalController,
   ) { }
 
+  eventsPage() {
+    this.navCtrl.push("EventsPage")
+  }
+
   openQrCodeModal() {
     this.openModal('QrCodeModalPage');
   }

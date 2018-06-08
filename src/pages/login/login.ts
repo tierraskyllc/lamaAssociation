@@ -120,8 +120,8 @@ export class LoginPage {
     this.navCtrl.push("ApplicationPage")
   }
 
-  eventsPage() {
-    this.navCtrl.push("EventsPage")
+  chapterAdminPage() {
+    this.navCtrl.push("ChapterAdminPage")
   }
 
   signUpSuccessPage() {
