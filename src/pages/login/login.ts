@@ -9,6 +9,7 @@ import {
 } from "@angular/forms";
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
+import { PasswordValidator } from './../../validators/password.validator';
 
 @IonicPage()
 @Component({
@@ -32,22 +33,15 @@ export class LoginPage {
 
   ionViewWillLoad() {
     this.loginForm = this.formBuilder.group({
-      email: new FormControl(
+      /*email: new FormControl(
         "",
         Validators.compose([
           Validators.required,
-          Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")
+          //Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")
         ])
-      ),
-      password: [
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(16),
-          Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,16}")
-        ])
-      ]
+      ),*/
+      email: new FormControl("", Validators.compose([Validators.required, Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")])),
+      password: new FormControl('', Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(16)]))
     });
   }
 
@@ -58,13 +52,15 @@ export class LoginPage {
     ],
     password: [
       { type: "required", message: "Password is required." },
-      { type: "pattern", message: "Enter a valid password." }
+      { type: "minlength", message: "Enter a valid password." },
+      { type: "maxlength", message: "Enter a valid password." }
     ]
   };
 
   //
 
   login() {
+    this.data.error = '';
     this.submitAttempt = true;
     if (this.loginForm.valid) {
       var body = new FormData();
@@ -72,7 +68,7 @@ export class LoginPage {
       var decoded_response = JSON.parse(
         '{"sessionid":"", "username":"", "firstname":"" , "lastname":""}'
       );
-      body.append("username", this.loginForm.controls.username.value);
+      body.append("username", this.loginForm.controls.email.value);
       body.append("password", this.loginForm.controls.password.value);
       this.http
         .post(this.shareProvider.server + "signin/signin.php", body)
@@ -89,7 +85,8 @@ export class LoginPage {
               if (decoded_response[6] != null) {
                 this.shareProvider.role = decoded_response[6];
               }
-              this.shareProvider.curentpage = "ProfilePage";
+              this.shareProvider.curentpage = "ApplicationPage";
+              this.navCtrl.push("ApplicationPage")
             } else if (decoded_response[0] == false) {
               this.data.error = decoded_response[2];
             } else {
@@ -98,9 +95,14 @@ export class LoginPage {
           },
           error => {
             this.data.error = error;
-            console.log("Oooops!");
+            //console.log("Oooops!");
           }
         );
+    }
+    else {
+      if((!this.loginForm.get('email').dirty) || (!this.loginForm.get('password').dirty)) {
+        this.data.error = 'Please enter Email and Password.';
+      }
     }
   }
   //
