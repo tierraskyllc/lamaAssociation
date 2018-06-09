@@ -1,9 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Member Application</ion-title>
-    <ion-buttons end>
-      <button>Export to PDF </button>
-    </ion-buttons>
+    <ion-title>Application</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -266,12 +263,14 @@
           </ion-col>
         </ion-row>
 
+
+
         <ion-row>
           <ion-col>
             <div>
               <ion-item no-padding color="accent">
-                <ion-label floating>Do you belong to another Club?</ion-label>
-                <ion-select formControlName="anyOtherClub" interface="popover" cancelText="Cancel" okText="OK">
+                <ion-label floating>Do you belong to another Riding Club?</ion-label>
+                <ion-select formControlName="anyOtherClub" interface="popover">
                   <ion-option *ngFor="let anyOtherClub of yesOrNo" [value]="anyOtherClub">{{ anyOtherClub }}</ion-option>
                 </ion-select>
               </ion-item>
@@ -279,11 +278,15 @@
           </ion-col>
         </ion-row>
 
+        <div *ngIf="applicationForm.get('anyOtherClub').value=='Yes'; then thenBlock"></div>
+
+        <ng-template #thenBlock>
+
         <ion-row>
           <ion-col>
             <div>
               <ion-item no-padding color="accent">
-                <ion-label floating>Name of other Club</ion-label>
+                <ion-label floating>Name of other Club?</ion-label>
                 <ion-input type="text" formControlName="nameOfOtherClub"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.nameOfOtherClub">
@@ -294,6 +297,8 @@
             </div>
           </ion-col>
         </ion-row>
+      </ng-template>
+
 
         <ion-row>
           <ion-col width="100%" align="center">

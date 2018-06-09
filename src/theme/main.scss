@@ -98,7 +98,7 @@ $palettes: (
         secondary: #FEFEFE, // Used for text colors in: buttons, header-title, subitem-title, subitem-subtitle
         accent:   #ffffff, // Used for text colors in: header-title, header-subtitle
         danger: #e91536,
-        background-selection: rgb(236, 243, 138)//background-selection of the datetime
+        background-selection: #ffffff//background-selection of the datetime
 
 
     ),
@@ -438,39 +438,42 @@ $card-content-ios-color-off: theme-colors('mainColors', 'accent');
   color: theme-colors('textColors', 'primary') !important;
 }
 
-
-//// I  experimenting
-
 /// DateTime
   // Settings for Android
-
-//  .picker-md .picker-opt.picker-opt-selected {
-//   color: theme-colors('textColors', 'primary') !important;
-//   font-family: Montserrat-Medium;
-// }
-// $picker-md-button-text-color: blue !important;
 .picker-md .picker-prefix,
 .picker-md .picker-suffix,
 .picker-md .picker-opt.picker-opt-selected {
-  color: theme-colors('textColors', 'accent') !important;
-  font-family: Montserrat-Medium;
+  color: theme-colors('textColors', 'primary') !important;
 }
 .picker-md .picker-opt {
     color: theme-colors('textColors', 'background-selection') !important;
-    font-family: Montserrat-Light;
 }
+
 // this is for cancel and the done selector
 .picker-md .picker-button,
 .picker-md .picker-button.activated {
   color: theme-colors('textColors', 'primary') !important;
-  font-family: Montserrat-Regular;
 }
 
+  // Settings for Ios
+  .picker-ios .picker-prefix,
+  .picker-ios .picker-suffix,
+  .picker-ios .picker-opt.picker-opt-selected {
+    color: theme-colors('textColors', 'primary') !important;
+  }
+  .picker-ios .picker-opt {
+      color: theme-colors('textColors', 'background-selection') !important;
+  }
+
+  // this is for cancel and the done selector
+  .picker-ios .picker-button,
+  .picker-ios .picker-button.activated {
+    color: theme-colors('textColors', 'primary') !important;
+  }
 
 
 
 
-  //// I  experimenting
 
 
 
@@ -487,6 +490,7 @@ $radio-ios-color-off: theme-colors('mainColors', 'accent');
 .select-text {
   color: theme-colors('textColors', 'primary') !important;
 }
+// this the yellow color of the selected date
 .select-md .select-icon .select-icon-inner,
  .select-ios .select-icon .select-icon-inner,{
   color: theme-colors('textColors', 'primary') !important;
