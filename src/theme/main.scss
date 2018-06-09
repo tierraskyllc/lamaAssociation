@@ -98,6 +98,7 @@ $palettes: (
         secondary: #FEFEFE, // Used for text colors in: buttons, header-title, subitem-title, subitem-subtitle
         accent:   #ffffff, // Used for text colors in: header-title, header-subtitle
         danger: #e91536,
+        background-selection: rgb(236, 243, 138)//background-selection of the datetime
 
 
     ),
@@ -391,6 +392,11 @@ $icon-size:(
   color: theme-colors('textColors', 'primary') !important;
   font-size: $h2-font-size !important;
 }
+
+[custom-datetime]{
+  color: theme-colors('textColors', 'primary') !important;
+  // font-size: $h2-font-size !important;
+}
 // Swipe Item
 // [swiped-item-bcg]{
 //   background-color: theme-colors('mainColors', 'primary', 'opacity60')!important;
@@ -432,11 +438,43 @@ $card-content-ios-color-off: theme-colors('mainColors', 'accent');
   color: theme-colors('textColors', 'primary') !important;
 }
 
-// Please change color
-.item-radio .label {
-  color: #fff;
-}
+
 //// I  experimenting
+
+/// DateTime
+  // Settings for Android
+
+//  .picker-md .picker-opt.picker-opt-selected {
+//   color: theme-colors('textColors', 'primary') !important;
+//   font-family: Montserrat-Medium;
+// }
+// $picker-md-button-text-color: blue !important;
+.picker-md .picker-prefix,
+.picker-md .picker-suffix,
+.picker-md .picker-opt.picker-opt-selected {
+  color: theme-colors('textColors', 'accent') !important;
+  font-family: Montserrat-Medium;
+}
+.picker-md .picker-opt {
+    color: theme-colors('textColors', 'background-selection') !important;
+    font-family: Montserrat-Light;
+}
+// this is for cancel and the done selector
+.picker-md .picker-button,
+.picker-md .picker-button.activated {
+  color: theme-colors('textColors', 'primary') !important;
+  font-family: Montserrat-Regular;
+}
+
+
+
+
+
+  //// I  experimenting
+
+
+
+
 /// Radio Button Radio Group
   // Settings for Android
 $radio-md-color-on: theme-colors('mainColors', 'secondary');
@@ -454,7 +492,7 @@ $radio-ios-color-off: theme-colors('mainColors', 'accent');
   color: theme-colors('textColors', 'primary') !important;
 }
 
-// Please change color
+// Please change color this is the label property for radio
 .item-radio .label {
   color: #fff;
 }
