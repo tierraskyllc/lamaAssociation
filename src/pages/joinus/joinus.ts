@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController } from "ionic-angular";
-import { Validators, FormBuilder, FormGroup, FormControl, FormArray } from "@angular/forms";
+import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
 import { PasswordValidator } from './../../validators/password.validator';

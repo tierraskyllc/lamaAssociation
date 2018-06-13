@@ -17,18 +17,34 @@
     </ion-row>
 
     <div class="form">
+      <ion-label primary>{{data.error}}</ion-label>
       <!--Form-->
       <form [formGroup]="applicationForm">
 
         <ion-row nowrap justify-content: center>
           <ion-col align="center">
-            <ion-label>L.A.M.A. {{mockMember.chapter}}</ion-label>
-          </ion-col>
-          <ion-col align="center">
             <ion-label>{{mockMember.firstName}} {{mockMember.lastName}}</ion-label>
           </ion-col>
+        </ion-row>
+        <ion-row nowrap justify-content: center>
           <ion-col align="center">
+            <ion-label>L.A.M.A. {{mockMember.chapter}}</ion-label>
+          </ion-col>
+          <!--ion-col align="center">
             <ion-label>{{mockMember.title}}</ion-label>
+          </ion-col-->
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div formGroupName="country_phone">
+              <ion-item no-padding color="accent">
+                <ion-label floating>Country</ion-label>
+                <ion-select formControlName="country" interface=popover cancelText="Cancel" okText="OK">
+                  <ion-option *ngFor="let item of countries" [value]="item">{{item.name}}</ion-option>
+                </ion-select>
+              </ion-item>
+            </div>
           </ion-col>
         </ion-row>
 
@@ -92,25 +108,20 @@
 
         <ion-row>
           <ion-col>
-            <div formGroupName="country_phone">
-              <ion-item no-padding color="accent">
-                <ion-label floating>Country</ion-label>
-                <ion-select formControlName="country" interface=popover cancelText="Cancel" okText="OK">
-                  <ion-option *ngFor="let item of countries" [value]="item">{{item.name}}</ion-option>
-                </ion-select>
-              </ion-item>
-              <ion-item no-padding color="accent">
-                <ion-input [textMask]="{mask: applicationForm.value.country_phone.country.phone_mask}" placeholder="{{ applicationForm.value.country_phone.country.sample_phone }}"
-                  type="text" formControlName="phone"></ion-input>
-              </ion-item>
-              <div class="validation-errors">
-                <ng-container *ngFor="let validation of validation_messages.phone">
-                  <div class="error-message" *ngIf="applicationForm.get('country_phone').get('phone').hasError(validation.type) && (applicationForm.get('country_phone').get('phone').dirty || applicationForm.get('country_phone').get('phone').touched)">
-                    {{ validation.message }}
-                  </div>
-                </ng-container>
+              <div formGroupName="country_phone">
+                <ion-item no-padding color="accent">
+                    <ion-label stacked>Phone Number</ion-label>
+                  <ion-input [textMask]="{mask: applicationForm.value.country_phone.country.phone_mask}" placeholder="{{ applicationForm.value.country_phone.country.sample_phone }}"
+                    type="text" formControlName="phone"></ion-input>
+                </ion-item>
+                <div class="validation-errors">
+                  <ng-container *ngFor="let validation of validation_messages.phone">
+                    <div class="error-message" *ngIf="applicationForm.get('country_phone').get('phone').hasError(validation.type) && (applicationForm.get('country_phone').get('phone').dirty || applicationForm.get('country_phone').get('phone').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
               </div>
-            </div>
           </ion-col>
         </ion-row>
 

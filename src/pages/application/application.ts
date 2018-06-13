@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
 import { AgeValidator } from  '../../validators/age';
-
 import { PhoneValidator } from './../../validators/phone.validator';
 import { Country } from './application.model';
-
 import emailMask from 'text-mask-addons/dist/emailMask';
+import { Http } from "@angular/http";
+import { ShareProvider } from "../../services/share";
+
 
 @IonicPage()
 @Component({
@@ -17,7 +17,7 @@ import emailMask from 'text-mask-addons/dist/emailMask';
 export class ApplicationPage {
 
   events: any;
-  data: any;
+  data: any = {};
 
   mockMember = {
     firstName : "John",
@@ -49,21 +49,57 @@ export class ApplicationPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public formBuilder: FormBuilder) {}
+    public formBuilder: FormBuilder,
+    private http: Http,
+    private shareProvider: ShareProvider) {
+      this.data.response = "";
+      this.data.error = "";
+
+      var decoded_response = "";
+      var body = new FormData();
+      body.append('sessionid', this.shareProvider.sessionid);
+      this.http
+      .post(this.shareProvider.server + "profile/profile.php", body)
+      .subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.mockMember.firstName = decoded_response[2]['first_name'];
+            this.mockMember.lastName = decoded_response[2]['last_name'];
+            this.mockMember.chapter = decoded_response[2]['chapter_name'];
+          }
+          else {
+            if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
+              this.navCtrl.push('LoginPage');
+            }
+            else {
+              this.data.error = "Unknown problem occured.  Please contact administrator.";
+            }
+          }
+        },
+        error => {
+          this.data.error = "Unknown problem occured.  Please contact administrator.";
+        }
+      );
+    }
 
   save(){
    }
 
   ionViewDidLoad() {
+    //this.populateCountries();
     console.log('ionViewDidLoad ApplicationPage');
   }
 
   ionViewWillLoad() {
     this.countries = [
       new Country('US', 'United States'),
-      new Country('UY', 'Uruguay'),
-      new Country('AR', 'Argentina')
+      //new Country('UY', 'Uruguay'),
+      //new Country('AR', 'Argentina')
+      new Country('AF', 'Afghanistan')
     ];
+    //this.countries = [];
+    this.populateCountries();
 
     this.genders = ["-Select-","Male", "Female"];
     this.yesOrNo = ["-Select-","Yes", "No"];
@@ -182,7 +218,39 @@ export class ApplicationPage {
     if (this.events[event]) {
         this.events[event](item);
     }
-}
+  }
 
+  populateCountries() {
+    var decoded_response = "";
+    var body = new FormData();
+    body.append('sessionid', this.shareProvider.sessionid);
+    this.http.post(this.shareProvider.server + "application/allcountries.php", body).subscribe(
+      data => {
+        //this.data.response = 'Response: ' + data["_body"];
+        decoded_response = JSON.parse(data["_body"]);
+        if (decoded_response[0] == "true") {
+          //this.data.countries = decoded_response[2];
+          //this.countries = [];
+          for(var i = 1; i < decoded_response[2].length; i++) {
+            try {
+              if(decoded_response[2][i]['code'] != 'US') {
+                this.countries.push(new Country(decoded_response[2][i]['code'], decoded_response[2][i]['name']));
+              }
+            }
+            catch(Error) {
+              console.log("Oooops!");
+            }
+          }
+        }
+        else {
+          this.data.error = "Unknown problem occured.  Please contact administrator.";
+        }
+      },
+      error => {
+        this.data.error = "Unknown problem occured.  Please contact administrator.";
+        console.log("Oooops!");
+      }
+    );
+  }
 
 }

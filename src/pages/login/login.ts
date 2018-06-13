@@ -1,15 +1,13 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { IonicPage, NavController } from "ionic-angular";
 import {
   Validators,
   FormBuilder,
   FormGroup,
-  FormControl,
-  FormArray
+  FormControl
 } from "@angular/forms";
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
-import { PasswordValidator } from './../../validators/password.validator';
 
 @IonicPage()
 @Component({
@@ -65,9 +63,9 @@ export class LoginPage {
     if (this.loginForm.valid) {
       var body = new FormData();
       var json_encoded_response = "";
-      var decoded_response = JSON.parse(
-        '{"sessionid":"", "username":"", "firstname":"" , "lastname":""}'
-      );
+      //var decoded_response = JSON.parse(
+      //  '{"sessionid":"", "username":"", "firstname":"" , "lastname":""}'
+      //);
       body.append("username", this.loginForm.controls.email.value);
       body.append("password", this.loginForm.controls.password.value);
       this.http
@@ -76,8 +74,9 @@ export class LoginPage {
           data => {
             //this.data.response = data["_body"];
             json_encoded_response = data["_body"];
+            var decoded_response = "";
             decoded_response = JSON.parse(json_encoded_response);
-            if (decoded_response[0] == true) {
+            if (decoded_response[0] == "true") {
               this.shareProvider.sessionid = decoded_response[2];
               this.shareProvider.username = decoded_response[3];
               this.shareProvider.firstname = decoded_response[4];
@@ -85,9 +84,43 @@ export class LoginPage {
               if (decoded_response[6] != null) {
                 this.shareProvider.role = decoded_response[6];
               }
-              this.shareProvider.curentpage = "ApplicationPage";
-              this.navCtrl.push("ApplicationPage")
-            } else if (decoded_response[0] == false) {
+              //-----
+              decoded_response = "";
+              var body = new FormData();
+              body.append('sessionid', this.shareProvider.sessionid);
+              this.http
+                .post(this.shareProvider.server + "profile/profile.php", body)
+                .subscribe(
+                  data => {
+                    decoded_response = JSON.parse(data["_body"]);
+                    if (decoded_response[0] == "true") {
+                      if(decoded_response[2]['is_member_approved'] == 0) {
+                        this.navCtrl.push("ApplicationPage");
+                        this.shareProvider.curentpage = "ApplicationPage";
+                      }
+                      else {
+                        if(decoded_response[2]['is_member_approved'] == 1) {
+                          this.navCtrl.push("ProfilePage");
+                          this.shareProvider.curentpage = "ProfilePage";
+                        }
+                      }
+                    }
+                    else {
+                      if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
+                        this.navCtrl.push('LoginPage');
+                      }
+                      else {
+                        this.data.error = "Unknown problem occured.  Please contact administrator.-1";
+                      }
+                    }
+                  },
+                  error => {
+                    this.data.error = "Unknown problem occured.  Please contact administrator.-2";
+                  }
+                );
+              //-----  
+              //this.navCtrl.push("ApplicationPage")
+            } else if (decoded_response[0] == "false") {
               this.data.error = decoded_response[2];
             } else {
               this.data.error = decoded_response[1];
