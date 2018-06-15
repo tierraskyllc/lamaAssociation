@@ -41,30 +41,60 @@
               <ion-item no-padding color="accent">
                 <ion-label floating>Country</ion-label>
                 <ion-select formControlName="country" interface=popover cancelText="Cancel" okText="OK">
-                  <ion-option *ngFor="let item of countries" [value]="item">{{item.name}}</ion-option>
+                  <ion-option (ionSelect)="correctStateAndCityValidations()" *ngFor="let item of countries" [value]="item">{{item.name}}</ion-option>
                 </ion-select>
               </ion-item>
             </div>
           </ion-col>
         </ion-row>
 
-        <ion-row>
+        <ion-row *ngIf="applicationForm.controls['country_phone'].controls['country'].value['name'] == 'United States'">
           <ion-col>
-
+              <ion-item no-padding color="accent">
+                <ion-label floating>State</ion-label>
+                <ion-select formControlName="usastate" interface=popover cancelText="Cancel" okText="OK">
+                  <ion-option (ionSelect)="populateCitiesByUSAState()" *ngFor="let curstate of data.usastates" [value]="curstate.name">{{curstate.name}}</ion-option>
+                </ion-select>
+              </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.usastate">
+                <div class="error-message" *ngIf="applicationForm.get('usastate').hasError(validation.type) && (applicationForm.get('usastate').dirty || applicationForm.get('usastate').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+          </ion-col>
+        </ion-row>
+        
+        <ion-row *ngIf="applicationForm.controls['country_phone'].controls['country'].value['name'] != 'United States'">
+          <ion-col>
             <ion-item no-padding color="accent">
-              <ion-label floating>Address</ion-label>
-              <ion-input type="text" formControlName="address"></ion-input>
+              <ion-label floating>State</ion-label>
+              <ion-input type="text" formControlName="state"></ion-input>
             </ion-item>
-            <ng-container *ngFor="let validation of validation_messages.address">
-              <div class="error-message" *ngIf="applicationForm.get('address').hasError(validation.type) && (applicationForm.get('address').dirty || applicationForm.get('address').touched)">
+            <ng-container *ngFor="let validation of validation_messages.state">
+              <div class="error-message" *ngIf="applicationForm.get('state').hasError(validation.type) && (applicationForm.get('state').dirty || applicationForm.get('state').touched)">
                 {{ validation.message }}
               </div>
             </ng-container>
-
           </ion-col>
         </ion-row>
 
-        <ion-row>
+        <ion-row *ngIf="applicationForm.controls['country_phone'].controls['country'].value['name'] == 'United States'">
+          <ion-col>
+              <ion-item no-padding color="accent">
+                <ion-label floating>City</ion-label>
+                <ion-select formControlName="usacity" interface=popover cancelText="Cancel" okText="OK">
+                  <ion-option *ngFor="let curcity of data.usacities" [value]="curcity.name">{{curcity.name}}</ion-option>
+                </ion-select>
+              </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.usacity">
+                <div class="error-message" *ngIf="applicationForm.get('usacity').hasError(validation.type) && (applicationForm.get('usacity').dirty || applicationForm.get('usacity').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+          </ion-col>
+        </ion-row>
+
+        <ion-row  *ngIf="applicationForm.controls['country_phone'].controls['country'].value['name'] != 'United States'">
           <ion-col>
             <ion-item no-padding color="accent">
               <ion-label floating>City</ion-label>
@@ -81,21 +111,22 @@
         <ion-row>
           <ion-col>
             <ion-item no-padding color="accent">
-              <ion-label floating>State</ion-label>
-              <ion-input type="text" formControlName="state"></ion-input>
+              <ion-label floating>Address (Street, Area, Apt., Suite etc.)</ion-label>
+              <ion-input type="text" formControlName="address"></ion-input>
             </ion-item>
-            <ng-container *ngFor="let validation of validation_messages.state">
-              <div class="error-message" *ngIf="applicationForm.get('state').hasError(validation.type) && (applicationForm.get('state').dirty || applicationForm.get('state').touched)">
+            <ng-container *ngFor="let validation of validation_messages.address">
+              <div class="error-message" *ngIf="applicationForm.get('address').hasError(validation.type) && (applicationForm.get('address').dirty || applicationForm.get('address').touched)">
                 {{ validation.message }}
               </div>
             </ng-container>
+
           </ion-col>
         </ion-row>
 
         <ion-row>
           <ion-col>
             <ion-item no-padding color="accent">
-              <ion-label floating>Zip Code</ion-label>
+              <ion-label floating>Zip Code / Pin Code</ion-label>
               <ion-input type="text" formControlName="zipCode"></ion-input>
             </ion-item>
             <ng-container *ngFor="let validation of validation_messages.zipCode">
@@ -127,17 +158,35 @@
 
         <ion-row>
           <ion-col>
+            <div>
+              <ion-item no-padding color="accent">
+                <ion-label floating>Date of Birth</ion-label>
+                <ion-datetime formControlName="dateofbirth" custom-datetime (ionChange)="calculateAge()"></ion-datetime>
+              </ion-item>
+              <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.dateofbirth">
+                  <div class="error-message" *ngIf="applicationForm.get('dateofbirth').hasError(validation.type) && (applicationForm.get('dateofbirth').dirty || applicationForm.get('dateofbirth').touched)">
+                    {{ validation.message }}
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
             <ion-item no-padding color="accent">
               <ion-label floating>Gender</ion-label>
               <ion-select formControlName="gender" interface=popover cancelText="Cancel" okText="OK">
                 <ion-option *ngFor="let gender of genders" [value]="gender">{{ gender }}</ion-option>
               </ion-select>
             </ion-item>
-            <!-- <ng-container *ngFor="let validation of validation_messages.gender">
-              <div class="error-message" *ngIf="!(applicationForm.get('gender').touched)">
+            <ng-container *ngFor="let validation of validation_messages.gender">
+              <div class="error-message" *ngIf="applicationForm.get('gender').hasError(validation.type) && (applicationForm.get('gender').dirty || applicationForm.get('gender').touched)">
                 {{ validation.message }}
               </div>
-            </ng-container> -->
+            </ng-container>
           </ion-col>
           <ion-col>
             <ion-item no-padding color="accent">
@@ -151,16 +200,7 @@
             </ng-container>
           </ion-col>
         </ion-row>
-        <ion-row>
-          <ion-col>
-            <div>
-              <ion-item no-padding color="accent">
-                <ion-label floating>Date of Birth</ion-label>
-                <ion-datetime custom-datetime></ion-datetime>
-              </ion-item>
-            </div>
-          </ion-col>
-        </ion-row>
+        
         <ion-row>
           <ion-col>
             <div>
@@ -192,9 +232,45 @@
                   <ion-option *ngFor="let haveMotorcycleLicense of yesOrNo" [value]="haveMotorcycleLicense">{{ haveMotorcycleLicense }}</ion-option>
                 </ion-select>
               </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.haveMotorcycleLicense">
+                <div class="error-message" *ngIf="applicationForm.get('haveMotorcycleLicense').hasError(validation.type) && (applicationForm.get('haveMotorcycleLicense').dirty || applicationForm.get('haveMotorcycleLicense').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
             </div>
           </ion-col>
         </ion-row>
+
+        <ion-row *ngIf="applicationForm.controls['haveMotorcycleLicense'].value == 'Yes'">
+          <ion-col width="100%" align="center">
+            <button ion-button small round (click)="uploadLicensePicture()">Upload License Picture</button>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <div>
+              <ion-item no-padding color="accent">
+                <ion-label floating>Do you have a valid insurance?</ion-label>
+                <ion-select formControlName="haveMotorcycleInsurance" interface="popover" cancelText="Cancel" okText="OK">
+                  <ion-option *ngFor="let haveMotorcycleInsurance of yesOrNo" [value]="haveMotorcycleInsurance">{{ haveMotorcycleInsurance }}</ion-option>
+                </ion-select>
+              </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.haveMotorcycleInsurance">
+                <div class="error-message" *ngIf="applicationForm.get('haveMotorcycleInsurance').hasError(validation.type) && (applicationForm.get('haveMotorcycleInsurance').dirty || applicationForm.get('haveMotorcycleInsurance').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="applicationForm.controls['haveMotorcycleInsurance'].value == 'Yes'">
+          <ion-col width="100%" align="center">
+            <button ion-button small round (click)="uploadInsurancePicture()">Upload Insurance Picture</button>
+          </ion-col>
+        </ion-row>
+
         <ion-row>
           <ion-col>
             <div>
@@ -210,6 +286,7 @@
             </div>
           </ion-col>
         </ion-row>
+
         <br>
         <ion-row>
           <ion-col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12>
@@ -285,6 +362,11 @@
                   <ion-option *ngFor="let anyOtherClub of yesOrNo" [value]="anyOtherClub">{{ anyOtherClub }}</ion-option>
                 </ion-select>
               </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.anyOtherClub">
+                <div class="error-message" *ngIf="applicationForm.get('anyOtherClub').hasError(validation.type) && (applicationForm.get('anyOtherClub').dirty || applicationForm.get('anyOtherClub').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
             </div>
           </ion-col>
         </ion-row>
@@ -325,6 +407,11 @@
                   <ion-option *ngFor="let maritalStatus of maritalStatus" [value]="maritalStatus">{{ maritalStatus }}</ion-option>
                 </ion-select>
               </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.maritalStatus">
+                <div class="error-message" *ngIf="applicationForm.get('maritalStatus').hasError(validation.type) && (applicationForm.get('maritalStatus').dirty || applicationForm.get('maritalStatus').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
             </div>
           </ion-col>
         </ion-row>
@@ -392,6 +479,11 @@
                   <ion-option *ngFor="let annualSalary of annualSalary" [value]="annualSalary">{{ annualSalary }}</ion-option>
                 </ion-select>
               </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.annualSalary">
+                <div class="error-message" *ngIf="applicationForm.get('annualSalary').hasError(validation.type) && (applicationForm.get('annualSalary').dirty || applicationForm.get('annualSalary').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
             </div>
           </ion-col>
         </ion-row>
@@ -404,6 +496,11 @@
                   <ion-option *ngFor="let highestEducation of highestEducation" [value]="highestEducation">{{ highestEducation }}</ion-option>
                 </ion-select>
               </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.highestEducation">
+                <div class="error-message" *ngIf="applicationForm.get('highestEducation').hasError(validation.type) && (applicationForm.get('highestEducation').dirty || applicationForm.get('highestEducation').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
             </div>
           </ion-col>
         </ion-row>
@@ -433,6 +530,11 @@
                   <ion-option *ngFor="let bloodType of bloodTypes" [value]="bloodType">{{ bloodType }}</ion-option>
                 </ion-select>
               </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.bloodType">
+                <div class="error-message" *ngIf="applicationForm.get('bloodType').hasError(validation.type) && (applicationForm.get('bloodType').dirty || applicationForm.get('bloodType').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
             </div>
 
             <div>
@@ -453,6 +555,11 @@
                   <ion-option *ngFor="let organDonar of yesOrNo" [value]="organDonar">{{ organDonar }}</ion-option>
                 </ion-select>
               </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.organDonar">
+                <div class="error-message" *ngIf="applicationForm.get('organDonar').hasError(validation.type) && (applicationForm.get('organDonar').dirty || applicationForm.get('organDonar').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
             </div>
 
             <div>
@@ -462,6 +569,11 @@
                   <ion-option *ngFor="let memberTitle of memberTitles" [value]="memberTitle">{{ memberTitle }}</ion-option>
                 </ion-select>
               </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.memberTitle">
+                <div class="error-message" *ngIf="applicationForm.get('memberTitle').hasError(validation.type) && (applicationForm.get('memberTitle').dirty || applicationForm.get('memberTitle').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
             </div>
 
             <div>
@@ -471,6 +583,11 @@
                   <ion-option *ngFor="let typeOfMembership of typeOfMemberships" [value]="typeOfMembership">{{ typeOfMembership }}</ion-option>
                 </ion-select>
               </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.typeOfMembership">
+                <div class="error-message" *ngIf="applicationForm.get('typeOfMembership').hasError(validation.type) && (applicationForm.get('typeOfMembership').dirty || applicationForm.get('typeOfMembership').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
             </div>
 
             <div>
@@ -480,12 +597,18 @@
                   <ion-option *ngFor="let typeOfChapter of typeOfChapters" [value]="typeOfChapter">{{ typeOfChapter }}</ion-option>
                 </ion-select>
               </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.typeOfChapter">
+                <div class="error-message" *ngIf="applicationForm.get('typeOfChapter').hasError(validation.type) && (applicationForm.get('typeOfChapter').dirty || applicationForm.get('typeOfChapter').touched)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
             </div>
           </ion-col>
         </ion-row>
+        
         <ion-row>
-          <ion-col>
-
+          <ion-col width="100%" align="center">
+            <button ion-button small round (click)="review()">REVIEW AND SUBMIT</button>
           </ion-col>
         </ion-row>
 
