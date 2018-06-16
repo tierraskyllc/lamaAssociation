@@ -57,7 +57,7 @@
                 </ion-select>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.usastate">
-                <div class="error-message" *ngIf="applicationForm.get('usastate').hasError(validation.type) && (applicationForm.get('usastate').dirty || applicationForm.get('usastate').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('usastate').hasError(validation.type) && (applicationForm.get('usastate').dirty || applicationForm.get('usastate').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -71,7 +71,7 @@
               <ion-input type="text" formControlName="state"></ion-input>
             </ion-item>
             <ng-container *ngFor="let validation of validation_messages.state">
-              <div class="error-message" *ngIf="applicationForm.get('state').hasError(validation.type) && (applicationForm.get('state').dirty || applicationForm.get('state').touched)">
+              <div class="error-message" *ngIf="applicationForm.get('state').hasError(validation.type) && (applicationForm.get('state').dirty || applicationForm.get('state').touched || submitAttempt)">
                 {{ validation.message }}
               </div>
             </ng-container>
@@ -87,7 +87,7 @@
                 </ion-select>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.usacity">
-                <div class="error-message" *ngIf="applicationForm.get('usacity').hasError(validation.type) && (applicationForm.get('usacity').dirty || applicationForm.get('usacity').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('usacity').hasError(validation.type) && (applicationForm.get('usacity').dirty || applicationForm.get('usacity').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -101,7 +101,7 @@
               <ion-input type="text" formControlName="city"></ion-input>
             </ion-item>
             <ng-container *ngFor="let validation of validation_messages.city">
-              <div class="error-message" *ngIf="applicationForm.get('city').hasError(validation.type) && (applicationForm.get('city').dirty || applicationForm.get('city').touched)">
+              <div class="error-message" *ngIf="applicationForm.get('city').hasError(validation.type) && (applicationForm.get('city').dirty || applicationForm.get('city').touched || submitAttempt)">
                 {{ validation.message }}
               </div>
             </ng-container>
@@ -115,7 +115,7 @@
               <ion-input type="text" formControlName="address"></ion-input>
             </ion-item>
             <ng-container *ngFor="let validation of validation_messages.address">
-              <div class="error-message" *ngIf="applicationForm.get('address').hasError(validation.type) && (applicationForm.get('address').dirty || applicationForm.get('address').touched)">
+              <div class="error-message" *ngIf="applicationForm.get('address').hasError(validation.type) && (applicationForm.get('address').dirty || applicationForm.get('address').touched || submitAttempt)">
                 {{ validation.message }}
               </div>
             </ng-container>
@@ -130,7 +130,7 @@
               <ion-input type="text" formControlName="zipCode"></ion-input>
             </ion-item>
             <ng-container *ngFor="let validation of validation_messages.zipCode">
-              <div class="error-message" *ngIf="applicationForm.get('zipCode').hasError(validation.type) && (applicationForm.get('zipCode').dirty || applicationForm.get('zipCode').touched)">
+              <div class="error-message" *ngIf="applicationForm.get('zipCode').hasError(validation.type) && (applicationForm.get('zipCode').dirty || applicationForm.get('zipCode').touched || submitAttempt)">
                 {{ validation.message }}
               </div>
             </ng-container>
@@ -147,7 +147,7 @@
                 </ion-item>
                 <div class="validation-errors">
                   <ng-container *ngFor="let validation of validation_messages.phone">
-                    <div class="error-message" *ngIf="applicationForm.get('country_phone').get('phone').hasError(validation.type) && (applicationForm.get('country_phone').get('phone').dirty || applicationForm.get('country_phone').get('phone').touched)">
+                    <div class="error-message" *ngIf="applicationForm.get('country_phone').get('phone').hasError(validation.type) && (applicationForm.get('country_phone').get('phone').dirty || applicationForm.get('country_phone').get('phone').touched || submitAttempt)">
                       {{ validation.message }}
                     </div>
                   </ng-container>
@@ -165,7 +165,7 @@
               </ion-item>
               <div class="validation-errors">
                 <ng-container *ngFor="let validation of validation_messages.dateofbirth">
-                  <div class="error-message" *ngIf="applicationForm.get('dateofbirth').hasError(validation.type) && (applicationForm.get('dateofbirth').dirty || applicationForm.get('dateofbirth').touched)">
+                  <div class="error-message" *ngIf="applicationForm.get('dateofbirth').hasError(validation.type) && (applicationForm.get('dateofbirth').dirty || applicationForm.get('dateofbirth').touched || submitAttempt)">
                     {{ validation.message }}
                   </div>
                 </ng-container>
@@ -183,7 +183,7 @@
               </ion-select>
             </ion-item>
             <ng-container *ngFor="let validation of validation_messages.gender">
-              <div class="error-message" *ngIf="applicationForm.get('gender').hasError(validation.type) && (applicationForm.get('gender').dirty || applicationForm.get('gender').touched)">
+              <div class="error-message" *ngIf="applicationForm.get('gender').hasError(validation.type) && (applicationForm.get('gender').dirty || applicationForm.get('gender').touched || submitAttempt)">
                 {{ validation.message }}
               </div>
             </ng-container>
@@ -194,7 +194,7 @@
               <ion-input formControlName="age" type="number"></ion-input>
             </ion-item>
             <ng-container *ngFor="let validation of validation_messages.age">
-              <div class="error-message" *ngIf="applicationForm.get('age').hasError(validation.type) && (applicationForm.get('age').dirty || applicationForm.get('age').touched)">
+              <div class="error-message" *ngIf="applicationForm.get('age').hasError(validation.type) && (applicationForm.get('age').dirty || applicationForm.get('age').touched || submitAttempt)">
                 {{ validation.message }}
               </div>
             </ng-container>
@@ -209,7 +209,7 @@
                 <ion-input type="text" formControlName="placeOfBirth"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.placeOfBirth">
-                <div class="error-message" *ngIf="applicationForm.get('placeOfBirth').hasError(validation.type) && (applicationForm.get('placeOfBirth').dirty || applicationForm.get('placeOfBirth').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('placeOfBirth').hasError(validation.type) && (applicationForm.get('placeOfBirth').dirty || applicationForm.get('placeOfBirth').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -233,7 +233,7 @@
                 </ion-select>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.haveMotorcycleLicense">
-                <div class="error-message" *ngIf="applicationForm.get('haveMotorcycleLicense').hasError(validation.type) && (applicationForm.get('haveMotorcycleLicense').dirty || applicationForm.get('haveMotorcycleLicense').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('haveMotorcycleLicense').hasError(validation.type) && (applicationForm.get('haveMotorcycleLicense').dirty || applicationForm.get('haveMotorcycleLicense').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -257,7 +257,7 @@
                 </ion-select>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.haveMotorcycleInsurance">
-                <div class="error-message" *ngIf="applicationForm.get('haveMotorcycleInsurance').hasError(validation.type) && (applicationForm.get('haveMotorcycleInsurance').dirty || applicationForm.get('haveMotorcycleInsurance').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('haveMotorcycleInsurance').hasError(validation.type) && (applicationForm.get('haveMotorcycleInsurance').dirty || applicationForm.get('haveMotorcycleInsurance').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -279,7 +279,7 @@
                 <ion-input formControlName="yearsRiding" type="number"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.yearsRiding">
-                <div class="error-message" *ngIf="applicationForm.get('yearsRiding').hasError(validation.type) && (applicationForm.get('yearsRiding').dirty || applicationForm.get('yearsRiding').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('yearsRiding').hasError(validation.type) && (applicationForm.get('yearsRiding').dirty || applicationForm.get('yearsRiding').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -363,7 +363,7 @@
                 </ion-select>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.anyOtherClub">
-                <div class="error-message" *ngIf="applicationForm.get('anyOtherClub').hasError(validation.type) && (applicationForm.get('anyOtherClub').dirty || applicationForm.get('anyOtherClub').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('anyOtherClub').hasError(validation.type) && (applicationForm.get('anyOtherClub').dirty || applicationForm.get('anyOtherClub').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -383,7 +383,7 @@
                 <ion-input type="text" formControlName="nameOfOtherClub"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.nameOfOtherClub">
-                <div class="error-message" *ngIf="applicationForm.get('nameOfOtherClub').hasError(validation.type) && (applicationForm.get('nameOfOtherClub').dirty || applicationForm.get('nameOfOtherClub').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('nameOfOtherClub').hasError(validation.type) && (applicationForm.get('nameOfOtherClub').dirty || applicationForm.get('nameOfOtherClub').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -408,7 +408,7 @@
                 </ion-select>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.maritalStatus">
-                <div class="error-message" *ngIf="applicationForm.get('maritalStatus').hasError(validation.type) && (applicationForm.get('maritalStatus').dirty || applicationForm.get('maritalStatus').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('maritalStatus').hasError(validation.type) && (applicationForm.get('maritalStatus').dirty || applicationForm.get('maritalStatus').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -433,7 +433,7 @@
                 <ion-input type="text" formControlName="nameOfEmployer"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.nameOfEmployer">
-                <div class="error-message" *ngIf="applicationForm.get('nameOfEmployer').hasError(validation.type) && (applicationForm.get('nameOfEmployer').dirty || applicationForm.get('nameOfEmployer').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('nameOfEmployer').hasError(validation.type) && (applicationForm.get('nameOfEmployer').dirty || applicationForm.get('nameOfEmployer').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -448,7 +448,7 @@
                 <ion-input formControlName="yearsEmployed" type="number"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.yearsEmployed">
-                <div class="error-message" *ngIf="applicationForm.get('yearsEmployed').hasError(validation.type) && (applicationForm.get('yearsEmployed').dirty || applicationForm.get('yearsEmployed').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('yearsEmployed').hasError(validation.type) && (applicationForm.get('yearsEmployed').dirty || applicationForm.get('yearsEmployed').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -463,7 +463,7 @@
                 <ion-input type="text" formControlName="occupation"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.occupation">
-                <div class="error-message" *ngIf="applicationForm.get('occupation').hasError(validation.type) && (applicationForm.get('occupation').dirty || applicationForm.get('occupation').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('occupation').hasError(validation.type) && (applicationForm.get('occupation').dirty || applicationForm.get('occupation').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -480,7 +480,7 @@
                 </ion-select>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.annualSalary">
-                <div class="error-message" *ngIf="applicationForm.get('annualSalary').hasError(validation.type) && (applicationForm.get('annualSalary').dirty || applicationForm.get('annualSalary').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('annualSalary').hasError(validation.type) && (applicationForm.get('annualSalary').dirty || applicationForm.get('annualSalary').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -497,7 +497,7 @@
                 </ion-select>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.highestEducation">
-                <div class="error-message" *ngIf="applicationForm.get('highestEducation').hasError(validation.type) && (applicationForm.get('highestEducation').dirty || applicationForm.get('highestEducation').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('highestEducation').hasError(validation.type) && (applicationForm.get('highestEducation').dirty || applicationForm.get('highestEducation').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -517,7 +517,7 @@
                 <ion-input type="text" formControlName="skillsPastimes"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.skillsPastimes">
-                <div class="error-message" *ngIf="applicationForm.get('skillsPastimes').hasError(validation.type) && (applicationForm.get('skillsPastimes').dirty || applicationForm.get('skillsPastimes').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('skillsPastimes').hasError(validation.type) && (applicationForm.get('skillsPastimes').dirty || applicationForm.get('skillsPastimes').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -531,7 +531,7 @@
                 </ion-select>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.bloodType">
-                <div class="error-message" *ngIf="applicationForm.get('bloodType').hasError(validation.type) && (applicationForm.get('bloodType').dirty || applicationForm.get('bloodType').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('bloodType').hasError(validation.type) && (applicationForm.get('bloodType').dirty || applicationForm.get('bloodType').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -543,7 +543,7 @@
                 <ion-input type="text" formControlName="allergies"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.allergies">
-                <div class="error-message" *ngIf="applicationForm.get('allergies').hasError(validation.type) && (applicationForm.get('allergies').dirty || applicationForm.get('allergies').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('allergies').hasError(validation.type) && (applicationForm.get('allergies').dirty || applicationForm.get('allergies').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -556,7 +556,7 @@
                 </ion-select>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.organDonar">
-                <div class="error-message" *ngIf="applicationForm.get('organDonar').hasError(validation.type) && (applicationForm.get('organDonar').dirty || applicationForm.get('organDonar').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('organDonar').hasError(validation.type) && (applicationForm.get('organDonar').dirty || applicationForm.get('organDonar').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -570,7 +570,7 @@
                 </ion-select>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.memberTitle">
-                <div class="error-message" *ngIf="applicationForm.get('memberTitle').hasError(validation.type) && (applicationForm.get('memberTitle').dirty || applicationForm.get('memberTitle').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('memberTitle').hasError(validation.type) && (applicationForm.get('memberTitle').dirty || applicationForm.get('memberTitle').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -584,7 +584,7 @@
                 </ion-select>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.typeOfMembership">
-                <div class="error-message" *ngIf="applicationForm.get('typeOfMembership').hasError(validation.type) && (applicationForm.get('typeOfMembership').dirty || applicationForm.get('typeOfMembership').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('typeOfMembership').hasError(validation.type) && (applicationForm.get('typeOfMembership').dirty || applicationForm.get('typeOfMembership').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -598,7 +598,7 @@
                 </ion-select>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.typeOfChapter">
-                <div class="error-message" *ngIf="applicationForm.get('typeOfChapter').hasError(validation.type) && (applicationForm.get('typeOfChapter').dirty || applicationForm.get('typeOfChapter').touched)">
+                <div class="error-message" *ngIf="applicationForm.get('typeOfChapter').hasError(validation.type) && (applicationForm.get('typeOfChapter').dirty || applicationForm.get('typeOfChapter').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>

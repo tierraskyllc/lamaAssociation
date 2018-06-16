@@ -20,11 +20,11 @@ export class ApplicationPage {
   data: any = {};
 
   mockMember = {
-    firstName : "John",
-    lastName : "Doe",
-    title: "Propect",
-    chapter: "Newark",
-    email: "john.doe@whatever.com"
+    firstName : "",
+    lastName : "",
+    title: "",
+    chapter: "",
+    email: ""
   };
 
   applicationForm: FormGroup;
@@ -142,7 +142,7 @@ export class ApplicationPage {
       //gender: new FormControl(this.genders[0], Validators.required),
       gender: ["", Validators.compose([Validators.required])],
       age: ['', Validators.required],
-      placeOfBirth: ['', Validators.compose([Validators.required, Validators.maxLength(40), Validators.pattern('[a-zA-Z ]*')])],
+      placeOfBirth: ['', Validators.compose([Validators.required, Validators.maxLength(40)])],
       yearsRiding: ['', Validators.required],
       haveMotorcycleLicense: ["", Validators.compose([Validators.required])],
       haveMotorcycleInsurance: ["", Validators.compose([Validators.required])],
@@ -153,18 +153,18 @@ export class ApplicationPage {
       //licensePlate2: ['', Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')])],
       //licensePlate3: ['', Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')])],
       anyOtherClub: ["", Validators.compose([Validators.required])],
-      nameOfOtherClub: ['', Validators.compose([Validators.required, Validators.maxLength(40), Validators.pattern('[a-zA-Z ]*')])],
+      nameOfOtherClub: ['', Validators.compose([Validators.required, Validators.maxLength(40)])],
       maritalStatus: ["", Validators.compose([Validators.required])],
       numberOfChildren: [''],
-      nameOfEmployer: ['', Validators.compose([Validators.required, Validators.maxLength(40), Validators.pattern('[a-zA-Z ]*')])],
+      nameOfEmployer: ['', Validators.compose([Validators.required, Validators.maxLength(40)])],
       yearsEmployed: ['', Validators.compose([Validators.required])],
-      occupation: ['', Validators.compose([Validators.required, Validators.maxLength(40), Validators.pattern('[a-zA-Z ]*')])],
+      occupation: ['', Validators.compose([Validators.required, Validators.maxLength(40)])],
       annualSalary: ["", Validators.compose([Validators.required])],
       highestEducation: ["", Validators.compose([Validators.required])],
-      skillsPastimes: ['', Validators.compose([Validators.required, Validators.maxLength(200), Validators.pattern('[a-zA-Z ]*')])],
+      skillsPastimes: ['', Validators.compose([Validators.required, Validators.maxLength(200)])],
       // bloodType: ['', new FormControl(this.bloodTypes[0], Validators.required)],
       bloodType: ["", Validators.compose([Validators.required])],
-      allergies: ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.pattern('[a-zA-Z ]*')])],
+      allergies: ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
       organDonar: ["", Validators.compose([Validators.required])],
       memberTitle: ["", Validators.compose([Validators.required])],
       typeOfMembership: ["", Validators.compose([Validators.required])],
@@ -365,6 +365,7 @@ export class ApplicationPage {
   }
 
   review() {
+    this.submitAttempt = true;
     if(this.applicationForm.valid) {
       var body = new FormData();
       var json_encoded_response = "";
