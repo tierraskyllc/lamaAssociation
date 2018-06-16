@@ -7,7 +7,7 @@ import { Country } from './application.model';
 import emailMask from 'text-mask-addons/dist/emailMask';
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
-
+import { AlertController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -51,7 +51,8 @@ export class ApplicationPage {
     public navParams: NavParams,
     public formBuilder: FormBuilder,
     private http: Http,
-    private shareProvider: ShareProvider) {
+    private shareProvider: ShareProvider,
+    private alertCtrl: AlertController) {
       this.data.response = "";
       this.data.error = "";
 
@@ -76,18 +77,19 @@ export class ApplicationPage {
               this.navCtrl.push('LoginPage');
             }
             else {
-              this.data.error = "Unknown problem occured.  Please contact administrator.";
+              //this.data.error = "Unknown problem occured.  Please contact administrator.";
+              //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-001");
+              console.log("Unknown problem occured.  Please contact administrator.  Code: APP-001");
             }
           }
         },
         error => {
-          this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-002");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: APP-002");
         }
       );
     }
-
-  save(){
-   }
 
   ionViewDidLoad() {
     //this.populateCountries();
@@ -261,17 +263,23 @@ export class ApplicationPage {
               }
             }
             catch(Error) {
-              console.log("Oooops!");
+              //console.log("Oooops!");
+              //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-003");
+              console.log("Failed to add country code " + decoded_response[2][i]['code'] + " => Unknown problem occured.  Please contact administrator.  Code: APP-003");
             }
           }
         }
         else {
-          this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-004");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: APP-004");
         }
       },
       error => {
-        this.data.error = "Unknown problem occured.  Please contact administrator.";
-        console.log("Oooops!");
+        //this.data.error = "Unknown problem occured.  Please contact administrator.";
+        //console.log("Oooops!");
+        //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-005");
+        console.log("Unknown problem occured.  Please contact administrator.  Code: APP-005");
       }
     );
   }
@@ -307,7 +315,9 @@ export class ApplicationPage {
           }
         },
         error => {
-          console.log("Oooops!");
+          //console.log("Oooops!");
+          //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-006");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: APP-006");
         }
       );
   }
@@ -321,14 +331,16 @@ export class ApplicationPage {
       .post(this.shareProvider.server + "application/usacitiesbystate.php", body)
       .subscribe(
         data => {
-          this.data.error = data["_body"];
+          //this.data.error = data["_body"];
           decoded_response = JSON.parse(data["_body"]);
           if (decoded_response[0]) {
             this.data.usacities = decoded_response[2];
           }
         },
         error => {
-          console.log("Oooops!");
+          //console.log("Oooops!");
+          //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-007");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: APP-007");
         }
       );
   }
@@ -364,7 +376,7 @@ export class ApplicationPage {
       body.append('city', this.applicationForm.controls['city'].value);
       body.append('address', this.applicationForm.controls['address'].value);
       body.append('zipCode', this.applicationForm.controls['zipCode'].value);
-      body.append('phone', this.applicationForm.controls['country_phone'].value['phone']['name']);
+      body.append('phone', this.applicationForm.controls['country_phone'].value['phone']);
       body.append('dateofbirth', this.applicationForm.controls['dateofbirth'].value);
       body.append('gender', this.applicationForm.controls['gender'].value);
       body.append('age', this.applicationForm.controls['age'].value);
@@ -403,11 +415,37 @@ export class ApplicationPage {
         }
       }
       //-----
-      this.data.error = "VALID";
+      this.http.post(this.shareProvider.server + "application/review.php", body).subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.presentMessageOnlyAlert("Server returned: true");
+          }
+          else {
+            //this.data.error = "Unknown problem occured.  Please contact administrator.";
+            //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-008");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: APP-008");
+          }
+        },
+        error => {
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //console.log("Oooops!");
+          //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-009");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: APP-009");
+        }
+      );
     }
     else {
-      this.data.error = "applicationForm is not valid.";
+      this.presentMessageOnlyAlert('Did you miss one or more required fields?');
     }
+  }
+
+  presentMessageOnlyAlert(alertmsg: string) {
+    let alert = this.alertCtrl.create({
+      message: alertmsg,
+      buttons: ['OK']
+    });
+    alert.present();
   }
     
 }
