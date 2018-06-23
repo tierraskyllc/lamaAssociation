@@ -196,7 +196,7 @@ export class ApplicationPage {
     setInterval(() => {      
       console.log('timer');
       this.uploadImage();
-      },3000);
+      },2000);
   }
 
   getInitialMotorcycle() {
