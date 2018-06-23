@@ -590,7 +590,7 @@ export class ApplicationPage {
         fileName: filename,
         chunkedMode: false,
         mimeType: "multipart/form-data",
-        params : {'fileName': filename}
+        params : {'fileName': filename, 'sessionid': this.shareProvider.sessionid}
       };
     
       const fileTransfer: TransferObject = this.transfer.create();
