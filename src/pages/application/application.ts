@@ -11,7 +11,8 @@ import { AlertController } from 'ionic-angular';
 
 import { ActionSheetController, ToastController, Platform, LoadingController, Loading } from 'ionic-angular';
 import { File } from '@ionic-native/file';
-import { Transfer, TransferObject } from '@ionic-native/transfer';
+//import { Transfer, TransferObject } from '@ionic-native/transfer';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
 
@@ -65,7 +66,8 @@ export class ApplicationPage {
     private shareProvider: ShareProvider,
     private alertCtrl: AlertController,
     private camera: Camera, 
-    private transfer: Transfer, 
+    //private transfer: Transfer,
+    private transfer: FileTransfer,
     private file: File, 
     private filePath: FilePath, 
     public actionSheetCtrl: ActionSheetController, 
