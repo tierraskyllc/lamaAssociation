@@ -529,7 +529,7 @@ export class ApplicationPage {
       }
       //this.uploadImage();
     }, (err) => {
-      this.presentToast('Error while selecting image.');
+      this.presentToast('Error while selecting image.' + err);
     });
   }
 
