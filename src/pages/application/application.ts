@@ -602,7 +602,7 @@ export class ApplicationPage {
         params : {'fileName': filename, 'sessionid': this.shareProvider.sessionid}
       };
     
-      const fileTransfer: TransferObject = this.transfer.create();
+      const fileTransfer: FileTransferObject = this.transfer.create();
     
       this.loading = this.loadingCtrl.create({
         content: 'Uploading...',
