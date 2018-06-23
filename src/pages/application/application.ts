@@ -27,6 +27,7 @@ export class ApplicationPage {
 
   lastImage: string = "";
   lastImageFullPath: string = "";
+  isUploadImageRunning: boolean = false;
   loading: Loading;
 
   mockMember = {
@@ -576,10 +577,11 @@ export class ApplicationPage {
   }
 
   public uploadImage() {
-    this.presentToast('Inside uploadImage');
-    if((this.lastImage != "") && (this.lastImageFullPath != "")) {
-      this.presentToast(this.lastImage);
-      this.presentToast(this.lastImageFullPath);
+    //this.presentToast('Inside uploadImage');
+    if((this.lastImage != "") && (this.lastImageFullPath != "") && (this.isUploadImageRunning != true)) {
+      this.isUploadImageRunning = true;
+      //this.presentToast(this.lastImage);
+      //this.presentToast(this.lastImageFullPath);
     // Destination URL
       var url = this.shareProvider.server + "application/upload.php";
     
@@ -611,9 +613,11 @@ export class ApplicationPage {
         //this.presentToast(this.lastImage);
         this.lastImage = "";
         this.lastImageFullPath = "";
+        this.isUploadImageRunning = false;
       }, err => {
         this.loading.dismissAll();
         this.presentToast('Error while uploading image(s).');
+        this.isUploadImageRunning = false;
       });
     }
   }
