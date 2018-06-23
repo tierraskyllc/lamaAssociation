@@ -579,6 +579,7 @@ export class ApplicationPage {
   public uploadImage() {
     //this.presentToast('Inside uploadImage');
     if((this.lastImage != "") && (this.lastImageFullPath != "") && (this.isUploadImageRunning != true)) {
+      this.presentToast('Inside uploadImage');
       this.isUploadImageRunning = true;
       //this.presentToast(this.lastImage);
       //this.presentToast(this.lastImageFullPath);
