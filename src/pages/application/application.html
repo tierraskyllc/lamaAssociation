@@ -243,7 +243,7 @@
 
         <ion-row *ngIf="applicationForm.controls['haveMotorcycleLicense'].value == 'Yes'">
           <ion-col width="100%" align="center">
-            <button ion-button small round (click)="uploadLicensePicture()">Upload License Picture</button>
+            <button ion-button small round (click)="uploadLicense()">Capture License Picture</button>
           </ion-col>
         </ion-row>
 
@@ -267,7 +267,7 @@
 
         <ion-row *ngIf="applicationForm.controls['haveMotorcycleInsurance'].value == 'Yes'">
           <ion-col width="100%" align="center">
-            <button ion-button small round (click)="uploadInsurancePicture()">Upload Insurance Picture</button>
+            <button ion-button small round (click)="uploadInsurance()">Capture Insurance Picture</button>
           </ion-col>
         </ion-row>
 
