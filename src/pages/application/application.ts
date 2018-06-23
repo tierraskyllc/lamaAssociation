@@ -194,7 +194,7 @@ export class ApplicationPage {
       ])
     });
     setInterval(() => {      
-      console.log('timer');
+      //console.log('timer');
       this.uploadImage();
       },2000);
   }
