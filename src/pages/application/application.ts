@@ -26,6 +26,7 @@ export class ApplicationPage {
   data: any = {};
 
   lastImage: string = "";
+  lastImageFullPath: string = "";
   loading: Loading;
 
   mockMember = {
@@ -514,6 +515,7 @@ export class ApplicationPage {
             let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
             let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
             this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+            this.lastImageFullPath = correctPath + currentName;
           });
       } else {
         //this.presentMessageOnlyAlert('checkpoint-1');
@@ -526,6 +528,7 @@ export class ApplicationPage {
         //this.presentMessageOnlyAlert(currentName);
         this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
         //this.presentMessageOnlyAlert('checkpoint-4');
+        this.lastImageFullPath = imagePath;
       }
       //this.uploadImage();
     }, (err) => {
@@ -548,7 +551,8 @@ export class ApplicationPage {
     this.file.copyFile(namePath, currentName, this.file.dataDirectory, newFileName).then(success => {
       this.lastImage = newFileName;
     }, error => {
-      this.presentToast('Error while storing file.');
+      //this.presentToast('Error while storing file.');
+      console.log('Error while storing file.  This error can be safely ignored.');
     });
   }
   
@@ -571,7 +575,7 @@ export class ApplicationPage {
   }
 
   public uploadImage() {
-    if(this.lastImage != "") {
+    if((this.lastImage != "") && (this.lastImageFullPath != "")) {
     // Destination URL
       var url = this.shareProvider.server + "application/upload.php";
     
@@ -586,23 +590,25 @@ export class ApplicationPage {
         fileName: filename,
         chunkedMode: false,
         mimeType: "multipart/form-data",
-        params : {'fileName': filename, 'sessionid': this.shareProvider.sessionid}
+        params : {'fileName': filename}
       };
     
       const fileTransfer: TransferObject = this.transfer.create();
     
-      /*this.loading = this.loadingCtrl.create({
+      this.loading = this.loadingCtrl.create({
         content: 'Uploading...',
       });
-      this.loading.present();*/
+      this.loading.present();
     
       // Use the FileTransfer to upload the image
-      fileTransfer.upload(targetPath, url, options).then(data => {
-        //this.loading.dismissAll()
-        //this.presentToast('Image succesful uploaded.');
+      fileTransfer.upload(this.lastImageFullPath, url, options).then(data => {
+        this.loading.dismissAll()
+        this.presentToast('Image succesful uploaded.');
+        //this.presentToast(this.lastImage);
         this.lastImage = "";
+        this.lastImageFullPath = "";
       }, err => {
-        //this.loading.dismissAll();
+        this.loading.dismissAll();
         this.presentToast('Error while uploading image(s).');
       });
     }
