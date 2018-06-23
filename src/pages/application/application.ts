@@ -576,7 +576,10 @@ export class ApplicationPage {
   }
 
   public uploadImage() {
+    this.presentToast('Inside uploadImage');
     if((this.lastImage != "") && (this.lastImageFullPath != "")) {
+      this.presentToast(this.lastImage);
+      this.presentToast(this.lastImageFullPath);
     // Destination URL
       var url = this.shareProvider.server + "application/upload.php";
     
