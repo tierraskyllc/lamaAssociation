@@ -581,7 +581,7 @@ export class ApplicationPage {
   public uploadImage() {
     //this.presentToast('Inside uploadImage');
     if((this.lastImage != "") && (this.lastImageFullPath != "") && (this.isUploadImageRunning != true)) {
-      this.presentToast('Inside uploadImage');
+      //this.presentToast('Inside uploadImage');
       this.isUploadImageRunning = true;
       //this.presentToast(this.lastImage);
       //this.presentToast(this.lastImageFullPath);
@@ -597,7 +597,7 @@ export class ApplicationPage {
       var options = {
         fileKey: "file",
         fileName: filename,
-        chunkedMode: false,
+        //chunkedMode: false,
         mimeType: "multipart/form-data",
         params : {'fileName': filename, 'sessionid': this.shareProvider.sessionid}
       };
@@ -610,14 +610,14 @@ export class ApplicationPage {
       this.loading.present();
     
       // Use the FileTransfer to upload the image
-      fileTransfer.upload(this.lastImageFullPath, url, options).then(data => {
+      fileTransfer.upload(this.lastImageFullPath, url, options).then((data) => {
         this.loading.dismissAll()
         this.presentToast('Image succesful uploaded.');
         //this.presentToast(this.lastImage);
         this.lastImage = "";
         this.lastImageFullPath = "";
         this.isUploadImageRunning = false;
-      }, err => {
+      }, (err) => {
         this.loading.dismissAll();
         this.presentToast('Error while uploading image(s).');
         this.isUploadImageRunning = false;
