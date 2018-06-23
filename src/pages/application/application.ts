@@ -597,7 +597,7 @@ export class ApplicationPage {
       var options = {
         fileKey: "file",
         fileName: filename,
-        //chunkedMode: false,
+        chunkedMode: false,
         mimeType: "multipart/form-data",
         params : {'fileName': filename, 'sessionid': this.shareProvider.sessionid}
       };
