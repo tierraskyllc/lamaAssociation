@@ -551,6 +551,7 @@ export class ApplicationPage {
     this.file.copyFile(namePath, currentName, this.file.dataDirectory, newFileName).then(success => {
       this.lastImage = newFileName;
     }, error => {
+      this.lastImage = newFileName;
       //this.presentToast('Error while storing file.');
       console.log('Error while storing file.  This error can be safely ignored.');
     });
