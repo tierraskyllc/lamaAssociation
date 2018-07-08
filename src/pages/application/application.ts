@@ -78,6 +78,9 @@ export class ApplicationPage {
       this.data.response = "";
       this.data.error = "";
       this.data.selectedimage = "";
+      this.data.insurancepic = "";
+      this.data.licensepic = "";
+      this.data.isappsubmited = false;
 
       this.data.usastates = [];
       this.data.usacities = [];
@@ -120,6 +123,8 @@ export class ApplicationPage {
   }
 
   ionViewWillLoad() {
+    this.getApplicationStatus();
+
     this.countries = [
       new Country('US', 'United States'),
       //new Country('UY', 'Uruguay'),
@@ -396,6 +401,7 @@ export class ApplicationPage {
       var body = new FormData();
       var json_encoded_response = "";
       var decoded_response = "";
+      body.append('sessionid', this.shareProvider.sessionid);
       body.append('country', this.applicationForm.controls['country_phone'].value['country']['name']);
       body.append('usastate', this.applicationForm.controls['usastate'].value);
       body.append('state', this.applicationForm.controls['state'].value);
@@ -427,7 +433,8 @@ export class ApplicationPage {
       body.append('memberTitle', this.applicationForm.controls['memberTitle'].value);
       body.append('typeOfMembership', this.applicationForm.controls['typeOfMembership'].value);
       body.append('typeOfChapter', this.applicationForm.controls['typeOfChapter'].value);
-
+      body.append('licensepic', this.data.licensepic);
+      body.append('insurancepic', this.data.insurancepic);
       //-----
       var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
       for (var i = 0; i < motorcyclesobjects.length; i++) {
@@ -445,19 +452,21 @@ export class ApplicationPage {
       this.http.post(this.shareProvider.server + "application/review.php", body).subscribe(
         data => {
           decoded_response = JSON.parse(data["_body"]);
+          //console.log(data["_body"]);
           if (decoded_response[0] == "true") {
-            this.presentMessageOnlyAlert("Server returned: true");
+            this.presentMessageOnlyAlert("You've successfully submitted your application.");
+            this.data.isappsubmited = true;
           }
           else {
             //this.data.error = "Unknown problem occured.  Please contact administrator.";
-            //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-008");
+            this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-008");
             console.log("Unknown problem occured.  Please contact administrator.  Code: APP-008");
           }
         },
         error => {
           //this.data.error = "Unknown problem occured.  Please contact administrator.";
           //console.log("Oooops!");
-          //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-009");
+          this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-009");
           console.log("Unknown problem occured.  Please contact administrator.  Code: APP-009");
         }
       );
@@ -544,6 +553,12 @@ export class ApplicationPage {
     var d = new Date(),
     n = d.getTime(),
     newFileName =  this.shareProvider.username + '_' + this.data.selectedimage + '_' + n + ".jpg";
+    if(this.data.selectedimage == 'license') {
+      this.data.licensepic = newFileName;
+    }
+    if(this.data.selectedimage == 'insurance') {
+      this.data.insurancepic = newFileName;
+    }
     //this.presentMessageOnlyAlert(newFileName);
     return newFileName;
   }
@@ -636,4 +651,40 @@ export class ApplicationPage {
     //this.presentActionSheet();
     this.takePicture(this.camera.PictureSourceType.CAMERA);
   }
+
+  getApplicationStatus() {
+    //this.submitAttempt = true;
+    var body = new FormData();
+    var json_encoded_response = "";
+    var decoded_response = "";
+    body.append('sessionid', this.shareProvider.sessionid);
+    //-----
+    this.http.post(this.shareProvider.server + "application/appstatus.php", body).subscribe(
+      data => {
+        decoded_response = JSON.parse(data["_body"]);
+        //console.log("=====");
+        //console.log(data["_body"]);
+        //console.log("=====");
+        if (decoded_response[0] == "true") {
+			    if(decoded_response[2] == null) {
+				    this.data.isappsubmited = true;
+			    }
+        }
+        else {
+          this.data.isappsubmited = false;
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-018");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: APP-018");
+        }
+      },
+      error => {
+        this.data.isappsubmited = true;
+        //this.data.error = "Unknown problem occured.  Please contact administrator.";
+        //console.log("Oooops!");
+        this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-019");
+        console.log("Unknown problem occured.  Please contact administrator.  Code: APP-019");
+      }
+    );
+  }
+
 }
