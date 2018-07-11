@@ -17,7 +17,7 @@ export class SplashPage {
       "duration" : 10000,
       "backgroundImage" : "assets/images/background/29.jpg",
       "logo" : "assets/images/logo/lamaHandsRoundCornersLogo.png",
-      "title" : "L.A.M.A. Association"
+      "title" : "L.A.M.A. Association (Click Here)"
     };
 
     this.params.events = {

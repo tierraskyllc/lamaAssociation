@@ -81,6 +81,7 @@ export class ApplicationPage {
       this.data.insurancepic = "";
       this.data.licensepic = "";
       this.data.isappsubmited = false;
+      this.data.submittedtext = "";
 
       this.data.usastates = [];
       this.data.usacities = [];
@@ -666,9 +667,26 @@ export class ApplicationPage {
         //console.log(data["_body"]);
         //console.log("=====");
         if (decoded_response[0] == "true") {
+          if(decoded_response[2] == 'NoApplication') {
+            this.data.isappsubmited = false;
+            //this.data.submittedtext = "Your application has been approved.  You are being redirected to your profile page.";
+            //this.navCtrl.push("ProfilePage");
+            //this.shareProvider.curentpage = "ProfilePage";
+          }
 			    if(decoded_response[2] == null) {
-				    this.data.isappsubmited = true;
-			    }
+            this.data.isappsubmited = true;
+            this.data.submittedtext = "Thank you for submitting your application with L.A.M.A.  You'll hear back from us soon.";
+          }
+          if(decoded_response[2] == 'Review') {
+            this.data.isappsubmited = true;
+            this.data.submittedtext = "We are currently reviewing your application.  You'll hear back from us soon.";
+          }
+          if(decoded_response[2] == 'Approved') {
+            this.data.isappsubmited = true;
+            this.data.submittedtext = "Your application has been approved.  You are being redirected to your profile page.";
+            this.navCtrl.push("ProfilePage");
+            this.shareProvider.curentpage = "ProfilePage";
+          }
         }
         else {
           this.data.isappsubmited = false;
