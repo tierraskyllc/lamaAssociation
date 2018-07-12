@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { NavController, IonicPage, ModalController } from "ionic-angular";
 import { ToastService } from "../../services/toast.service";
+import { ActionSheetController } from 'ionic-angular'
 
 @IonicPage()
 @Component({
@@ -50,6 +51,7 @@ export class ProfilePage {
     public navCtrl: NavController,
     public toastCtrl: ToastService,
     public modalCtrl: ModalController,
+    public actionSheetCtrl: ActionSheetController
   ) { }
 
   eventsPage() {
@@ -89,5 +91,35 @@ export class ProfilePage {
 
   like(post) {
     this.toastCtrl.create("Like clicked");
+  }
+
+  presentActionSheet() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Modify your album',
+      buttons: [
+        {
+          text: 'Destructive',
+          role: 'destructive',
+          handler: () => {
+            console.log('Destructive clicked');
+          }
+        },
+        {
+          text: 'Archive',
+          handler: () => {
+            console.log('Archive clicked');
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+ 
+    actionSheet.present();
   }
 }
