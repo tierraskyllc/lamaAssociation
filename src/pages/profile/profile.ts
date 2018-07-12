@@ -2,6 +2,9 @@ import { Component } from "@angular/core";
 import { NavController, IonicPage, ModalController } from "ionic-angular";
 import { ToastService } from "../../services/toast.service";
 import { ActionSheetController } from 'ionic-angular'
+import { Http } from "@angular/http";
+import { ShareProvider } from "../../services/share";
+import { AlertController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -9,6 +12,7 @@ import { ActionSheetController } from 'ionic-angular'
   templateUrl: "profile.html"
 })
 export class ProfilePage {
+  data: any = {};
   following = false;
   signingIn = false;
   underConstruction = true;
@@ -48,6 +52,9 @@ export class ProfilePage {
   ];
 
   constructor(
+    private http: Http,
+    private shareProvider: ShareProvider,
+    private alertCtrl: AlertController,
     public navCtrl: NavController,
     public toastCtrl: ToastService,
     public modalCtrl: ModalController,
@@ -93,33 +100,70 @@ export class ProfilePage {
     this.toastCtrl.create("Like clicked");
   }
 
+  presentMessageOnlyAlert(alertmsg: string) {
+    let alert = this.alertCtrl.create({
+      message: alertmsg,
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
   presentActionSheet() {
-    let actionSheet = this.actionSheetCtrl.create({
-      title: 'Modify your album',
-      buttons: [
-        {
-          text: 'Destructive',
+    var tmparr = ['Edit Profile'];
+    var body = new FormData();
+    body.append('sessionid', this.shareProvider.sessionid);
+    this.http.post(this.shareProvider.server + "menu/menu.php", body).subscribe(
+      data => {
+        tmparr = JSON.parse(data["_body"]);
+        //=========
+        var tmpbuttons = [];
+        var mybutton = {};
+        var tmphandler = null;
+        for(var i=0; i<tmparr.length; i++) {
+          if(tmparr[i] == 'Edit Profile') {
+            tmphandler = () => {
+              console.log('Edit Profile' + ' clicked');
+            }
+          }
+          if(tmparr[i] == 'Manage Applications') {
+            tmphandler = () => {
+              console.log('Manage Applications' + ' clicked');
+            }
+          }
+          mybutton = {
+            text: tmparr[i],
+            handler: tmphandler
+          };
+          tmpbuttons.push(mybutton);
+        }
+        mybutton = {
+          text: 'Log Out',
           role: 'destructive',
           handler: () => {
-            console.log('Destructive clicked');
+            console.log('LOGOUT clicked');
           }
-        },
-        {
-          text: 'Archive',
-          handler: () => {
-            console.log('Archive clicked');
-          }
-        },
-        {
+        };
+        tmpbuttons.push(mybutton);
+        mybutton = {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
             console.log('Cancel clicked');
           }
-        }
-      ]
-    });
- 
-    actionSheet.present();
+        };
+        tmpbuttons.push(mybutton);
+        let actionSheet = this.actionSheetCtrl.create({
+          buttons: tmpbuttons
+        });
+        actionSheet.present();
+        //=========
+      },
+      error => {
+        //this.data.error = "Unknown problem occured.  Please contact administrator.";
+        //console.log("Oooops!");
+        this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-MENU-001");
+        console.log("Unknown problem occured.  Please contact administrator.  Code: APP-MENU-001");
+      }
+    );
   }
 }

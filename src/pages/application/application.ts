@@ -457,6 +457,7 @@ export class ApplicationPage {
           if (decoded_response[0] == "true") {
             this.presentMessageOnlyAlert("You've successfully submitted your application.");
             this.data.isappsubmited = true;
+            this.data.submittedtext = "Thank you for submitting your application with L.A.M.A.  You'll hear back from us soon.";
           }
           else {
             //this.data.error = "Unknown problem occured.  Please contact administrator.";
