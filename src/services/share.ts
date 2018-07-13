@@ -39,7 +39,7 @@ export class ShareProvider {
     this.lastname = "";
   }
 
-  presentMenu(myNavCtrl) {
+  displayToolMenu(myNavCtrl) {
     this.loading = this.loadingCtrl.create({
       content: '',
     });
