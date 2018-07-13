@@ -628,7 +628,7 @@ export class ApplicationPage {
     
       // Use the FileTransfer to upload the image
       fileTransfer.upload(this.lastImageFullPath, url, options).then((data) => {
-        this.loading.dismissAll()
+        this.loading.dismissAll();
         this.presentToast('Image succesful uploaded.');
         //this.presentToast(this.lastImage);
         this.lastImage = "";

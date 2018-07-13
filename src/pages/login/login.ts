@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { IonicPage, NavController } from "ionic-angular";
+import { IonicPage, NavController, NavParams } from "ionic-angular";
 import {
   Validators,
   FormBuilder,
@@ -26,18 +26,14 @@ export class LoginPage {
     public formBuilder: FormBuilder,
     private http: Http,
     private shareProvider: ShareProvider,
-    public navCtrl: NavController
-  ) {}
+    public navCtrl: NavController,
+    public navParams: NavParams
+  ) {
+    this.data.error = navParams.get('data');
+  }
 
   ionViewWillLoad() {
     this.loginForm = this.formBuilder.group({
-      /*email: new FormControl(
-        "",
-        Validators.compose([
-          Validators.required,
-          //Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")
-        ])
-      ),*/
       email: new FormControl("", Validators.compose([Validators.required, Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")])),
       password: new FormControl('', Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(16)]))
     });
