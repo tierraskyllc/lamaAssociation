@@ -25,7 +25,7 @@
     "@ionic-native/core": "4.7.0",
     "@ionic-native/file": "^4.8.0",
     "@ionic-native/file-path": "^4.8.0",
-    "@ionic-native/file-transfer": "^4.8.0",
+    "@ionic-native/file-transfer": "^4.9.2",
     "@ionic-native/splash-screen": "4.7.0",
     "@ionic-native/status-bar": "4.7.0",
     "@ionic-native/transfer": "^3.14.0",
