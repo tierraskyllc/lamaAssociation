@@ -127,6 +127,7 @@ export class ProfilePage {
           }
           if(tmparr[i] == 'Manage Applications') {
             tmphandler = () => {
+              this.navCtrl.push("ManageApplicationsPage");
               console.log('Manage Applications' + ' clicked');
             }
           }
