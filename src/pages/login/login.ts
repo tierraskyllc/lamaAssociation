@@ -97,6 +97,7 @@ export class LoginPage {
                 .subscribe(
                   data => {
                     decoded_response = JSON.parse(data["_body"]);
+                    //console.log(data["_body"]);
                     if (decoded_response[0] == "true") {
                       if(decoded_response[2]['is_member_approved'] == 0) {
                         this.navCtrl.push("ApplicationPage");
@@ -117,13 +118,15 @@ export class LoginPage {
                         this.loading.dismissAll();
                       }
                       else {
-                        this.data.error = "Unknown problem occured.  Please contact administrator.-1";
+                        this.data.error = "Unknown problem occured.  Please contact administrator.";
+                        console.log("Unknown problem occured.  Please contact administrator. - L001");
                         this.loading.dismissAll();
                       }
                     }
                   },
                   error => {
-                    this.data.error = "Unknown problem occured.  Please contact administrator.-2";
+                    this.data.error = "Unknown problem occured.  Please contact administrator.";
+                    console.log("Unknown problem occured.  Please contact administrator. - L002");
                     this.loading.dismissAll();
                   }
                 );
@@ -131,9 +134,11 @@ export class LoginPage {
               //this.navCtrl.push("ApplicationPage")
             } else if (decoded_response[0] == "false") {
               this.data.error = decoded_response[2];
+              console.log("Unknown problem occured.  Please contact administrator. - L003");
               this.loading.dismissAll();
             } else {
               this.data.error = decoded_response[1];
+              console.log("Unknown problem occured.  Please contact administrator. - L004");
               this.loading.dismissAll();
             }
           },

@@ -565,11 +565,13 @@ $searchbar-ios-input-background-color: theme-colors('mainColors', 'primary') !im
 $searchbar-ios-input-placeholder-color: theme-colors('mainColors', 'secondary');
 $searchbar-ios-input-search-icon-color: theme-colors('mainColors', 'secondary');
 $searchbar-ios-input-clear-icon-color: theme-colors('mainColors', 'secondary');
+$searchbar-ios-input-text-color: #FCD736;
 // For android
 $searchbar-md-input-background-color: theme-colors('mainColors', 'primary') !important;
 $searchbar-md-input-placeholder-color: theme-colors('mainColors', 'secondary');
 $searchbar-md-input-search-icon-color: theme-colors('mainColors', 'secondary');
 $searchbar-md-input-clear-icon-color: theme-colors('mainColors', 'secondary');
+$searchbar-md-input-text-color: #FCD736;
 
 [search-bar-title]{
   color: theme-colors('textColors', 'primary');
