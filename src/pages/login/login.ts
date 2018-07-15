@@ -8,6 +8,7 @@ import {
 } from "@angular/forms";
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
+import { LoadingController, Loading } from 'ionic-angular'
 
 @IonicPage()
 @Component({
@@ -15,6 +16,9 @@ import { ShareProvider } from "../../services/share";
   templateUrl: "login.html"
 })
 export class LoginPage {
+
+  loading: Loading;
+
   loginForm: FormGroup;
   data: any = {};
   submitAttempt: boolean = false;
@@ -27,7 +31,8 @@ export class LoginPage {
     private http: Http,
     private shareProvider: ShareProvider,
     public navCtrl: NavController,
-    public navParams: NavParams
+    public navParams: NavParams,
+    public loadingCtrl: LoadingController
   ) {
     this.data.error = navParams.get('data');
   }
@@ -51,9 +56,12 @@ export class LoginPage {
     ]
   };
 
-  //
-
   login() {
+    this.loading = this.loadingCtrl.create({
+      content: '',
+    });
+    this.loading.present();
+
     this.data.error = '';
     this.submitAttempt = true;
     if (this.loginForm.valid) {
@@ -93,37 +101,45 @@ export class LoginPage {
                       if(decoded_response[2]['is_member_approved'] == 0) {
                         this.navCtrl.push("ApplicationPage");
                         this.shareProvider.curentpage = "ApplicationPage";
+                        this.loading.dismissAll();
                       }
                       else {
                         if(decoded_response[2]['is_member_approved'] == 1) {
                           this.navCtrl.push("ProfilePage");
                           this.shareProvider.curentpage = "ProfilePage";
                         }
+                        this.loading.dismissAll();
                       }
                     }
                     else {
                       if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
                         this.navCtrl.push('LoginPage');
+                        this.loading.dismissAll();
                       }
                       else {
                         this.data.error = "Unknown problem occured.  Please contact administrator.-1";
+                        this.loading.dismissAll();
                       }
                     }
                   },
                   error => {
                     this.data.error = "Unknown problem occured.  Please contact administrator.-2";
+                    this.loading.dismissAll();
                   }
                 );
               //-----  
               //this.navCtrl.push("ApplicationPage")
             } else if (decoded_response[0] == "false") {
               this.data.error = decoded_response[2];
+              this.loading.dismissAll();
             } else {
               this.data.error = decoded_response[1];
+              this.loading.dismissAll();
             }
           },
           error => {
             this.data.error = error;
+            this.loading.dismissAll();
             //console.log("Oooops!");
           }
         );
@@ -132,6 +148,7 @@ export class LoginPage {
       if((!this.loginForm.get('email').dirty) || (!this.loginForm.get('password').dirty)) {
         this.data.error = 'Please enter Email and Password.';
       }
+      this.loading.dismissAll();
     }
   }
   //

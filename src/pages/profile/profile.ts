@@ -33,14 +33,13 @@ export class ProfilePage {
     {
       postImageUrl: "assets/images/background/background-2.jpg",
       text: `I believe in being strong when everything seems to be going wrong.
-             I believe that happy girls are the prettiest girls.
              I believe that tomorrow is another day and I believe in miracles.`,
       date: "November 5, 2016",
       likes: 12,
       comments: 4,
       timestamp: "11h ago"
     },
-    {
+    /*{
       postImageUrl: "assets/images/background/background-3.jpg",
       text:
         "Do not go where the path may lead, go instead where there is no path and leave a trail.",
@@ -48,7 +47,7 @@ export class ProfilePage {
       likes: 30,
       comments: 64,
       timestamp: "30d ago"
-    }
+    }*/
   ];
 
   constructor(

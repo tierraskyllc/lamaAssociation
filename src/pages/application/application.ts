@@ -36,7 +36,8 @@ export class ApplicationPage {
     lastName : "",
     title: "",
     chapter: "",
-    email: ""
+    email: "",
+    lama_chapter_id: ""
   };
 
   applicationForm: FormGroup;
@@ -86,6 +87,11 @@ export class ApplicationPage {
       this.data.usastates = [];
       this.data.usacities = [];
 
+      /*this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();*/
+
       var decoded_response = "";
       var body = new FormData();
       body.append('sessionid', this.shareProvider.sessionid);
@@ -98,15 +104,19 @@ export class ApplicationPage {
             this.mockMember.firstName = decoded_response[2]['first_name'];
             this.mockMember.lastName = decoded_response[2]['last_name'];
             this.mockMember.chapter = decoded_response[2]['chapter_name'];
+            this.mockMember.lama_chapter_id = decoded_response[2]['lama_chapter_id'];
+            //this.loading.dismissAll();
           }
           else {
             if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
               this.navCtrl.push('LoginPage');
+              //this.loading.dismissAll();
             }
             else {
               //this.data.error = "Unknown problem occured.  Please contact administrator.";
               //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-001");
               console.log("Unknown problem occured.  Please contact administrator.  Code: APP-001");
+              //this.loading.dismissAll();
             }
           }
         },
@@ -114,6 +124,7 @@ export class ApplicationPage {
           //this.data.error = "Unknown problem occured.  Please contact administrator.";
           //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-002");
           console.log("Unknown problem occured.  Please contact administrator.  Code: APP-002");
+          //this.loading.dismissAll();
         }
       );
     }
@@ -211,11 +222,11 @@ export class ApplicationPage {
   getInitialMotorcycle() {
     return this.formBuilder.group({
       color: [''],
-      year: ['', Validators.compose([Validators.required])],
+      year: ['', Validators.compose([Validators.maxLength(4), Validators.pattern('[0-9 ]*'), Validators.required])],
       make: [''],
       model: [''],
       licensePlate: [''],
-      currentMileage: [''],
+      currentMileage: ['', Validators.compose([Validators.pattern('[0-9 ]*')])],
     });
   }
 
@@ -278,6 +289,11 @@ export class ApplicationPage {
   }
 
   populateCountries() {
+    /*this.loading = this.loadingCtrl.create({
+      content: '',
+    });
+    this.loading.present();*/
+
     var decoded_response = "";
     var body = new FormData();
     body.append('sessionid', this.shareProvider.sessionid);
@@ -300,11 +316,13 @@ export class ApplicationPage {
               console.log("Failed to add country code " + decoded_response[2][i]['code'] + " => Unknown problem occured.  Please contact administrator.  Code: APP-003");
             }
           }
+          //this.loading.dismissAll();
         }
         else {
           //this.data.error = "Unknown problem occured.  Please contact administrator.";
           //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-004");
           console.log("Unknown problem occured.  Please contact administrator.  Code: APP-004");
+          //this.loading.dismissAll();
         }
       },
       error => {
@@ -312,6 +330,7 @@ export class ApplicationPage {
         //console.log("Oooops!");
         //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-005");
         console.log("Unknown problem occured.  Please contact administrator.  Code: APP-005");
+        //this.loading.dismissAll();
       }
     );
   }
@@ -334,6 +353,11 @@ export class ApplicationPage {
   }
 
   populateUSAStates() {
+    /*this.loading = this.loadingCtrl.create({
+      content: '',
+    });
+    this.loading.present();*/
+
     var decoded_response = "";
     var body = new FormData();
     body.append('sessionid', this.shareProvider.sessionid);
@@ -345,16 +369,23 @@ export class ApplicationPage {
           if (decoded_response[0]) {
             this.data.usastates = decoded_response[2];
           }
+          //this.loading.dismissAll();
         },
         error => {
           //console.log("Oooops!");
           //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-006");
           console.log("Unknown problem occured.  Please contact administrator.  Code: APP-006");
+          //this.loading.dismissAll();
         }
       );
   }
 
   populateCitiesByUSAState() {
+    this.loading = this.loadingCtrl.create({
+      content: '',
+    });
+    this.loading.present();
+
     var decoded_response = "";
     var body = new FormData();
     body.append('sessionid', this.shareProvider.sessionid);
@@ -368,11 +399,13 @@ export class ApplicationPage {
           if (decoded_response[0]) {
             this.data.usacities = decoded_response[2];
           }
+          this.loading.dismissAll();
         },
         error => {
           //console.log("Oooops!");
           //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-007");
           console.log("Unknown problem occured.  Please contact administrator.  Code: APP-007");
+          this.loading.dismissAll();
         }
       );
   }
@@ -397,12 +430,23 @@ export class ApplicationPage {
   }
 
   review() {
+    /*this.loading = this.loadingCtrl.create({
+      content: '',
+    });
+    this.loading.present();*/
+
     this.submitAttempt = true;
     if(this.applicationForm.valid) {
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+
       var body = new FormData();
       var json_encoded_response = "";
       var decoded_response = "";
       body.append('sessionid', this.shareProvider.sessionid);
+      body.append('lama_chapter_id', this.mockMember.lama_chapter_id);
       body.append('country', this.applicationForm.controls['country_phone'].value['country']['name']);
       body.append('usastate', this.applicationForm.controls['usastate'].value);
       body.append('state', this.applicationForm.controls['state'].value);
@@ -458,11 +502,13 @@ export class ApplicationPage {
             this.presentMessageOnlyAlert("You've successfully submitted your application.");
             this.data.isappsubmited = true;
             this.data.submittedtext = "Thank you for submitting your application with L.A.M.A.  You'll hear back from us soon.";
+            this.loading.dismissAll();
           }
           else {
             //this.data.error = "Unknown problem occured.  Please contact administrator.";
             this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-008");
             console.log("Unknown problem occured.  Please contact administrator.  Code: APP-008");
+            this.loading.dismissAll();
           }
         },
         error => {
@@ -470,11 +516,13 @@ export class ApplicationPage {
           //console.log("Oooops!");
           this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-009");
           console.log("Unknown problem occured.  Please contact administrator.  Code: APP-009");
+          this.loading.dismissAll();
         }
       );
     }
     else {
       this.presentMessageOnlyAlert('Did you miss one or more required fields?');
+      //this.loading.dismissAll();
     }
   }
 
@@ -655,6 +703,11 @@ export class ApplicationPage {
   }
 
   getApplicationStatus() {
+    /*this.loading = this.loadingCtrl.create({
+      content: '',
+    });
+    this.loading.present();*/
+
     //this.submitAttempt = true;
     var body = new FormData();
     var json_encoded_response = "";
@@ -695,6 +748,7 @@ export class ApplicationPage {
           this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-018");
           console.log("Unknown problem occured.  Please contact administrator.  Code: APP-018");
         }
+        //this.loading.dismissAll();
       },
       error => {
         this.data.isappsubmited = true;
@@ -702,8 +756,35 @@ export class ApplicationPage {
         //console.log("Oooops!");
         this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-019");
         console.log("Unknown problem occured.  Please contact administrator.  Code: APP-019");
+        //this.loading.dismissAll();
       }
     );
+  }
+
+  changeValidationForAnyOtherClub() {
+    //console.log('changeValidationForAnyOtherClub clicked');
+    //console.log(this.applicationForm.controls.anyOtherClub.value);
+    if(this.applicationForm.controls.anyOtherClub.value == 'No') {
+      //console.log('No selected');
+      this.applicationForm.get("nameOfOtherClub").setValidators([]);
+      this.applicationForm.get("nameOfOtherClub").updateValueAndValidity();
+    }
+    if(this.applicationForm.controls.anyOtherClub.value == 'Yes') {
+      this.applicationForm.get("nameOfOtherClub").setValidators([Validators.required, Validators.maxLength(40)]);
+      this.applicationForm.get("nameOfOtherClub").updateValueAndValidity();
+    }
+  }
+
+  displayLoadingForSpecificTime(seconds: number) {
+    console.log('displayLoading called');
+    this.loading = this.loadingCtrl.create({
+      content: '',
+    });
+    this.loading.present();
+    setTimeout(() => {
+      this.loading.dismissAll();
+      console.log('loading dismissed from displayLoading');
+    }, seconds);
   }
 
 }
