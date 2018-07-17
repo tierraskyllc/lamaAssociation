@@ -49,6 +49,10 @@ export class ManageApplicationsPage {
     console.log('ionViewDidLoad ManageApplicationsPage');
   }
 
+  openApplication(lama_applications_id: number) {
+    this.navCtrl.push("ManageApplicationPage", { lama_applications_id: lama_applications_id });
+  }
+
   search() {
     clearTimeout(this.searchTimer);
     this.searchTimer = setTimeout(() => {      
