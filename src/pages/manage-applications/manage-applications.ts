@@ -50,6 +50,7 @@ export class ManageApplicationsPage {
   }
 
   openApplication(lama_applications_id: number) {
+    //console.log(lama_applications_id);
     this.navCtrl.push("ManageApplicationPage", { lama_applications_id: lama_applications_id });
   }
 
