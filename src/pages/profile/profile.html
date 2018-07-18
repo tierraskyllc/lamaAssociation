@@ -18,23 +18,23 @@
       </div>
       <!-- <img id="profile-image" [src]="member.profileImage"> -->
 
-      <h3 id="profile-name">{{member.name}}</h3>
-      <p>{{member.chapter}} Chapter &bull; {{member.status}}</p>
-      <p class="profile-description">{{member.title}}</p>
+      <h3 id="profile-name" style="color: #FCD736;">{{member.name}}</h3>
+      <p style="color: #FCD736;">{{member.chapter}} Chapter &bull; {{member.status}}</p>
+      <p class="profile-description" style="color: #FCD736;">{{member.title}}</p>
 
       <!-- Buttons  -->
       <ion-row nowrap justify-content-center>
 
-        <button ion-button small (click)="eventsPage()">Events</button>
+        <button ion-button small (click)="eventsPage()" style="color: #FCD736;">Events</button>
         <!-- <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()">Following<ion-icon name="checkmark"></ion-icon></button> -->
-        <button ion-button [disabled]="underConstruction" *ngIf="!following" small color="purple" (click)="follow()">Garage</button>
-        <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()">Following
+        <button ion-button [disabled]="underConstruction" *ngIf="!following" small color="purple" (click)="follow()" style="color: #FCD736;">Garage</button>
+        <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()" style="color: #FCD736;">Following
           <ion-icon name="checkmark"></ion-icon>
         </button>
         <!-- <button ion-button [disabled]="underConstruction"*ngIf="!following" small color="purple" (click)="follow()">Follow</button>
         <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()">Following<ion-icon name="checkmark"></ion-icon></button> -->
-        <button ion-button *ngIf="!signingIn" small color="purple" (click)="signIn()">Sign In</button>
-        <button ion-button *ngIf="signingIn" class="follow-button" small color="purple" (click)="signIn()">Signing In
+        <!--button ion-button *ngIf="!signingIn" small color="purple" (click)="signIn()">Sign In</button-->
+        <button ion-button *ngIf="signingIn" class="follow-button" small color="purple" (click)="signIn()" style="color: #FCD736;">Signing In
           <ion-icon name="checkmark"></ion-icon>
         </button>
 
@@ -42,30 +42,30 @@
 
       <ion-row>
         <button ion-button block (click)="openQrCodeModal()">
-          <ion-icon name="finger-print">Here To Sign-In</ion-icon>
+          <ion-icon name="finger-print" style="color: #FCD736;">Here To Sign-In</ion-icon>
         </button>
       </ion-row>
     </div>
     <hr/>
 
     <ion-row class="profile-numbers">
-      <ion-col col-4>
+      <!--ion-col col-4>
         <p>Followers</p>
         <span>{{member.followers}}</span>
-      </ion-col>
-      <ion-col col-4>
-        <p>Current Miles</p>
-        <span>{{member.following}}</span>
-      </ion-col>
-      <ion-col col-4>
-        <p>Member Since</p>
+      </ion-col-->
+      <ion-col col-6>
+        <p style="color: #FCD736;">Member Since</p>
         <span>{{member.memberSince}}</span>
+      </ion-col>
+      <ion-col col-6>
+        <p style="color: #FCD736;">Current Miles</p>
+        <span>{{member.following}}</span>        
       </ion-col>
     </ion-row>
 
     <div id="posts">
       <ion-card *ngFor="let post of posts">
-        <ion-item>
+        <ion-item style="background: whitesmoke">
           <ion-avatar item-start>
             <img [src]="member.profileImage">
           </ion-avatar>
@@ -73,28 +73,28 @@
           <p>{{post.date}}</p>
         </ion-item>
         <img [src]="post.postImageUrl" (click)="imageTapped(post)">
-        <ion-card-content>
+        <ion-card-content  style="background: whitesmoke">
           <p>{{post.text}}</p>
         </ion-card-content>
-        <ion-row>
-          <ion-col col-4>
+        <!--ion-row>
+          <ion-col col-4  style="background: whitesmoke">
             <button ion-button color="purple" clear small icon-left (click)="like(post)">
               <ion-icon name='thumbs-up'></ion-icon>
               {{post.likes}} Likes
             </button>
           </ion-col>
-          <ion-col col-5>
+          <ion-col col-5  style="background: whitesmoke">
             <button ion-button no-padding color="purple" clear small icon-left (click)="comment(post)">
               <ion-icon name='text'></ion-icon>
               {{post.comments}} Comments
             </button>
           </ion-col>
-          <ion-col col-3 align-self-center text-center>
+          <ion-col col-3 align-self-center text-center  style="background: whitesmoke">
             <p>
               {{post.timestamp}}
             </p>
           </ion-col>
-        </ion-row>
+        </ion-row-->
       </ion-card>
     </div>
   </div>

@@ -315,7 +315,7 @@
                       <ion-col>
                         <ion-item no-padding color="accent">
                           <ion-label>Year: </ion-label>
-                          <ion-input type="text" formControlName="year" required placeholder="-enter-"></ion-input>
+                          <ion-input type="number" formControlName="year" required placeholder="-enter-"></ion-input>
                         </ion-item>
                       </ion-col>
                       <ion-col>
@@ -367,7 +367,7 @@
               <ion-item no-padding color="accent">
                 <ion-label floating>Do you belong to another Riding Club?</ion-label>
                 <ion-select formControlName="anyOtherClub" interface="popover">
-                  <ion-option *ngFor="let anyOtherClub of yesOrNo" [value]="anyOtherClub">{{ anyOtherClub }}</ion-option>
+                  <ion-option (ionSelect)="changeValidationForAnyOtherClub()" *ngFor="let anyOtherClub of yesOrNo" [value]="anyOtherClub">{{ anyOtherClub }}</ion-option>
                 </ion-select>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.anyOtherClub">
@@ -600,7 +600,7 @@
 
             <div>
               <ion-item no-padding color="accent">
-                <ion-label floating>Type of typeOfChapter</ion-label>
+                <ion-label floating>Type of Chapter</ion-label>
                 <ion-select formControlName="typeOfChapter" interface="popover" cancelText="Cancel" okText="OK">
                   <ion-option *ngFor="let typeOfChapter of typeOfChapters" [value]="typeOfChapter">{{ typeOfChapter }}</ion-option>
                 </ion-select>

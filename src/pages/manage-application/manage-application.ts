@@ -3,7 +3,7 @@ import { Validators, FormBuilder, FormGroup, FormControl, FormArray } from '@ang
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AgeValidator } from  '../../validators/age';
 import { PhoneValidator } from './../../validators/phone.validator';
-import { Country } from './application.model';
+import { Country } from './manage-application.model';
 import emailMask from 'text-mask-addons/dist/emailMask';
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
@@ -16,15 +16,23 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
 
+/**
+ * Generated class for the ManageApplicationPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+
 @IonicPage()
 @Component({
-  selector: 'page-application',
-  templateUrl: 'application.html'
+  selector: 'page-manage-application',
+  templateUrl: 'manage-application.html',
 })
-export class ApplicationPage {
+export class ManageApplicationPage {
 
   events: any;
   data: any = {};
+  formdata: any = {};
 
   lastImage: string = "";
   lastImageFullPath: string = "";
@@ -75,6 +83,8 @@ export class ApplicationPage {
     public toastCtrl: ToastController, 
     public platform: Platform, 
     public loadingCtrl: LoadingController) {
+
+      this.data.lama_applications_id = navParams.get('lama_applications_id');
       
       this.data.response = "";
       this.data.error = "";
@@ -130,18 +140,18 @@ export class ApplicationPage {
     }
 
   ionViewDidLoad() {
-    //this.populateCountries();
-    console.log('ionViewDidLoad ApplicationPage');
+    console.log('ionViewDidLoad ManageApplicationPage');
+    this.getApplicationDetails();
   }
 
   ionViewWillLoad() {
-    this.getApplicationStatus();
+    //this.getApplicationStatus();
 
     this.countries = [
       new Country('US', 'United States'),
       //new Country('UY', 'Uruguay'),
       //new Country('AR', 'Argentina')
-      new Country('AF', 'Afghanistan')
+      //new Country('AF', 'Afghanistan')
     ];
     //this.countries = [];
     this.populateCountries();
@@ -213,6 +223,11 @@ export class ApplicationPage {
         this.getInitialMotorcycle()
       ])
     });
+
+    //this.getApplicationDetails();
+    //this.data.usastatetitle = "State: " + this.formdata.state;
+    //this.data.usacitytitle = "City: " + this.formdata.city;
+
     setInterval(() => {      
       //console.log('timer');
       this.uploadImage();
@@ -381,6 +396,7 @@ export class ApplicationPage {
   }
 
   populateCitiesByUSAState() {
+    this.data.usastatetitle = "State";
     this.loading = this.loadingCtrl.create({
       content: '',
     });
@@ -405,6 +421,41 @@ export class ApplicationPage {
           //console.log("Oooops!");
           //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-007");
           console.log("Unknown problem occured.  Please contact administrator.  Code: APP-007");
+          this.loading.dismissAll();
+        }
+      );
+  }
+
+  populateCitiesByUSAStateWithFormStateValue(mycity: string) {
+    this.data.usastatetitle = "State";
+    this.loading = this.loadingCtrl.create({
+      content: '',
+    });
+    this.loading.present();
+
+    var decoded_response = "";
+    var body = new FormData();
+    body.append('sessionid', this.shareProvider.sessionid);
+    body.append('usastate', this.formdata.state);
+    this.http
+      .post(this.shareProvider.server + "application/usacitiesbystate.php", body)
+      .subscribe(
+        data => {
+          //this.data.error = data["_body"];
+          decoded_response = JSON.parse(data["_body"]);
+          if (decoded_response[0]) {
+            this.data.usacities = decoded_response[2];
+          }
+          this.formdata.city = mycity;
+          this.data.usacitytitle = "City: " + this.formdata.city;
+          this.loading.dismissAll();
+        },
+        error => {
+          //console.log("Oooops!");
+          //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-007");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: APP-007");
+          this.formdata.city = mycity;
+          this.data.usacitytitle = "City: " + this.formdata.city;
           this.loading.dismissAll();
         }
       );
@@ -787,4 +838,97 @@ export class ApplicationPage {
     }, seconds);
   }
 
+  getApplicationDetails() {
+    //console.log(this.data.lama_applications_id);
+    this.loading = this.loadingCtrl.create({
+      content: '',
+    });
+    this.loading.present();
+
+    //-----
+    var decoded_response = "";
+    var body = new FormData();
+    body.append('sessionid', this.shareProvider.sessionid);
+    body.append('lama_applications_id', this.data.lama_applications_id);
+    this.http
+      .post(this.shareProvider.server + "application/fetchfullapplication.php", body)
+      .subscribe(
+        data => {
+          console.log(data["_body"]);
+          decoded_response = JSON.parse(data["_body"]);
+          //console.log(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.formdata.id = decoded_response[2]["id"];
+            this.formdata.lama_members_id = decoded_response[2]["lama_members_id"];
+            this.formdata.lama_chapters_id = decoded_response[2]["lama_chapters_id"];
+            this.formdata.country = decoded_response[2]["country"];
+            this.formdata.state = decoded_response[2]["state"];
+            //this.data.usastatetitle = this.formdata.state;
+            this.populateCitiesByUSAStateWithFormStateValue(decoded_response[2]["city"]);
+            //this.formdata.city = decoded_response[2]["city"];
+            //this.data.usacitytitle = this.formdata.city;
+            this.formdata.address = decoded_response[2]["address"];
+            this.formdata.zipcode = decoded_response[2]["zipcode"];
+            this.formdata.phone = decoded_response[2]["phone"];
+            this.formdata.date_of_birth = decoded_response[2]["date_of_birth"];
+            this.formdata.gender = decoded_response[2]["gender"];
+            this.formdata.age = decoded_response[2]["age"];
+            this.formdata.place_of_birth = decoded_response[2]["place_of_birth"];
+            this.formdata.have_motor_cycle_license = decoded_response[2]["have_motor_cycle_license"];
+            this.formdata.have_motor_cycle_insurance = decoded_response[2]["have_motor_cycle_insurance"];
+            this.formdata.years_riding = decoded_response[2]["years_riding"];
+            this.formdata.any_other_club = decoded_response[2]["any_other_club"];
+            this.formdata.name_of_other_club = decoded_response[2]["name_of_other_club"];
+            this.formdata.marital_status = decoded_response[2]["marital_status"];
+            this.formdata.number_of_children = decoded_response[2]["number_of_children"];
+            this.formdata.name_of_employer = decoded_response[2]["name_of_employer"];
+            this.formdata.years_employed = decoded_response[2]["years_employed"];
+            this.formdata.occupation = decoded_response[2]["occupation"];
+            this.formdata.annual_salary = decoded_response[2]["annual_salary"];
+            this.formdata.highest_education = decoded_response[2]["highest_education"];
+            this.formdata.skills_pastimes = decoded_response[2]["skills_pastimes"];
+            this.formdata.blood_type = decoded_response[2]["blood_type"];
+            this.formdata.allergies = decoded_response[2]["allergies"];
+            this.formdata.organ_donar = decoded_response[2]["organ_donar"];
+            this.formdata.member_title = decoded_response[2]["member_title"];
+            this.formdata.type_of_membership = decoded_response[2]["type_of_membership"];
+            this.formdata.type_of_chapter = decoded_response[2]["type_of_chapter"];
+            this.formdata.licensepic = decoded_response[2]["licensepic"];
+            this.formdata.insurancepic = decoded_response[2]["insurancepic"];
+            this.formdata.application_status = decoded_response[2]["application_status"];
+            this.formdata.dttmcreated = decoded_response[2]["dttmcreated"];
+            //this.applicationForm.controls['address'].value = decoded_response[2]["phone"];
+            //this.applicationForm.controls['country_phone'].value['phone'] = decoded_response[2]["phone"];
+            //this.formdata.phone = decoded_response[2]["phone"];
+
+            this.data.usastatetitle = "State: " + this.formdata.state;
+            //this.data.usacitytitle = "City: " + this.formdata.city;
+
+            this.loading.dismissAll()
+          }
+          else if (decoded_response[0] == "false") {
+            this.data.error = decoded_response[2];
+            console.log(decoded_response[2]);
+            this.loading.dismissAll();
+          }
+          else {
+            if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
+              this.navCtrl.push('LoginPage');
+              this.loading.dismissAll();
+            }
+            else {
+              this.data.error = "Unknown problem occured.  Please contact administrator.";
+              console.log("Unknown problem occured.  Please contact administrator. - MA001");
+              this.loading.dismissAll();
+            }
+          }
+        },
+        error => {
+          this.data.error = "Unknown problem occured.  Please contact administrator.";
+          console.log("Unknown problem occured.  Please contact administrator. - MA002");
+          this.loading.dismissAll();
+        }
+      );
+    //-----
+  }
 }
