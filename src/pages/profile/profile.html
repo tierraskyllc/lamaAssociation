@@ -1,7 +1,11 @@
 <ion-header>
   <ion-navbar>
     <ion-title>profile</ion-title>
-    <ion-buttons end><button style="background: transparent;" (click)="shareProvider.displayToolMenu(navCtrl)"><ion-icon name="construct" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+    <ion-buttons end>
+      <button style="background: transparent;" (click)="shareProvider.displayToolMenu(navCtrl)">
+        <ion-icon name="construct" style="zoom:1.3;"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -27,7 +31,8 @@
 
         <button ion-button small (click)="eventsPage()" style="color: #FCD736;">Events</button>
         <!-- <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()">Following<ion-icon name="checkmark"></ion-icon></button> -->
-        <button ion-button [disabled]="underConstruction" *ngIf="!following" small color="purple" (click)="follow()" style="color: #FCD736;">Garage</button>
+        <!-- <button ion-button [disabled]="underConstruction" *ngIf="!following" small color="purple" (click)="follow()" style="color: #FCD736;">Garage</button> -->
+        <button ion-button small color="purple" (click)="garagePage()" style="color: #FCD736;">Garage</button>
         <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()" style="color: #FCD736;">Following
           <ion-icon name="checkmark"></ion-icon>
         </button>
@@ -49,17 +54,13 @@
     <hr/>
 
     <ion-row class="profile-numbers">
-      <!--ion-col col-4>
-        <p>Followers</p>
-        <span>{{member.followers}}</span>
-      </ion-col-->
       <ion-col col-6>
         <p style="color: #FCD736;">Member Since</p>
         <span>{{member.memberSince}}</span>
       </ion-col>
       <ion-col col-6>
         <p style="color: #FCD736;">Current Miles</p>
-        <span>{{member.following}}</span>        
+        <span>{{member.following}}</span>
       </ion-col>
     </ion-row>
 
@@ -73,28 +74,9 @@
           <p>{{post.date}}</p>
         </ion-item>
         <img [src]="post.postImageUrl" (click)="imageTapped(post)">
-        <ion-card-content  style="background: whitesmoke">
+        <ion-card-content style="background: whitesmoke">
           <p>{{post.text}}</p>
         </ion-card-content>
-        <!--ion-row>
-          <ion-col col-4  style="background: whitesmoke">
-            <button ion-button color="purple" clear small icon-left (click)="like(post)">
-              <ion-icon name='thumbs-up'></ion-icon>
-              {{post.likes}} Likes
-            </button>
-          </ion-col>
-          <ion-col col-5  style="background: whitesmoke">
-            <button ion-button no-padding color="purple" clear small icon-left (click)="comment(post)">
-              <ion-icon name='text'></ion-icon>
-              {{post.comments}} Comments
-            </button>
-          </ion-col>
-          <ion-col col-3 align-self-center text-center  style="background: whitesmoke">
-            <p>
-              {{post.timestamp}}
-            </p>
-          </ion-col>
-        </ion-row-->
       </ion-card>
     </div>
   </div>
