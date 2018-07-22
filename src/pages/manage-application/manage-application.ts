@@ -919,7 +919,7 @@ export class ManageApplicationPage {
             this.formdata.temporaryshortsessionid = decoded_response[2]["temporaryshortsessionid"];
 
             this.formdata.licensepicurl = this.shareProvider.server + "application/fetchdocpic.php?temporaryshortsessionid=" + this.formdata.temporaryshortsessionid + "&doctype=licensepic&docname=" + this.formdata.licensepic;
-            this.formdata.insurancepicurl = '';
+            this.formdata.insurancepicurl = this.shareProvider.server + "application/fetchdocpic.php?temporaryshortsessionid=" + this.formdata.temporaryshortsessionid + "&doctype=insurancepic&docname=" + this.formdata.insurancepic;
 
             //console.log(this.shareProvider.server + "application/fetchdocpic.php?temporaryshortsessionid=" + this.formdata.temporaryshortsessionid + "&doctype=licensepic&docname=" + this.formdata.licensepic);
 

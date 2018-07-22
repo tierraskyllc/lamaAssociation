@@ -252,7 +252,7 @@
           <ion-row *ngIf="applicationForm.controls['haveMotorcycleLicense'].value == 'Yes'">
               <ion-col width="100%" align="center">
                 <!--ion-img [src]="formdata.licensepicurl"></ion-img-->
-                <img [src]="formdata.licensepicurl">
+                <img [src]="formdata.licensepicurl" style="max-width: 100%; height: auto;">
               </ion-col>
           </ion-row>
   
@@ -279,6 +279,13 @@
               </div>
             </ion-col>
           </ion-row>
+
+          <ion-row *ngIf="applicationForm.controls['haveMotorcycleInsurance'].value == 'Yes'">
+            <ion-col width="100%" align="center">
+              <!--ion-img [src]="formdata.licensepicurl"></ion-img-->
+              <img [src]="formdata.insurancepicurl" style="max-width: 100%; height: auto;">
+            </ion-col>
+        </ion-row>
   
           <ion-row *ngIf="applicationForm.controls['haveMotorcycleInsurance'].value == 'Yes'">
             <ion-col width="100%" align="center">
