@@ -16,6 +16,10 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
 
+import { DomSanitizer } from '@angular/platform-browser';
+
+import { Observable } from 'rxjs/Observable';
+
 /**
  * Generated class for the ManageApplicationPage page.
  *
@@ -82,7 +86,8 @@ export class ManageApplicationPage {
     public actionSheetCtrl: ActionSheetController, 
     public toastCtrl: ToastController, 
     public platform: Platform, 
-    public loadingCtrl: LoadingController) {
+    public loadingCtrl: LoadingController,
+    private sanitizer: DomSanitizer) {
 
       this.data.lama_applications_id = navParams.get('lama_applications_id');
       
@@ -115,18 +120,15 @@ export class ManageApplicationPage {
             this.mockMember.lastName = decoded_response[2]['last_name'];
             this.mockMember.chapter = decoded_response[2]['chapter_name'];
             this.mockMember.lama_chapter_id = decoded_response[2]['lama_chapter_id'];
-            //this.loading.dismissAll();
           }
           else {
             if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
               this.navCtrl.push('LoginPage');
-              //this.loading.dismissAll();
             }
             else {
               //this.data.error = "Unknown problem occured.  Please contact administrator.";
               //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-001");
               console.log("Unknown problem occured.  Please contact administrator.  Code: APP-001");
-              //this.loading.dismissAll();
             }
           }
         },
@@ -134,7 +136,6 @@ export class ManageApplicationPage {
           //this.data.error = "Unknown problem occured.  Please contact administrator.";
           //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-002");
           console.log("Unknown problem occured.  Please contact administrator.  Code: APP-002");
-          //this.loading.dismissAll();
         }
       );
     }
@@ -331,13 +332,11 @@ export class ManageApplicationPage {
               console.log("Failed to add country code " + decoded_response[2][i]['code'] + " => Unknown problem occured.  Please contact administrator.  Code: APP-003");
             }
           }
-          //this.loading.dismissAll();
         }
         else {
           //this.data.error = "Unknown problem occured.  Please contact administrator.";
           //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-004");
           console.log("Unknown problem occured.  Please contact administrator.  Code: APP-004");
-          //this.loading.dismissAll();
         }
       },
       error => {
@@ -345,7 +344,6 @@ export class ManageApplicationPage {
         //console.log("Oooops!");
         //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-005");
         console.log("Unknown problem occured.  Please contact administrator.  Code: APP-005");
-        //this.loading.dismissAll();
       }
     );
   }
@@ -384,13 +382,11 @@ export class ManageApplicationPage {
           if (decoded_response[0]) {
             this.data.usastates = decoded_response[2];
           }
-          //this.loading.dismissAll();
         },
         error => {
           //console.log("Oooops!");
           //this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-006");
           console.log("Unknown problem occured.  Please contact administrator.  Code: APP-006");
-          //this.loading.dismissAll();
         }
       );
   }
@@ -481,10 +477,10 @@ export class ManageApplicationPage {
   }
 
   review() {
-    /*this.loading = this.loadingCtrl.create({
+    this.loading = this.loadingCtrl.create({
       content: '',
     });
-    this.loading.present();*/
+    this.loading.present();
 
     this.submitAttempt = true;
     if(this.applicationForm.valid) {
@@ -754,10 +750,10 @@ export class ManageApplicationPage {
   }
 
   getApplicationStatus() {
-    /*this.loading = this.loadingCtrl.create({
+    this.loading = this.loadingCtrl.create({
       content: '',
     });
-    this.loading.present();*/
+    this.loading.present();
 
     //this.submitAttempt = true;
     var body = new FormData();
@@ -799,7 +795,7 @@ export class ManageApplicationPage {
           this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-018");
           console.log("Unknown problem occured.  Please contact administrator.  Code: APP-018");
         }
-        //this.loading.dismissAll();
+        this.loading.dismissAll();
       },
       error => {
         this.data.isappsubmited = true;
@@ -807,7 +803,7 @@ export class ManageApplicationPage {
         //console.log("Oooops!");
         this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-019");
         console.log("Unknown problem occured.  Please contact administrator.  Code: APP-019");
-        //this.loading.dismissAll();
+        this.loading.dismissAll();
       }
     );
   }
@@ -854,7 +850,7 @@ export class ManageApplicationPage {
       .post(this.shareProvider.server + "application/fetchfullapplication.php", body)
       .subscribe(
         data => {
-          console.log(data["_body"]);
+          //console.log(data["_body"]);
           decoded_response = JSON.parse(data["_body"]);
           //console.log(data["_body"]);
           if (decoded_response[0] == "true") {
@@ -920,6 +916,14 @@ export class ManageApplicationPage {
             this.formdata.insurancepic = decoded_response[2]["insurancepic"];
             this.formdata.application_status = decoded_response[2]["application_status"];
             this.formdata.dttmcreated = decoded_response[2]["dttmcreated"];
+            this.formdata.temporaryshortsessionid = decoded_response[2]["temporaryshortsessionid"];
+
+            this.formdata.licensepicurl = this.shareProvider.server + "application/fetchdocpic.php?temporaryshortsessionid=" + this.formdata.temporaryshortsessionid + "&doctype=licensepic&docname=" + this.formdata.licensepic;
+            this.formdata.insurancepicurl = '';
+
+            //console.log(this.shareProvider.server + "application/fetchdocpic.php?temporaryshortsessionid=" + this.formdata.temporaryshortsessionid + "&doctype=licensepic&docname=" + this.formdata.licensepic);
+
+            //this.fetchPic(this.formdata.licensepic);
 
             this.loading.dismissAll()
           }
@@ -948,4 +952,29 @@ export class ManageApplicationPage {
       );
     //-----
   }
+
+  /*fetchPic(picName: string) {
+    var decoded_response = "";
+    var body = new FormData();
+    body.append('sessionid', this.shareProvider.sessionid);
+    body.append('docname', picName);
+    this.http
+      .post(this.shareProvider.server + "application/fetchdocpic.php", body)
+      .subscribe(
+        data => {
+          //this.formdata.licensepicdata = data["_body"];
+          console.log('fetchPic called...');
+          this.loading.dismissAll();
+        },
+        error => {
+          this.data.error = "Unknown problem occured.  Please contact administrator.";
+          console.log("Unknown problem occured.  Please contact administrator. - MA003");
+          this.loading.dismissAll();
+        }
+      );
+  }
+  
+  hexToBase64(str) {
+    return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
+  }*/
 }

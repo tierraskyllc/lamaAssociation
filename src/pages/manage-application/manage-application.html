@@ -248,6 +248,13 @@
               </div>
             </ion-col>
           </ion-row>
+
+          <ion-row *ngIf="applicationForm.controls['haveMotorcycleLicense'].value == 'Yes'">
+              <ion-col width="100%" align="center">
+                <!--ion-img [src]="formdata.licensepicurl"></ion-img-->
+                <img [src]="formdata.licensepicurl">
+              </ion-col>
+          </ion-row>
   
           <ion-row *ngIf="applicationForm.controls['haveMotorcycleLicense'].value == 'Yes'">
             <ion-col width="100%" align="center">
