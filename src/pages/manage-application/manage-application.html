@@ -381,7 +381,7 @@
                 <ion-item no-padding color="accent">
                   <ion-label floating>Do you belong to another Riding Club?</ion-label>
                   <ion-select formControlName="anyOtherClub" interface="popover">
-                    <ion-option (ionSelect)="changeValidationForAnyOtherClub()" *ngFor="let anyOtherClub of yesOrNo" [value]="anyOtherClub" [selected]="formdata.any_other_club">{{ anyOtherClub }}</ion-option>
+                    <ion-option (ionSelect)="changeValidationForAnyOtherClub()" *ngFor="let anyOtherClub of yesOrNo" [value]="anyOtherClub" [selected]="formdata.any_other_club == anyOtherClub">{{ anyOtherClub }}</ion-option>
                   </ion-select>
                 </ion-item>
                 <ng-container *ngFor="let validation of validation_messages.anyOtherClub">
@@ -627,12 +627,46 @@
               </div>
             </ion-col>
           </ion-row>
-          
-          <!--ion-row>
-            <ion-col width="100%" align="center">
-              <button ion-button small round (click)="review()">REVIEW AND SUBMIT</button>
+
+          <ion-row>
+            <ion-col>
+              <div>
+                <ion-item no-padding color="accent">
+                  <ion-label floating>Application Status</ion-label>
+                  <ion-select formControlName="applicationStatus" interface="popover" cancelText="Cancel" okText="OK">
+                    <ion-option *ngFor="let st of appStatus" [value]="st" [selected]="applicationForm.controls['applicationStatus'].value == st">{{ st }}</ion-option>
+                  </ion-select>
+                </ion-item>
+                <ng-container *ngFor="let validation of validation_messages.applicationStatus">
+                  <div class="error-message" *ngIf="applicationForm.get('applicationStatus').hasError(validation.type) && (applicationForm.get('applicationStatus').dirty || applicationForm.get('applicationStatus').touched || submitAttempt)">
+                    {{ validation.message }}
+                  </div>
+                </ng-container>
+              </div>
             </ion-col>
-          </ion-row-->
+          </ion-row>
+
+          <ion-row *ngIf="applicationForm.controls['applicationStatus'].value == 'Rejected'">
+            <ion-col>
+              <div>
+                <ion-item no-padding color="accent">
+                  <ion-label floating>Note/Message to Applicant</ion-label>
+                  <ion-textarea formControlName="note" value="{{formdata.note}}"></ion-textarea>
+                </ion-item>
+                <ng-container *ngFor="let validation of validation_messages.note">
+                  <div class="error-message" *ngIf="applicationForm.get('note').hasError(validation.type) && (applicationForm.get('note').dirty || applicationForm.get('note').touched || submitAttempt)">
+                    {{ validation.message }}
+                  </div>
+                </ng-container>
+              </div>
+            </ion-col>
+          </ion-row>
+          
+          <ion-row>
+            <ion-col width="100%" align="center">
+              <button ion-button small round (click)="update()">REVIEW AND UPDATE</button>
+            </ion-col>
+          </ion-row>
   
         </form>
       </div>

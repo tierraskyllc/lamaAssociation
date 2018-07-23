@@ -68,6 +68,7 @@ export class ManageApplicationPage {
   memberTitles: Array<string>;
   typeOfMemberships: Array<string>;
   typeOfChapters: Array<string>;
+  appStatus: Array<string>;
 
   submitAttempt: boolean = false;
 
@@ -168,6 +169,7 @@ export class ManageApplicationPage {
     this.memberTitles = ["No Title", "President", "Vice President", "Treasurer", "Secretary", "Business Manager", "Motor Touring Officer", "Sgt of Arms", "Road Captain", "Retired"];
     this.typeOfMemberships = ["Full Color Member", "DAMA", "Spousal/Pareja", "Prospect", "Probate", "Associate/Asociado"];
     this.typeOfChapters = ["Organized Chapter/Capitulo", "Establishing Chapter/Capitulo Estableciendo", "Brother Chapter/Capítulo hermano"];
+    this.appStatus = ['Review', 'Rejected', 'Accepted'];
 
     let country = new FormControl(this.countries[0], Validators.required);
     let phone = new FormControl('', Validators.compose([Validators.required, PhoneValidator.validCountryPhone(country)]));
@@ -220,8 +222,10 @@ export class ManageApplicationPage {
       memberTitle: ["", Validators.compose([Validators.required])],
       typeOfMembership: ["", Validators.compose([Validators.required])],
       typeOfChapter: ["", Validators.compose([Validators.required])],
+      applicationStatus: ["", Validators.compose([Validators.required])],
+      note: [''],
       motorcycles: this.formBuilder.array([
-        this.getInitialMotorcycle()
+        //this.getInitialMotorcycle()
       ])
     });
 
@@ -292,7 +296,9 @@ export class ManageApplicationPage {
     'organDonar': [{ type: 'required', message: 'Please select Yes or No.' }],
     'memberTitle': [{type: 'required', message: 'Member Title is required.'}],
     'typeOfMembership': [{type: 'required', message: 'Type of Membership is required.'}],
-    'typeOfChapter': [{type: 'required', message: 'Type of Chapter is required.'}]
+    'typeOfChapter': [{type: 'required', message: 'Type of Chapter is required.'}],
+    'applicationStatus': [{ type: 'required', message: 'Application Status is required.' }],
+    'note': [{ type: 'required', message: 'Note is required.' }]
   }
 
   onEvent(event: string, item: any, e: any) {
@@ -476,12 +482,8 @@ export class ManageApplicationPage {
     }
   }
 
-  review() {
-    this.loading = this.loadingCtrl.create({
-      content: '',
-    });
-    this.loading.present();
-
+  update() {
+    this.changeValidationForAnyOtherClub();
     this.submitAttempt = true;
     if(this.applicationForm.valid) {
       this.loading = this.loadingCtrl.create({
@@ -493,7 +495,8 @@ export class ManageApplicationPage {
       var json_encoded_response = "";
       var decoded_response = "";
       body.append('sessionid', this.shareProvider.sessionid);
-      body.append('lama_chapter_id', this.mockMember.lama_chapter_id);
+      body.append('lama_applications_id', this.formdata.id);
+      //body.append('lama_chapter_id', this.mockMember.lama_chapter_id);
       body.append('country', this.applicationForm.controls['country_phone'].value['country']['name']);
       body.append('usastate', this.applicationForm.controls['usastate'].value);
       body.append('state', this.applicationForm.controls['state'].value);
@@ -527,6 +530,8 @@ export class ManageApplicationPage {
       body.append('typeOfChapter', this.applicationForm.controls['typeOfChapter'].value);
       body.append('licensepic', this.data.licensepic);
       body.append('insurancepic', this.data.insurancepic);
+      body.append('application_status', this.applicationForm.controls['applicationStatus'].value);
+      body.append('note', this.applicationForm.controls['note'].value);
       //-----
       var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
       for (var i = 0; i < motorcyclesobjects.length; i++) {
@@ -541,7 +546,7 @@ export class ManageApplicationPage {
         }
       }
       //-----
-      this.http.post(this.shareProvider.server + "application/review.php", body).subscribe(
+      this.http.post(this.shareProvider.server + "application/update.php", body).subscribe(
         data => {
           decoded_response = JSON.parse(data["_body"]);
           //console.log(data["_body"]);
@@ -850,7 +855,7 @@ export class ManageApplicationPage {
       .post(this.shareProvider.server + "application/fetchfullapplication.php", body)
       .subscribe(
         data => {
-          //console.log(data["_body"]);
+          console.log(data["_body"]);
           decoded_response = JSON.parse(data["_body"]);
           //console.log(data["_body"]);
           if (decoded_response[0] == "true") {
@@ -913,19 +918,26 @@ export class ManageApplicationPage {
             this.formdata.type_of_chapter = decoded_response[2]["type_of_chapter"];
             this.applicationForm.controls['typeOfChapter'].setValue(decoded_response[2]["type_of_chapter"]);
             this.formdata.licensepic = decoded_response[2]["licensepic"];
+            this.data.licensepic = decoded_response[2]["licensepic"];
             this.formdata.insurancepic = decoded_response[2]["insurancepic"];
+            this.data.insurancepic = decoded_response[2]["insurancepic"];
             this.formdata.application_status = decoded_response[2]["application_status"];
+            this.applicationForm.controls['applicationStatus'].setValue(decoded_response[2]["application_status"]);
+            this.formdata.note = decoded_response[2]["note"];
+            this.applicationForm.controls['note'].setValue(decoded_response[2]["note"]);
+            this.formdata.dttmaccepted = decoded_response[2]["dttmaccepted"];
             this.formdata.dttmcreated = decoded_response[2]["dttmcreated"];
+            this.formdata.motorcycles = decoded_response[2]["motorcycles"];
             this.formdata.temporaryshortsessionid = decoded_response[2]["temporaryshortsessionid"];
 
             this.formdata.licensepicurl = this.shareProvider.server + "application/fetchdocpic.php?temporaryshortsessionid=" + this.formdata.temporaryshortsessionid + "&doctype=licensepic&docname=" + this.formdata.licensepic;
             this.formdata.insurancepicurl = this.shareProvider.server + "application/fetchdocpic.php?temporaryshortsessionid=" + this.formdata.temporaryshortsessionid + "&doctype=insurancepic&docname=" + this.formdata.insurancepic;
 
-            //console.log(this.shareProvider.server + "application/fetchdocpic.php?temporaryshortsessionid=" + this.formdata.temporaryshortsessionid + "&doctype=licensepic&docname=" + this.formdata.licensepic);
+            for (var i = 0; i < this.formdata.motorcycles.length; i++) {
+              this.displayMotorcycle(this.formdata.motorcycles[i]['color'], this.formdata.motorcycles[i]['year'], this.formdata.motorcycles[i]['make'], this.formdata.motorcycles[i]['model'], this.formdata.motorcycles[i]['license_plate'], this.formdata.motorcycles[i]['current_mileage']);
+            }
 
-            //this.fetchPic(this.formdata.licensepic);
-
-            this.loading.dismissAll()
+            this.loading.dismissAll();
           }
           else if (decoded_response[0] == "false") {
             this.data.error = decoded_response[2];
@@ -953,28 +965,31 @@ export class ManageApplicationPage {
     //-----
   }
 
-  /*fetchPic(picName: string) {
-    var decoded_response = "";
-    var body = new FormData();
-    body.append('sessionid', this.shareProvider.sessionid);
-    body.append('docname', picName);
-    this.http
-      .post(this.shareProvider.server + "application/fetchdocpic.php", body)
-      .subscribe(
-        data => {
-          //this.formdata.licensepicdata = data["_body"];
-          console.log('fetchPic called...');
-          this.loading.dismissAll();
-        },
-        error => {
-          this.data.error = "Unknown problem occured.  Please contact administrator.";
-          console.log("Unknown problem occured.  Please contact administrator. - MA003");
-          this.loading.dismissAll();
-        }
-      );
+  getMotorcycle(color, year, make, model, licensePlate, currentMileage) {
+    return this.formBuilder.group({
+      color: [color],
+      year: [year, Validators.compose([Validators.maxLength(4), Validators.pattern('[0-9 ]*'), Validators.required])],
+      make: [make],
+      model: [model],
+      licensePlate: [licensePlate],
+      currentMileage: [currentMileage, Validators.compose([Validators.pattern('[0-9 ]*')])],
+    });
   }
-  
-  hexToBase64(str) {
-    return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
-  }*/
+
+  displayMotorcycle(color, year, make, model, licensePlate, currentMileage) {
+    const control = <FormArray>this.applicationForm.controls['motorcycles'];
+    control.push(this.getMotorcycle(color, year, make, model, licensePlate, currentMileage));
+    //this.displayMotorCycles();
+  }
+
+  changeValidationForApplicationStatus() {
+    if(this.applicationForm.controls.applicationStatus.value != 'Rejected') {
+      this.applicationForm.get("note").setValidators([]);
+      this.applicationForm.get("note").updateValueAndValidity();
+    }
+    if(this.applicationForm.controls.applicationStatus.value == 'Rejected') {
+      this.applicationForm.get("note").setValidators([Validators.required]);
+      this.applicationForm.get("note").updateValueAndValidity();
+    }
+  }
 }
