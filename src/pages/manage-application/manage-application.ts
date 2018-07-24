@@ -496,6 +496,7 @@ export class ManageApplicationPage {
       var decoded_response = "";
       body.append('sessionid', this.shareProvider.sessionid);
       body.append('lama_applications_id', this.formdata.id);
+      body.append('lama_members_id', this.formdata.lama_members_id);
       //body.append('lama_chapter_id', this.mockMember.lama_chapter_id);
       body.append('country', this.applicationForm.controls['country_phone'].value['country']['name']);
       body.append('usastate', this.applicationForm.controls['usastate'].value);
@@ -551,10 +552,11 @@ export class ManageApplicationPage {
           decoded_response = JSON.parse(data["_body"]);
           //console.log(data["_body"]);
           if (decoded_response[0] == "true") {
-            this.presentMessageOnlyAlert("You've successfully submitted your application.");
+            this.presentMessageOnlyAlert(decoded_response[1]);
             this.data.isappsubmited = true;
-            this.data.submittedtext = "Thank you for submitting your application with L.A.M.A.  You'll hear back from us soon.";
+            this.data.submittedtext = decoded_response[1];
             this.loading.dismissAll();
+            this.navCtrl.pop();
           }
           else {
             //this.data.error = "Unknown problem occured.  Please contact administrator.";
