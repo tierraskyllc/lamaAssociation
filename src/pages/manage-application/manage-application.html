@@ -633,7 +633,7 @@
               <div>
                 <ion-item no-padding color="accent">
                   <ion-label floating>Application Status</ion-label>
-                  <ion-select formControlName="applicationStatus" interface="popover" cancelText="Cancel" okText="OK">
+                  <ion-select formControlName="applicationStatus" interface="popover" cancelText="Cancel" okText="OK" [disabled]="applicationForm.controls['applicationStatus'].value == 'Approved'">
                     <ion-option *ngFor="let st of appStatus" [value]="st" [selected]="applicationForm.controls['applicationStatus'].value == st">{{ st }}</ion-option>
                   </ion-select>
                 </ion-item>
@@ -662,7 +662,7 @@
             </ion-col>
           </ion-row>
           
-          <ion-row>
+          <ion-row *ngIf="applicationForm.controls['applicationStatus'].value != 'Approved'">
             <ion-col width="100%" align="center">
               <button ion-button small round (click)="update()">REVIEW AND UPDATE</button>
             </ion-col>

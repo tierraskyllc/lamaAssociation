@@ -169,7 +169,7 @@ export class ManageApplicationPage {
     this.memberTitles = ["No Title", "President", "Vice President", "Treasurer", "Secretary", "Business Manager", "Motor Touring Officer", "Sgt of Arms", "Road Captain", "Retired"];
     this.typeOfMemberships = ["Full Color Member", "DAMA", "Spousal/Pareja", "Prospect", "Probate", "Associate/Asociado"];
     this.typeOfChapters = ["Organized Chapter/Capitulo", "Establishing Chapter/Capitulo Estableciendo", "Brother Chapter/Capítulo hermano"];
-    this.appStatus = ['Review', 'Rejected', 'Accepted'];
+    this.appStatus = ['Review', 'Rejected', 'Approved'];
 
     let country = new FormControl(this.countries[0], Validators.required);
     let phone = new FormControl('', Validators.compose([Validators.required, PhoneValidator.validCountryPhone(country)]));

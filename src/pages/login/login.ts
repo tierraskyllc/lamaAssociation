@@ -57,14 +57,13 @@ export class LoginPage {
   };
 
   login() {
-    this.loading = this.loadingCtrl.create({
-      content: '',
-    });
-    this.loading.present();
-
     this.data.error = '';
     this.submitAttempt = true;
     if (this.loginForm.valid) {
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
       var body = new FormData();
       var json_encoded_response = "";
       //var decoded_response = JSON.parse(
@@ -153,7 +152,7 @@ export class LoginPage {
       if((!this.loginForm.get('email').dirty) || (!this.loginForm.get('password').dirty)) {
         this.data.error = 'Please enter Email and Password.';
       }
-      this.loading.dismissAll();
+      //this.loading.dismissAll();
     }
   }
   //
