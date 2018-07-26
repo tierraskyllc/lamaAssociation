@@ -15,9 +15,9 @@ export class ProfilePage {
   data: any = {};
   following = false;
   signingIn = false;
-  underConstruction = true;
+  underConstruction = false;
   member = {
-    name: "Paula Bolliger",
+    name: "Name from Server",
     profileImage: "assets/images/avatar/girl-avatar.png",
     profileQrImage: "assets/images/qr-code.png",
     coverImage: "assets/images/background/background-5.jpg",
@@ -39,15 +39,6 @@ export class ProfilePage {
       comments: 4,
       timestamp: "11h ago"
     },
-    /*{
-      postImageUrl: "assets/images/background/background-3.jpg",
-      text:
-        "Do not go where the path may lead, go instead where there is no path and leave a trail.",
-      date: "October 23, 2016",
-      likes: 30,
-      comments: 64,
-      timestamp: "30d ago"
-    }*/
   ];
 
   constructor(
@@ -62,6 +53,10 @@ export class ProfilePage {
 
   eventsPage() {
     this.navCtrl.push("EventsPage")
+  }
+
+  garagePage() {
+    this.navCtrl.push("GaragePage")
   }
 
   openQrCodeModal() {
@@ -98,5 +93,5 @@ export class ProfilePage {
   like(post) {
     this.toastCtrl.create("Like clicked");
   }
-  
+
 }
