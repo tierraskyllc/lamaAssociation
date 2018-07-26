@@ -723,6 +723,7 @@ export class ApplicationPage {
         if (decoded_response[0] == "true") {
           if(decoded_response[2] == 'NoApplication') {
             this.data.isappsubmited = false;
+            this.data.apprejectionnote = '';
             //this.data.submittedtext = "Your application has been approved.  You are being redirected to your profile page.";
             //this.navCtrl.push("ProfilePage");
             //this.shareProvider.curentpage = "ProfilePage";
@@ -730,14 +731,29 @@ export class ApplicationPage {
 			    if(decoded_response[2] == null) {
             this.data.isappsubmited = true;
             this.data.submittedtext = "Thank you for submitting your application with L.A.M.A.  You'll hear back from us soon.";
+            this.data.apprejectionnote = '';
           }
           if(decoded_response[2] == 'Review') {
             this.data.isappsubmited = true;
             this.data.submittedtext = "We are currently reviewing your application.  You'll hear back from us soon.";
+            this.data.apprejectionnote = '';
           }
           if(decoded_response[2] == 'Approved') {
             this.data.isappsubmited = true;
             this.data.submittedtext = "Your application has been approved.  You are being redirected to your profile page.";
+            this.data.apprejectionnote = '';
+            this.navCtrl.push("ProfilePage");
+            this.shareProvider.curentpage = "ProfilePage";
+          }
+          if(decoded_response[2] == 'Rejected') {
+            this.data.isappsubmited = true;
+            this.data.submittedtext = "Your application has been rejected.";
+            if((decoded_response[3] == null) ||(decoded_response[3] == 'null')) {
+              this.data.apprejectionnote = '';
+            }
+            else {
+              this.data.apprejectionnote = decoded_response[3];
+            }
             this.navCtrl.push("ProfilePage");
             this.shareProvider.curentpage = "ProfilePage";
           }

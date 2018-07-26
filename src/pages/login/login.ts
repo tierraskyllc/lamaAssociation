@@ -133,11 +133,11 @@ export class LoginPage {
               //this.navCtrl.push("ApplicationPage")
             } else if (decoded_response[0] == "false") {
               this.data.error = decoded_response[2];
-              console.log("Unknown problem occured.  Please contact administrator. - L003");
+              console.log(decoded_response[2]);
               this.loading.dismissAll();
             } else {
               this.data.error = decoded_response[1];
-              console.log("Unknown problem occured.  Please contact administrator. - L004");
+              console.log(decoded_response[1]);
               this.loading.dismissAll();
             }
           },

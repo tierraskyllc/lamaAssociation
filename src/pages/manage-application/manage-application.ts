@@ -756,65 +756,6 @@ export class ManageApplicationPage {
     this.takePicture(this.camera.PictureSourceType.CAMERA);
   }
 
-  getApplicationStatus() {
-    this.loading = this.loadingCtrl.create({
-      content: '',
-    });
-    this.loading.present();
-
-    //this.submitAttempt = true;
-    var body = new FormData();
-    var json_encoded_response = "";
-    var decoded_response = "";
-    body.append('sessionid', this.shareProvider.sessionid);
-    //-----
-    this.http.post(this.shareProvider.server + "application/appstatus.php", body).subscribe(
-      data => {
-        decoded_response = JSON.parse(data["_body"]);
-        //console.log("=====");
-        //console.log(data["_body"]);
-        //console.log("=====");
-        if (decoded_response[0] == "true") {
-          if(decoded_response[2] == 'NoApplication') {
-            this.data.isappsubmited = false;
-            //this.data.submittedtext = "Your application has been approved.  You are being redirected to your profile page.";
-            //this.navCtrl.push("ProfilePage");
-            //this.shareProvider.curentpage = "ProfilePage";
-          }
-			    if(decoded_response[2] == null) {
-            this.data.isappsubmited = true;
-            this.data.submittedtext = "Thank you for submitting your application with L.A.M.A.  You'll hear back from us soon.";
-          }
-          if(decoded_response[2] == 'Review') {
-            this.data.isappsubmited = true;
-            this.data.submittedtext = "We are currently reviewing your application.  You'll hear back from us soon.";
-          }
-          if(decoded_response[2] == 'Approved') {
-            this.data.isappsubmited = true;
-            this.data.submittedtext = "Your application has been approved.  You are being redirected to your profile page.";
-            this.navCtrl.push("ProfilePage");
-            this.shareProvider.curentpage = "ProfilePage";
-          }
-        }
-        else {
-          this.data.isappsubmited = false;
-          //this.data.error = "Unknown problem occured.  Please contact administrator.";
-          this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-018");
-          console.log("Unknown problem occured.  Please contact administrator.  Code: APP-018");
-        }
-        this.loading.dismissAll();
-      },
-      error => {
-        this.data.isappsubmited = true;
-        //this.data.error = "Unknown problem occured.  Please contact administrator.";
-        //console.log("Oooops!");
-        this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: APP-019");
-        console.log("Unknown problem occured.  Please contact administrator.  Code: APP-019");
-        this.loading.dismissAll();
-      }
-    );
-  }
-
   changeValidationForAnyOtherClub() {
     //console.log('changeValidationForAnyOtherClub clicked');
     //console.log(this.applicationForm.controls.anyOtherClub.value);
@@ -857,7 +798,7 @@ export class ManageApplicationPage {
       .post(this.shareProvider.server + "application/fetchfullapplication.php", body)
       .subscribe(
         data => {
-          console.log(data["_body"]);
+          //console.log(data["_body"]);
           decoded_response = JSON.parse(data["_body"]);
           //console.log(data["_body"]);
           if (decoded_response[0] == "true") {
@@ -925,7 +866,12 @@ export class ManageApplicationPage {
             this.data.insurancepic = decoded_response[2]["insurancepic"];
             this.formdata.application_status = decoded_response[2]["application_status"];
             this.applicationForm.controls['applicationStatus'].setValue(decoded_response[2]["application_status"]);
-            this.formdata.note = decoded_response[2]["note"];
+            if((decoded_response[2]["note"] == null) || (decoded_response[2]["note"] == 'null')) {
+              this.formdata.note = '';
+            }
+            else {
+              this.formdata.note = decoded_response[2]["note"];
+            }
             this.applicationForm.controls['note'].setValue(decoded_response[2]["note"]);
             this.formdata.dttmaccepted = decoded_response[2]["dttmaccepted"];
             this.formdata.dttmcreated = decoded_response[2]["dttmcreated"];

@@ -185,6 +185,7 @@ export class ManageApplicationsPage {
 
   public ionViewWillEnter() {
     this.getPendingApplications();
+    this.searchApplications();
   }
 
 }
