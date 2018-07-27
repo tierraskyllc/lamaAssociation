@@ -11,19 +11,19 @@
   <div id="posts">
     <ion-card *ngFor="let motorcycleInfo of memberMotorcycleInfo">
       <ion-item style="background: whitesmoke">
-        <ion-avatar item-start>
+        <!--ion-avatar item-start>
           <img [src]="member.profileImage">
-        </ion-avatar>
-        <h2 class="sticky">{{member.name}}</h2>
-        <p>{{motorcycleInfo.date}}</p>
+        </ion-avatar-->
+        <h2 class="sticky">{{motorcycleInfo.make}}&nbsp;&nbsp;{{motorcycleInfo.model}}</h2>
+        <p>Year: {{motorcycleInfo.year}}</p>
       </ion-item>
-      <img [src]="motorcycleInfo.postImageUrl" (click)="imageTapped(motorcycleInfo)">
+      <!--img [src]="motorcycleInfo.postImageUrl" (click)="imageTapped(motorcycleInfo)"-->
       <ion-card-content style="background: whitesmoke">
-        <h2>Year: {{motorcycleInfo.year}}</h2>
-        <h2>Make: {{motorcycleInfo.make}}</h2>
-        <h2>Model: {{motorcycleInfo.model}}</h2>
+        <!--h2>Year: {{motorcycleInfo.year}}</h2-->
+        <!--h2>Make: {{motorcycleInfo.make}}</h2-->
+        <!--h2>Model: {{motorcycleInfo.model}}</h2-->
         <h2>Color: {{motorcycleInfo.color}}</h2>
-        <h2>Odometer: {{motorcycleInfo.odometer}}</h2>
+        <h2>Odometer: {{motorcycleInfo.total_miles}}</h2>
       </ion-card-content>
     </ion-card>
   </div>

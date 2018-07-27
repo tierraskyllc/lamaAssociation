@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, ViewController, NavParams } from 'ionic-angular';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 @IonicPage()
 @Component({
@@ -8,12 +9,15 @@ import { IonicPage, ViewController, NavParams } from 'ionic-angular';
 })
 export class QrCodeModalPage {
   myParam: string;
+  value: string;
 
   constructor(
     public viewCtrl: ViewController,
     public params: NavParams
     ) {
-      this.myParam = params.get('myParam');
+      //this.myParam = params.get('myParam');
+      //this.value = "Vishal Gandhi";
+      this.value = params.get('qrcodevalue');
   }
 
   ionViewDidLoad() {

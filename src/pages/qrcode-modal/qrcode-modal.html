@@ -10,7 +10,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding style="text-align: center; align-content: center; align-items: center; vertical-align: middle;">
   <!-- <h1>Modal</h1> -->
   <!-- <h3>This modal is pretty nice.</h3> -->
   <!-- <p>EXAMPLES</p> -->
@@ -19,11 +19,18 @@
     <li> Second thing to do</li>
   </ul> -->
   <!-- <p>Selfies normcore four dollar toast four loko listicle artisan.</p> -->
-    <p><img src="assets/images/qr-code.png" alt=""></p>
+    <!--p><img src="assets/images/qr-code.png" alt=""></p-->
+    <ion-grid style="vertical-align: middle;">
+      <ion-row center style="vertical-align: middle;">
+        <ion-col style="vertical-align: middle;">
+          <p><ngx-qrcode [qrc-value]="value" [qrc-version]=5 [qrc-correction-level]="'L'"></ngx-qrcode></p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   <!-- <p>Mumblecore cred selfies fingerstache. Tousled skateboard plaid lo-fi shabby chic salvia, Cred meh yr tofu.</p> -->
 </ion-content>
 
 <ion-footer>
-  <button ion-button full color="danger" (click)="dismiss()">Thank You
+  <button ion-button full color="danger" (click)="dismiss()">Click Here to Go Back
   </button>
 </ion-footer>

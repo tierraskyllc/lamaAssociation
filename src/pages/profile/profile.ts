@@ -68,7 +68,7 @@ export class ProfilePage {
   }
 
   openModal(pageName) {
-    this.modalCtrl.create(pageName, null, { cssClass: 'inset-modal' })
+    this.modalCtrl.create(pageName, { qrcodevalue: this.shareProvider.username + '|' + this.shareProvider.firstname + '|' + this.shareProvider.lastname }, { cssClass: 'inset-modal' })
                   .present();
   }
 
