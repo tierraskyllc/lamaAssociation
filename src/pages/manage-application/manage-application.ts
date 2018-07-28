@@ -237,6 +237,8 @@ export class ManageApplicationPage {
       //console.log('timer');
       this.uploadImage();
       },2000);
+
+      this.changeValidationForAnyOtherClub();
   }
 
   getInitialMotorcycle() {

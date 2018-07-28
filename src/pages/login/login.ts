@@ -57,6 +57,12 @@ export class LoginPage {
   };
 
   login() {
+    this.shareProvider.sessionid = "";
+    this.shareProvider.role = "member";
+    this.shareProvider.username = "";
+    this.shareProvider.firstname = "";
+    this.shareProvider.lastname = "";
+
     this.data.error = '';
     this.submitAttempt = true;
     if (this.loginForm.valid) {
@@ -181,7 +187,20 @@ export class LoginPage {
   }
 
   ionViewDidLoad() {
+    /*this.shareProvider.sessionid = "";
+    this.shareProvider.role = "member";
+    this.shareProvider.username = "";
+    this.shareProvider.firstname = "";
+    this.shareProvider.lastname = "";*/
     console.log("ionViewDidLoad LoginPage");
+  }
+
+  public ionViewWillEnter() {
+    /*this.shareProvider.sessionid = "";
+    this.shareProvider.role = "member";
+    this.shareProvider.username = "";
+    this.shareProvider.firstname = "";
+    this.shareProvider.lastname = "";*/
   }
 }
 
