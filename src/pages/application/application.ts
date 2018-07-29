@@ -227,6 +227,8 @@ export class ApplicationPage {
       model: [''],
       licensePlate: [''],
       currentMileage: ['', Validators.compose([Validators.pattern('[0-9 ]*')])],
+      odometerPic: [''],
+      registrationPic: ['']
     });
   }
 
@@ -483,14 +485,15 @@ export class ApplicationPage {
       //-----
       var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
       for (var i = 0; i < motorcyclesobjects.length; i++) {
-        if(!((motorcyclesobjects[i]['year'] == '') && (motorcyclesobjects[i]['color'] == '') && (motorcyclesobjects[i]['make'] == '') && (motorcyclesobjects[i]['model'] == '') && (motorcyclesobjects[i]['licensePlate'] == '') && (motorcyclesobjects[i]['currentMileage'] == ''))) {
+        if(!((motorcyclesobjects[i]['year'] == '') && (motorcyclesobjects[i]['color'] == '') && (motorcyclesobjects[i]['make'] == '') && (motorcyclesobjects[i]['model'] == '') && (motorcyclesobjects[i]['licensePlate'] == '') && (motorcyclesobjects[i]['currentMileage'] == '') && (motorcyclesobjects[i]['odometerPic'] == ''))) {
           //this.data.error = motorcyclesobjects[i]['year'] + ' ' + motorcyclesobjects[i]['color'] + ' ' + motorcyclesobjects[i]['make'] + ' ' + motorcyclesobjects[i]['model'] + ' ' + motorcyclesobjects[i]['licensePlate'] + ' ' + motorcyclesobjects[i]['currentMileage'];
           body.append('year'+i, motorcyclesobjects[i]['year']);
           body.append('color'+i, motorcyclesobjects[i]['color']);
           body.append('make'+i, motorcyclesobjects[i]['make']);
           body.append('model'+i, motorcyclesobjects[i]['model']);
           body.append('licensePlate'+i, motorcyclesobjects[i]['licensePlate']);
-          body.append('currentMileage'+i, motorcyclesobjects[i]['currentMileage']);
+          body.append('currentMileage'+i, motorcyclesobjects[i]['currentMileage'])
+          body.append('odometerPic'+i, motorcyclesobjects[i]['odometerPic']);;
         }
       }
       //-----
@@ -606,8 +609,18 @@ export class ApplicationPage {
     if(this.data.selectedimage == 'license') {
       this.data.licensepic = newFileName;
     }
-    if(this.data.selectedimage == 'insurance') {
+    else if(this.data.selectedimage == 'insurance') {
       this.data.insurancepic = newFileName;
+    }
+    else {
+      var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
+      for (var i = 0; i < motorcyclesobjects.length; i++) {
+        if(this.data.selectedimage == 'odometer'+i) {
+          var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
+          motorcyclesobjects[i]['odometerPic'] = newFileName;
+          break;
+        }
+      }
     }
     //this.presentMessageOnlyAlert(newFileName);
     return newFileName;
@@ -698,6 +711,12 @@ export class ApplicationPage {
 
   public uploadInsurance() {
     this.data.selectedimage = "insurance";
+    //this.presentActionSheet();
+    this.takePicture(this.camera.PictureSourceType.CAMERA);
+  }
+
+  public uploadOdometer(num) {
+    this.data.selectedimage = "odometer"+num;
     //this.presentActionSheet();
     this.takePicture(this.camera.PictureSourceType.CAMERA);
   }
