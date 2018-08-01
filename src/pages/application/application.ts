@@ -15,6 +15,7 @@ import { File } from '@ionic-native/file';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
+//import { PhotoViewer } from '@ionic-native/photo-viewer';
 
 @IonicPage()
 @Component({
@@ -74,7 +75,9 @@ export class ApplicationPage {
     public actionSheetCtrl: ActionSheetController, 
     public toastCtrl: ToastController, 
     public platform: Platform, 
-    public loadingCtrl: LoadingController) {
+    public loadingCtrl: LoadingController,
+    //private photoViewer: PhotoViewer
+    ) {
       
       this.data.response = "";
       this.data.error = "";
@@ -228,6 +231,7 @@ export class ApplicationPage {
       licensePlate: [''],
       currentMileage: ['', Validators.compose([Validators.pattern('[0-9 ]*')])],
       odometerPic: [''],
+      odometerPicURL: [''],
       registrationPic: ['']
     });
   }
@@ -719,6 +723,54 @@ export class ApplicationPage {
     this.data.selectedimage = "odometer"+num;
     //this.presentActionSheet();
     this.takePicture(this.camera.PictureSourceType.CAMERA);
+  }
+
+  public displayOdometerPic(num) {
+    var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
+    if((motorcyclesobjects[num]['odometerPic'] == null) || (motorcyclesobjects[num]['odometerPic'] == '')) {
+      this.presentToast('You have not uploaded odometer pic for this motorcycle yet.  You must upload one.');
+    }
+    else {
+      //this.presentToast('I\'ll try to upload odometer pic here.');
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+
+      var body = new FormData();
+      body.append('sessionid', this.shareProvider.sessionid);
+      body.append('docname', motorcyclesobjects[num]['odometerPic']);
+      this.http.post(this.shareProvider.server + "docdownload/tempsession.php", body).subscribe(
+        data => {
+          var decoded_response = JSON.parse(data["_body"]);
+          //console.log(data["_body"]);
+          if (decoded_response[0] == "true") {
+            //console.log(decoded_response[1]);
+            //----------
+            var docurl = this.shareProvider.server + "docdownload/downloaddoc.php?temporaryshortsessionid=" + decoded_response[1] + "&docname=" + motorcyclesobjects[num]['odometerPic'];
+            motorcyclesobjects[num]['odometerPicURL'] = docurl;
+            console.log(motorcyclesobjects[num]['odometerPicURL']);
+            //this.photoViewer.show(docurl, 'Motorcycle # '+ num + ' odometer picture', {share: false});
+            //this.photoViewer.show(docurl);
+            //----------
+            this.loading.dismissAll();
+          }
+          else {
+            //this.data.error = "Unknown problem occured.  Please contact administrator.";
+            this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: APP-108");
+            this.loading.dismissAll();
+          }
+        },
+        error => {
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //console.log("Oooops!");
+          this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: APP-109");
+          this.loading.dismissAll();
+        }
+      );
+    }
   }
 
   getApplicationStatus() {

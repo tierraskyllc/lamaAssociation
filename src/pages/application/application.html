@@ -304,7 +304,7 @@
         <ion-row>
           <ion-col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12>
               <ion-list formArrayName="motorcycles" no-lines>
-                <div *ngFor="let applicationForm of applicationForm.controls.motorcycles.controls; let i=index">
+                <div *ngFor="let applicationForm1 of applicationForm.controls.motorcycles.controls; let i=index">
                   <div [formGroupName]="i">
                     <ion-row>
                       <ion-col>
@@ -350,6 +350,15 @@
                       <ion-col>
                           <button ion-button small round (click)="uploadOdometer(i)">Capture Odometer Picture</button>
                       </ion-col>
+                      <ion-col>
+                        <ion-buttons end><button style="background: transparent;" (click)="displayOdometerPic(i)"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+                      </ion-col>
+                    </ion-row>
+                    <!--1:&nbsp;{{this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']}}-->
+                    <ion-row *ngIf="this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']">
+                        <ion-col width="100%" align="center">
+                          <img [src]="this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']" style="max-width: 100%; height: auto;">
+                        </ion-col>
                     </ion-row>
                   </div>
                 </div>

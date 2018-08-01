@@ -11,6 +11,7 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
+//import { PhotoViewer } from '@ionic-native/photo-viewer';
 //import { Transfer } from '@ionic-native/transfer';
 
 @NgModule({
@@ -38,6 +39,7 @@ import { Camera } from '@ionic-native/camera';
     FilePath,
     FileTransfer,
     FileTransferObject,
+    //PhotoViewer,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
