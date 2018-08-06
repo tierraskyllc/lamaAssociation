@@ -250,17 +250,18 @@
           </ion-row>
 
           <ion-row *ngIf="applicationForm.controls['haveMotorcycleLicense'].value == 'Yes'">
-              <ion-col width="100%" align="center">
-                <!--ion-img [src]="formdata.licensepicurl"></ion-img-->
-                <img [src]="formdata.licensepicurl" style="max-width: 100%; height: auto;">
-              </ion-col>
-          </ion-row>
-  
-          <ion-row *ngIf="applicationForm.controls['haveMotorcycleLicense'].value == 'Yes'">
             <ion-col width="100%" align="center">
               <button ion-button small round (click)="uploadLicense()">Capture License Picture</button>
             </ion-col>
+            <ion-col>
+              <ion-buttons end><button style="background: transparent;" (click)="displayLicensePic()"><ion-icon color="secondary" name="refresh" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+            </ion-col>
           </ion-row>
+          <ion-row *ngIf="this.data.licensePicURL">
+            <ion-col width="100%" align="center">
+              <img [src]="this.data.licensePicURL" style="max-width: 100%; height: auto;">
+            </ion-col>
+        </ion-row>
   
           <ion-row>
             <ion-col>
@@ -282,14 +283,15 @@
 
           <ion-row *ngIf="applicationForm.controls['haveMotorcycleInsurance'].value == 'Yes'">
             <ion-col width="100%" align="center">
-              <!--ion-img [src]="formdata.licensepicurl"></ion-img-->
-              <img [src]="formdata.insurancepicurl" style="max-width: 100%; height: auto;">
-            </ion-col>
-        </ion-row>
-  
-          <ion-row *ngIf="applicationForm.controls['haveMotorcycleInsurance'].value == 'Yes'">
-            <ion-col width="100%" align="center">
               <button ion-button small round (click)="uploadInsurance()">Capture Insurance Picture</button>
+            </ion-col>
+            <ion-col>
+              <ion-buttons end><button style="background: transparent;" (click)="displayInsurancePic()"><ion-icon color="secondary" name="refresh" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="this.data.insurancePicURL">
+            <ion-col width="100%" align="center">
+              <img [src]="this.data.insurancePicURL" style="max-width: 100%; height: auto;">
             </ion-col>
           </ion-row>
   
@@ -313,7 +315,7 @@
           <ion-row>
             <ion-col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12>
                 <ion-list formArrayName="motorcycles" no-lines>
-                  <div *ngFor="let applicationForm of applicationForm.controls.motorcycles.controls; let i=index">
+                  <div *ngFor="let applicationForm1 of applicationForm.controls.motorcycles.controls; let i=index">
                     <div [formGroupName]="i">
                       <ion-row>
                         <ion-col>
@@ -355,6 +357,35 @@
                           <ion-label>Current Mileage: </ion-label>
                         <ion-input type="number" formControlName="currentMileage" placeholder="000000"></ion-input>
                       </ion-item>
+                      <ion-row>
+                        <ion-col>
+                            <button ion-button small round (click)="uploadOdometer(i)">Capture Odometer Picture</button>
+                        </ion-col>
+                        <ion-col>
+                          <ion-buttons end><button style="background: transparent;" (click)="displayOdometerPic(i)"><ion-icon color="secondary" name="refresh" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+                        </ion-col>
+                      </ion-row>
+                      <!--1:&nbsp;{{this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']}}-->
+                      <ion-row *ngIf="this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']">
+                          <ion-col width="100%" align="center">
+                            <img [src]="this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']" style="max-width: 100%; height: auto;">
+                          </ion-col>
+                      </ion-row>
+  
+                      <ion-row>
+                        <ion-col>
+                            <button ion-button small round (click)="uploadRegistration(i)">Capture Registration Picture</button>
+                        </ion-col>
+                        <ion-col>
+                          <ion-buttons end><button style="background: transparent;" (click)="displayRegistrationPic(i)"><ion-icon color="secondary" name="refresh" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+                        </ion-col>
+                      </ion-row>
+                      <!--1:&nbsp;{{this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']}}-->
+                      <ion-row *ngIf="this.applicationForm.controls['motorcycles'].value[i]['registrationPicURL']">
+                          <ion-col width="100%" align="center">
+                            <img [src]="this.applicationForm.controls['motorcycles'].value[i]['registrationPicURL']" style="max-width: 100%; height: auto;">
+                          </ion-col>
+                      </ion-row>
                     </div>
                   </div>
                 </ion-list>
