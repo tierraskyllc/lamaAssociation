@@ -981,11 +981,13 @@ export class ApplicationPage {
             this.data.isappsubmited = true;
             this.data.submittedtext = "Thank you for submitting your application with L.A.M.A.  You'll hear back from us soon.";
             this.data.apprejectionnote = '';
+            this.data.isresubmissionallowed = false;
           }
           else if(decoded_response[2] == 'Review') {
             this.data.isappsubmited = true;
             this.data.submittedtext = "We are currently reviewing your application.  You'll hear back from us soon.";
             this.data.apprejectionnote = '';
+            this.data.isresubmissionallowed = false;
           }
           else if(decoded_response[2] == 'Approved') {
             this.data.isappsubmited = true;
@@ -993,6 +995,7 @@ export class ApplicationPage {
             this.data.apprejectionnote = '';
             this.navCtrl.push("ProfilePage");
             this.shareProvider.curentpage = "ProfilePage";
+            this.data.isresubmissionallowed = false;
           }
           else if(decoded_response[2] == 'Rejected') {
             this.data.isappsubmited = true;
