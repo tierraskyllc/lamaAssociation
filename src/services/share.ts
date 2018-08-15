@@ -70,10 +70,17 @@ export class ShareProvider {
                 console.log('Manage Applications' + ' clicked');
               }
             }
-            if(tmparr[i] == 'Meeting (SignIn)') {
+            if(tmparr[i] == 'Manage Meetings (SignIn)') {
               tmphandler = () => {
                 //myNavCtrl.push("Meeting (SignIn)Page");
-                console.log('Meeting (SignIn)' + ' clicked');
+                console.log('Manage Meetings (SignIn)' + ' clicked');
+              }
+            }
+            if(tmparr[i] == 'Manage Events (SignIn)') {
+              tmphandler = () => {
+                //myNavCtrl.push("Meeting (SignIn)Page");
+                myNavCtrl.push("ManageEventsPage");
+                console.log('Manage Events (SignIn)' + ' clicked');
               }
             }
             mybutton = {

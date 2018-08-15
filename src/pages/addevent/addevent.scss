@@ -1,0 +1,81 @@
+page-addevent {
+    .logo {
+        overflow: hidden;
+      }
+    
+      img {
+        max-width: 250px;
+        display: block;
+        margin: auto;
+    
+      }
+    
+      .form {
+        padding: 10px;
+        overflow: hidden;
+        // .item-inner {
+        //     margin-left: 10px !important;
+        // }
+    
+        .item-md ion-icon[item-start] {
+          margin: 25px 0 0;
+        }
+    
+        .text-input,
+        ion-label {
+          color: theme-colors("textColors", "primary") !important;
+        }
+    
+        .item-inner {
+          margin-left: 10px !important;
+          border-bottom-color: theme-colors("mainColors", "secondary") !important;
+          box-shadow: none !important;
+        }
+    
+        [button-clear] {
+          margin-top: 15px;
+        }
+    
+        [title] {
+          font-size: $h1-font-size;
+          color: theme-colors("textColors", "primary");
+          text-transform: uppercase;
+          margin: 0 10px;
+        }
+    
+        .error-message {
+          font-family: Courier;
+          color: theme-colors("textColors", "danger") !important;
+          font-size: 18px;
+        }
+    
+        .invalidmsg {
+          text-align: center;
+          font-family: Courier;
+          color: theme-colors("textColors", "danger") !important;
+          font-size: 18px;
+        }
+    
+        // moto card info
+        [card-header] {
+          line-height: normal !important;
+          margin-bottom: 0;
+          margin-top: 0;
+        }
+    
+        [card-title] {
+          line-height: normal !important;
+          margin-bottom: 0;
+          margin-top: 0;
+        }
+    
+        [card-subtitle] {
+            margin: 0;
+        }
+    
+        [card-body-text] {
+            padding-top: 20px;
+            margin-bottom: 25px;
+        }
+      }
+}
