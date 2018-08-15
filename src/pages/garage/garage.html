@@ -25,6 +25,13 @@
         <h2>Color: {{motorcycleInfo.color}}</h2>
         <h2>Odometer: {{motorcycleInfo.total_miles}}</h2>
       </ion-card-content>
+
+      <ion-row>
+        <button ion-button block (click)="openQrCodeModal()">
+          <ion-icon name="finger-print" style="color: #FCD736;">Update Odometer now</ion-icon>
+        </button>
+    </ion-row>
+    
     </ion-card>
   </div>
 </ion-content>

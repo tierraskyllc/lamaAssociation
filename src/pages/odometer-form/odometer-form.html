@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Update Odometer</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12>
+
+        <div class="form">
+          <ion-item no-padding color="accent">
+            <ion-label>Enter New Odometer Mileage</ion-label>
+          </ion-item>
+          <form [formGroup]="odometerUpdateForm">
+            <ion-item no-padding color="accent">
+              <ion-label stacked>
+                <ion-icon name="cloud-upload"></ion-icon>Mileage Update</ion-label>
+              <ion-input formControlName="mileageUpdate" type="number"></ion-input>
+            </ion-item>
+
+
+          </form>
+
+
+        </div>
+
+
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
+<ion-footer>
+  <button ion-button full color="danger" (click)="dismiss()">Submit</button>
+</ion-footer>

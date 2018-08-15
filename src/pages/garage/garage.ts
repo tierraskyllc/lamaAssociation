@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { ToastService } from "../../services/toast.service";
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
@@ -52,12 +52,13 @@ export class GaragePage {
   ];
 
   constructor(
-    public navCtrl: NavController, 
-    public navParams: NavParams, 
+    public navCtrl: NavController,
+    public navParams: NavParams,
     public toastCtrl: ToastService,
     private http: Http,
     private shareProvider: ShareProvider,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    public modalCtrl: ModalController
   ) { }
 
   ionViewDidLoad() {
@@ -107,4 +108,13 @@ export class GaragePage {
     this.toastCtrl.create("Post image clicked");
   }
 
+  openQrCodeModal() {
+    this.modalCtrl.create('OdometerFormPage', { qrcodevalue: this.shareProvider.username + '|' + this.shareProvider.firstname + '|' + this.shareProvider.lastname }, { cssClass: 'inset-modal' })
+                  .present();
+  }
+
+
+
+
+  
 }
