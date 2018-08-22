@@ -100,11 +100,6 @@ export class AddeventPage {
     this.data.countries = ['United States'];
     this.populateCountries();
     this.populateUSAStates();
-
-    setInterval(() => {      
-      //console.log('timer');
-      this.uploadImage();
-      },2000);
   }
 
   ionViewDidLoad() {
@@ -291,6 +286,7 @@ export class AddeventPage {
             this.data.isappsubmited = true;
             //this.data.submittedtext = "Thank you for submitting your application with L.A.M.A.  You'll hear back from us soon.";
             this.loading.dismissAll();
+            this.navCtrl.pop();
           }
           else {
             //this.data.error = "Unknown problem occured.  Please contact administrator.";
