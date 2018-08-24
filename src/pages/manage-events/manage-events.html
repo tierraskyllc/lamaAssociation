@@ -20,6 +20,35 @@
                   <ion-buttons end><button style="background: transparent;" (click)="addEvent()"><ion-icon color="secondary" name="add-circle" style="zoom:2;"></ion-icon></button></ion-buttons>
               </ion-col>
           </ion-row>
+          <ion-row *ngFor="let item of items">
+              <ion-col>
+                <ion-row><ion-col></ion-col></ion-row>
+                <ion-row>
+                    <ion-col style="border: thin solid #FCD736; border-radius: 8pt;">
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col col-8></ion-col>
+                                <ion-col col-1>
+                                    <ion-buttons end><button style="background: transparent;" (click)="openSignIn(item['id'])"><ion-icon color="secondary" name="qr-scanner" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+                                </ion-col>
+                                <ion-col col-1></ion-col>
+                                <ion-col col-1>
+                                    <ion-buttons end><button style="background: transparent;" (click)="openEvent(item['id'])"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+                                </ion-col>
+                                <ion-col col-1></ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col col-9 style="color: #FCD736;" align="left">{{item["title"]}}</ion-col>
+                                <ion-col col-3 style="color: #FCD736;" align="center">{{item["start_dttm"]}}</ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col col-12 style="color: #FCD736;" align="left">{{item["venue_city"]}},&nbsp;&nbsp;{{item["venue_state"]}},&nbsp;&nbsp;{{item["venue_country"]}}</ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+        </ion-row>
       </ion-grid>
   </ion-content>
   
