@@ -20,6 +20,7 @@ export class ManageEventsPage {
 
   loading: Loading;
   items: any;
+  data: any = {};
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -30,6 +31,10 @@ export class ManageEventsPage {
   }
 
   ionViewWillLoad() {
+    this.getEvents();
+  }
+
+  public ionViewWillEnter() {
     this.getEvents();
   }
 
@@ -65,9 +70,9 @@ export class ManageEventsPage {
               var ampm = hours >= 12 ? 'pm' : 'am';
               hours = hours % 12;
               hours = hours ? hours : 12; // the hour '0' should be '12'
-              minutes = minutes < 10 ? '0'+minutes : minutes;
-              var strTime = hours + ':' + minutes + ' ' + ampm;
-              decoded_response[2][i]["start_dttm"] = d.getMonth() + '-' + d.getDate() + '-' + d.getFullYear() + ' ' + strTime;
+              var minutes1 = minutes < 10 ? '0' + minutes.toString() : minutes.toString();
+              var strTime = hours + ':' + minutes1 + ' ' + ampm;
+              decoded_response[2][i]["start_dttm"] = d.getMonth()+1 + '-' + d.getDate() + '-' + d.getFullYear() + ' ' + strTime;
               //decoded_response[2][i]["start_dttm"] = decoded_response[2][i]["start_dttm"].substring(5,7) + '-' + decoded_response[2][i]["start_dttm"].substring(8,10) + '-' + decoded_response[2][i]["start_dttm"].substring(0,4);
             }
             this.items = decoded_response[2];
@@ -93,6 +98,13 @@ export class ManageEventsPage {
           this.loading.dismissAll();
         }
       );
+  }
+
+  openEvent(lama_events_id: number) {
+    //console.log('checkpoint-1');
+    //console.log(lama_events_id);
+    //console.log('checkpoint-2');
+    this.navCtrl.push("ViewupdateeventPage", { lama_events_id: lama_events_id });
   }
 
 }
