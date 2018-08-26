@@ -9,7 +9,6 @@
   <ion-grid>
     <ion-row>
       <ion-col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12>
-
         <div class="form">
           <ion-item no-padding color="accent">
             <ion-label>Enter New Odometer Mileage</ion-label>
@@ -20,17 +19,22 @@
                 <ion-icon name="cloud-upload"></ion-icon>Mileage Update</ion-label>
               <ion-input formControlName="mileageUpdate" type="number"></ion-input>
             </ion-item>
-
-
           </form>
-
-
         </div>
-
-
-
       </ion-col>
     </ion-row>
+    <!-- Adding the feature to upload odometer picture from phone START-->
+    <div *ngFor="let applicationForm1 of odometerUpdateForm.controls.motorcycles.controls; let i=index">
+      <!-- <div *ngFor="let applicationForm1 of odometerUpdateForm.get('motorcycles'); let i=index"> -->
+      <div [formGroupName]="i">
+        <ion-row *ngIf="this.odometerUpdateForm.controls['motorcycles'].value[i]['odometerPicURL']">
+          <ion-col width="100%" align="center">
+            <img [src]="this.odometerUpdateForm.controls['motorcycles'].value[i]['odometerPicURL']" style="max-width: 100%; height: auto;">
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+    <!-- Adding the feature to upload odometer picture from phone END-->
   </ion-grid>
 
 </ion-content>
