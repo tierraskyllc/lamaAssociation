@@ -22,7 +22,7 @@ export class ViewupdateeventPage {
 
   data: any = {};
   loading: Loading;
-
+  submitAttempt: boolean = false;
   updateEventForm: FormGroup;
 
   eventRequestStatus: Array<string>;
@@ -36,7 +36,8 @@ export class ViewupdateeventPage {
     private http: Http,
     private shareProvider: ShareProvider,
     public loadingCtrl: LoadingController,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    private alertCtrl: AlertController,
   ) {
     this.data.lama_events_id = navParams.get('lama_events_id');
   }
@@ -93,6 +94,7 @@ export class ViewupdateeventPage {
             this.data.emailaddress_of_officer = decoded_response[2]["emailaddress_of_officer"];
             this.data.additional_info = decoded_response[2]["additional_info"];
             this.data.request_status = decoded_response[2]["request_status"];
+            this.updateEventForm.controls.request_status.setValue(decoded_response[2]["request_status"]);
             this.data.officer_approved_first_name = decoded_response[2]["officer_approved_first_name"];
             this.data.officer_approved_last_name = decoded_response[2]["officer_approved_last_name"];
             this.data.dttmaccepted = decoded_response[2]["dttmaccepted"];
@@ -140,6 +142,60 @@ export class ViewupdateeventPage {
           this.loading.dismissAll();
         }
       );
+  }
+
+  update() {
+    this.submitAttempt = true;
+    if(this.updateEventForm.valid) {
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+
+      var body = new FormData();
+      var json_encoded_response = "";
+      var decoded_response = "";
+      body.append('sessionid', this.shareProvider.sessionid);
+      body.append('lama_events_id', this.data.lama_events_id);
+      body.append('request_status', this.updateEventForm.controls.request_status.value);
+      this.http.post(this.shareProvider.server + "events/updateevent.php", body).subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          //console.log(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.presentMessageOnlyAlert("You've successfully updated event request for this event.");
+            this.data.isappsubmited = true;
+            //this.data.submittedtext = "Thank you for submitting your application with L.A.M.A.  You'll hear back from us soon.";
+            this.loading.dismissAll();
+            this.navCtrl.pop();
+          }
+          else {
+            //this.data.error = "Unknown problem occured.  Please contact administrator.";
+            this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: VUE-008");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: VUE-008");
+            this.loading.dismissAll();
+          }
+        },
+        error => {
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //console.log("Oooops!");
+          this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: VUE-009");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: VUE-009");
+          this.loading.dismissAll();
+        }
+      );
+    }
+    else {
+      this.presentMessageOnlyAlert('Did you miss one or more required fields?');
+    }
+  }
+
+  presentMessageOnlyAlert(alertmsg: string) {
+    let alert = this.alertCtrl.create({
+      message: alertmsg,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
 }

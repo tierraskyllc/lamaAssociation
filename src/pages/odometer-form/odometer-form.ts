@@ -28,7 +28,7 @@ export class OdometerFormPage {
       mileageUpdate: new FormControl("", Validators.compose([Validators.required, Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")])),
       motorcycles: this.formBuilder.array([
         this.getInitialMotorcycle()
-
+      ])
     })
   }
 
