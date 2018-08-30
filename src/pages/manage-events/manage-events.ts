@@ -101,10 +101,11 @@ export class ManageEventsPage {
   }
 
   openEvent(lama_events_id: number) {
-    //console.log('checkpoint-1');
-    //console.log(lama_events_id);
-    //console.log('checkpoint-2');
     this.navCtrl.push("ViewupdateeventPage", { lama_events_id: lama_events_id });
+  }
+
+  openSignIn(lama_events_id: number) {
+    this.navCtrl.push("SignintoeventPage", { lama_events_id: lama_events_id });
   }
 
 }

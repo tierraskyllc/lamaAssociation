@@ -11,6 +11,7 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
+import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
 //import { PhotoViewer } from '@ionic-native/photo-viewer';
 //import { Transfer } from '@ionic-native/transfer';
 
@@ -39,6 +40,7 @@ import { Camera } from '@ionic-native/camera';
     FilePath,
     FileTransfer,
     FileTransferObject,
+    QRScanner,
     //PhotoViewer,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

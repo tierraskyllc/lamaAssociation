@@ -37,7 +37,7 @@ export class ViewupdateeventPage {
     private shareProvider: ShareProvider,
     public loadingCtrl: LoadingController,
     public formBuilder: FormBuilder,
-    private alertCtrl: AlertController,
+    private alertCtrl: AlertController
   ) {
     this.data.lama_events_id = navParams.get('lama_events_id');
   }
