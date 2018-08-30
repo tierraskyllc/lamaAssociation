@@ -24,8 +24,8 @@
       </ion-col>
     </ion-row>
     <!-- Adding the feature to upload odometer picture from phone START-->
-    <div *ngFor="let applicationForm1 of odometerUpdateForm.controls.motorcycles.controls; let i=index">
-      <!-- <div *ngFor="let applicationForm1 of odometerUpdateForm.get('motorcycles'); let i=index"> -->
+    <!-- <div *ngFor="let applicationForm1 of odometerUpdateForm.controls.motorcycles.controls; let i=index"> -->
+      <div *ngFor="let applicationForm1 of odometerUpdateForm.get('motorcycles'); let i=index">
       <div [formGroupName]="i">
         <ion-row *ngIf="this.odometerUpdateForm.controls['motorcycles'].value[i]['odometerPicURL']">
           <ion-col width="100%" align="center">
