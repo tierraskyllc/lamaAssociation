@@ -71,8 +71,9 @@ export class SignintoeventPage {
 
        // start scanning
        let scanSub = this.qrScanner.scan().subscribe((text: string) => {
-         console.log('Scanned something', text);
-         this.presentConfirm(text);
+         //console.log('Scanned something', text);
+         this.signin(this.data.lama_events_id, text)
+         //this.presentConfirm(text);
          //this.qrScanner.hide(); // hide camera preview
          scanSub.unsubscribe(); // stop scanning
        });
@@ -113,6 +114,55 @@ export class SignintoeventPage {
       ]
     });
     alert.present();
+  }
+
+  signin(lama_events_id, qrcode) {
+    var d = new Date();
+    var hours = d.getHours();
+    var minutes = d.getMinutes();
+    var seconds = d.getSeconds();
+    var hours1 = hours < 10 ? '0' + hours.toString() : hours.toString();
+    var minutes1 = minutes < 10 ? '0' + minutes.toString() : minutes.toString();
+    var seconds1 = seconds < 10 ? '0' + seconds.toString() : seconds.toString();
+    var month = d.getMonth() + 1;
+    var month1 = month < 10 ? '0' + month.toString() : month.toString();
+    var dt = d.getDate();
+    var dt1 = dt < 10 ? '0' + dt.toString() : dt.toString();
+    var curdttm = d.getFullYear() + '-' + month1 + '-' + dt1 + ' ' + hours1 + ':' + minutes1 + ':' + seconds1;
+    //==========================================
+    this.loading = this.loadingCtrl.create({
+      content: '',
+    });
+    this.loading.present();
+
+    var body = new FormData();
+    var json_encoded_response = "";
+    var decoded_response = "";
+    body.append('sessionid', this.shareProvider.sessionid);
+    body.append('lama_events_id', this.data.lama_events_id);
+    body.append('qrcode', qrcode);
+    body.append('curdttm', curdttm);
+    this.http.post(this.shareProvider.server + "events/signintoevent.php", body).subscribe(
+      data => {
+        decoded_response = JSON.parse(data["_body"]);
+        //console.log(data["_body"]);
+        if (decoded_response[0] == "true") {
+          this.presentConfirm(decoded_response[2]);
+          this.loading.dismissAll();
+        }
+        else {
+          this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: SITE-008");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: SITE-008");
+          this.loading.dismissAll();
+        }
+      },
+      error => {
+        this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: SITE-009");
+        console.log("Unknown problem occured.  Please contact administrator.  Code: SITE-009");
+        this.loading.dismissAll();
+      }
+    );
+    //==========================================
   }
 
 }
