@@ -5,7 +5,7 @@ import { ShareProvider } from "../../services/share";
 import { LoadingController, Loading } from 'ionic-angular'
 
 /**
- * Generated class for the ManageEventsPage page.
+ * Generated class for the EventattendeesPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -13,40 +13,38 @@ import { LoadingController, Loading } from 'ionic-angular'
 
 @IonicPage()
 @Component({
-  selector: 'page-manage-events',
-  templateUrl: 'manage-events.html',
+  selector: 'page-eventattendees',
+  templateUrl: 'eventattendees.html',
 })
-export class ManageEventsPage {
+export class EventattendeesPage {
 
   loading: Loading;
-  items: any;
+
   data: any = {};
+  items: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private http: Http,
     private shareProvider: ShareProvider,
     public loadingCtrl: LoadingController) {
+      this.data.lama_events_id = navParams.get('lama_events_id');
       this.items = [];
   }
 
-  ionViewWillLoad() {
-    this.getEvents();
-  }
-
-  public ionViewWillEnter() {
-    this.getEvents();
-  }
-
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ManageEventsPage');
+    console.log('ionViewDidLoad EventattendeesPage');
   }
 
-  private addEvent() {
-    this.navCtrl.push("AddeventPage");
+  ionViewWillLoad() {
+    this.getEventAttendees();
   }
 
-  getEvents() {
+  ionViewWillEnter() {
+    this.getEventAttendees();
+  }
+
+  getEventAttendees() {
     this.loading = this.loadingCtrl.create({
       content: '',
     });
@@ -55,8 +53,9 @@ export class ManageEventsPage {
     var decoded_response = "";
     var body = new FormData();
     body.append('sessionid', this.shareProvider.sessionid);
+    body.append('lama_events_id', this.data.lama_events_id);
     this.http
-      .post(this.shareProvider.server + "events/getevents.php", body)
+      .post(this.shareProvider.server + "events/geteventattendees.php", body)
       .subscribe(
         data => {
           //console.log(data["_body"]);
@@ -64,7 +63,7 @@ export class ManageEventsPage {
           decoded_response = JSON.parse(data["_body"]);
           if (decoded_response[0] == "true") {
             for(var i=0; i<decoded_response[2].length; i++) {
-              var d = new Date(decoded_response[2][i]["start_dttm"]);
+              var d = new Date(decoded_response[2][i]["dttm_signedin"]);
               var hours = d.getHours();
               var minutes = d.getMinutes();
               var ampm = hours >= 12 ? 'pm' : 'am';
@@ -72,8 +71,11 @@ export class ManageEventsPage {
               hours = hours ? hours : 12; // the hour '0' should be '12'
               var minutes1 = minutes < 10 ? '0' + minutes.toString() : minutes.toString();
               var strTime = hours + ':' + minutes1 + ' ' + ampm;
-              decoded_response[2][i]["start_dttm"] = d.getMonth()+1 + '-' + d.getDate() + '-' + d.getFullYear() + ' ' + strTime;
-              //decoded_response[2][i]["start_dttm"] = decoded_response[2][i]["start_dttm"].substring(5,7) + '-' + decoded_response[2][i]["start_dttm"].substring(8,10) + '-' + decoded_response[2][i]["start_dttm"].substring(0,4);
+              var month = d.getMonth()+1;
+              var month1 = month < 10 ? '0' + month.toString() : month.toString();
+              var dt = d.getDate();
+              var dt1 = dt < 10 ? '0' + dt.toString() : dt.toString();
+              decoded_response[2][i]["dttm_signedin"] = month1 + '-' + dt1 + '-' + d.getFullYear() + ' ' + strTime;
             }
             this.items = decoded_response[2];
             this.loading.dismissAll();
@@ -86,7 +88,7 @@ export class ManageEventsPage {
             else {
               this.data.error = "Unknown problem occured.  Please contact administrator.";
               this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
-              console.log("Unknown problem occured.  Please contact administrator.  Code: Manage-Events-001");
+              console.log("Unknown problem occured.  Please contact administrator.  Code: EventAttendees-001");
               this.loading.dismissAll();
             }
           }
@@ -94,23 +96,10 @@ export class ManageEventsPage {
         error => {
           this.data.error = "Unknown problem occured.  Please contact administrator.";
           this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
-          console.log("Unknown problem occured.  Please contact administrator.  Code: Manage-Events-002");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: EventAttendees-002");
           this.loading.dismissAll();
         }
       );
-  }
-
-  openEvent(lama_events_id: number) {
-    this.navCtrl.push("ViewupdateeventPage", { lama_events_id: lama_events_id });
-  }
-
-  openSignIn(lama_events_id: number) {
-    this.navCtrl.push("SignintoeventPage", { lama_events_id: lama_events_id });
-  }
-
-  openEventAttendees(lama_events_id: number) {
-    console.log('openEventAttendees clicked');
-    this.navCtrl.push("EventattendeesPage", { lama_events_id: lama_events_id });
   }
 
 }

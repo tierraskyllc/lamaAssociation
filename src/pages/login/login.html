@@ -51,7 +51,7 @@
             </div>
 
             <!---Join Us button-->
-            <button ion-button type="button" float-right default-button (click)="joinUsPage()">join us</button>
+            <!--button ion-button type="button" float-right default-button (click)="joinUsPage()">join us</button-->
 
             <!---Login button-->
             <button ion-button float-right default-button (click)="login()">login</button>
@@ -59,27 +59,35 @@
           </ion-col>
 
           <!---Share Section-->
-          <ion-col col-12 col-sm-12 col-md-12 offset-lg-3 col-lg-6 offset-xl-3 col-xl-6 social>
+          <!--ion-col col-12 col-sm-12 col-md-12 offset-lg-3 col-lg-6 offset-xl-3 col-xl-6 social-->
             <!---Facebook button-->
-            <button ion-button color="facebook" (click)="onEvent('onFacebook')">Facebook</button>
+            <!--button ion-button color="facebook" (click)="onEvent('onFacebook')">Facebook</button-->
             <!---Twitter button-->
-            <button ion-button color="twitter" (click)="onEvent('onTwitter')">Twitter</button>
+            <!--button ion-button color="twitter" (click)="onEvent('onTwitter')">Twitter</button-->
             <!---Google button-->
-            <button ion-button color="google" (click)="onEvent('onGoogle')">Google</button>
+            <!--button ion-button color="google" (click)="onEvent('onGoogle')">Google</button-->
             <!---Pinterest button-->
-            <button ion-button color="pinterest" (click)="onEvent('onPinterest')">Pinterest</button>
-          </ion-col>
+            <!--button ion-button color="pinterest" (click)="onEvent('onPinterest')">Pinterest</button-->
+          <!--/ion-col-->
           <!---End Share Section-->
         </ion-row>
+        <ion-row>
+          <ion-col style="text-align: left; vertical-align:middle;">
+                <ion-label>New Member?</ion-label>
+          </ion-col>
+          <ion-col style="text-align: center; vertical-align:middle;">
+              <button ion-button type="button" float-right default-button (click)="joinUsPage()">Click Here to Join Us</button>
+          </ion-col>
+        </ion-row>
       </form>
-      <hr>
+      <!--hr>
       <ion-row nowrap justify-content-center>
         <ion-col>
           <ion-item>
             <button ion-button (click)="profilePage()">profilePage</button>
           </ion-item>
         </ion-col>
-      </ion-row>
+      </ion-row-->
       <!--ion-row>
         <ion-col>
           <ion-item>
@@ -87,7 +95,7 @@
           </ion-item>
         </ion-col>
       </ion-row-->
-      <ion-row>
+      <!--ion-row>
         <ion-col>
           <ion-item>
             <button ion-button (click)="chapterAdminPage()">chapteradminPage</button>
@@ -100,7 +108,7 @@
               <button ion-button (click)="signUpSuccessPage()">signupsuccessPage</button>
             </ion-item>
           </ion-col>
-        </ion-row>
+        </ion-row-->
     </div>
   </ion-grid>
 
