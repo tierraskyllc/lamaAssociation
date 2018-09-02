@@ -73,6 +73,7 @@ export class ShareProvider {
             if(tmparr[i] == 'Manage Meetings (SignIn)') {
               tmphandler = () => {
                 //myNavCtrl.push("Meeting (SignIn)Page");
+                myNavCtrl.push("ManageMeetingsPage");
                 console.log('Manage Meetings (SignIn)' + ' clicked');
               }
             }

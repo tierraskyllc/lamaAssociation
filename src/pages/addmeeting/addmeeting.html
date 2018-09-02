@@ -1,0 +1,200 @@
+<!--
+  Generated template for the AddmeetingPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar>
+      <ion-title>Chapter Meeting Application</ion-title>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content padding>
+      <ion-grid>
+          <div class="form">
+            <form [formGroup]="addMeetingForm">
+                <ion-row>
+                  <ion-col>
+                      <ion-item no-padding color="accent">
+                        <ion-label>Chapter</ion-label>
+                        <ion-select formControlName="chapter" interface=popover>
+                          <ion-option *ngFor="let curchap of data.mychapters" [value]="curchap.id">{{curchap.name}}</ion-option>
+                        </ion-select>
+                      </ion-item>
+                      <ng-container *ngFor="let validation of validation_messages.chapter">
+                          <div class="error-message" *ngIf="addMeetingForm.get('chapter').hasError(validation.type) && (addMeetingForm.get('chapter').dirty || addMeetingForm.get('chapter').touched || submitAttempt)">
+                            {{ validation.message }}
+                          </div>
+                        </ng-container>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                      <ion-item no-padding color="accent">
+                        <ion-label floating>Meeting Name</ion-label>
+                        <ion-input type="text" formControlName="title"></ion-input>
+                      </ion-item>
+                      <ng-container *ngFor="let validation of validation_messages.title">
+                        <div class="error-message" *ngIf="addMeetingForm.get('title').hasError(validation.type) && (addMeetingForm.get('title').dirty || addMeetingForm.get('title').touched || submitAttempt)">
+                          {{ validation.message }}
+                        </div>
+                      </ng-container>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                      <ion-col>
+                        <ion-item no-padding color="accent">
+                          <ion-label floating>Meeting Description</ion-label>
+                          <!--ion-input type="text" formControlName="description"></ion-input-->
+                          <ion-textarea formControlName="description" rows="5"></ion-textarea>
+                        </ion-item>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col>
+                        <ion-item no-padding color="accent">
+                          <ion-label floating>Meeting Start Date and Time</ion-label>
+                          <ion-datetime formControlName="start_dttm" displayFormat="MMM DD, YYYY h:m A" pickerFormat="MMM DD YYYY h m A" min="{{ data.currentyear }}" max="{{ data.nextyear }}" custom-datetime></ion-datetime>
+                        </ion-item>
+                        <ng-container *ngFor="let validation of validation_messages.start_dttm">
+                          <div class="error-message" *ngIf="addMeetingForm.get('start_dttm').hasError(validation.type) && (addMeetingForm.get('start_dttm').dirty || addMeetingForm.get('start_dttm').touched || submitAttempt)">
+                            {{ validation.message }}
+                          </div>
+                        </ng-container>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                          <ion-item no-padding color="accent">
+                            <ion-label floating>Meeting End Date and Time</ion-label>
+                            <ion-datetime formControlName="end_dttm" displayFormat="MMM DD, YYYY h:m A" pickerFormat="MMM DD YYYY h m A" min="{{ data.currentyear }}" max="{{ data.nextyear }}" custom-datetime></ion-datetime>
+                          </ion-item>
+                          <ng-container *ngFor="let validation of validation_messages.end_dttm">
+                            <div class="error-message" *ngIf="addMeetingForm.get('end_dttm').hasError(validation.type) && (addMeetingForm.get('end_dttm').dirty || addMeetingForm.get('end_dttm').touched || submitAttempt)">
+                              {{ validation.message }}
+                            </div>
+                          </ng-container>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                            <ion-item no-padding color="accent">
+                              <ion-label floating>Country</ion-label>
+                              <ion-select formControlName="venue_country" interface=popover cancelText="Cancel" okText="OK">
+                                <ion-option (ionSelect)="correctStateAndCityValidationsForVenueState()" *ngFor="let curcountry of data.countries" [value]="curcountry">{{curcountry}}</ion-option>
+                              </ion-select>
+                            </ion-item>
+                            <ng-container *ngFor="let validation of validation_messages.venue_country">
+                                <div class="error-message" *ngIf="addMeetingForm.get('venue_country').hasError(validation.type) && (addMeetingForm.get('venue_country').dirty || addMeetingForm.get('venue_country').touched || submitAttempt)">
+                                  {{ validation.message }}
+                                </div>
+                              </ng-container>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row *ngIf="addMeetingForm.controls['venue_country'].value == 'United States'">
+                        <ion-col>
+                            <ion-item no-padding color="accent">
+                              <ion-label floating>State</ion-label>
+                              <ion-select formControlName="venue_usa_state" interface=popover cancelText="Cancel" okText="OK">
+                                <ion-option (ionSelect)="populateCitiesByUSAState()" *ngFor="let curstate of data.usastates" [value]="curstate.name">{{curstate.name}}</ion-option>
+                              </ion-select>
+                            </ion-item>
+                            <ng-container *ngFor="let validation of validation_messages.venue_usa_state">
+                                <div class="error-message" *ngIf="addMeetingForm.get('venue_usa_state').hasError(validation.type) && (addMeetingForm.get('venue_usa_state').dirty || addMeetingForm.get('venue_usa_state').touched || submitAttempt)">
+                                  {{ validation.message }}
+                                </div>
+                              </ng-container>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row *ngIf="addMeetingForm.controls['venue_country'].value != 'United States'">
+                        <ion-col>
+                          <ion-item no-padding color="accent">
+                            <ion-label floating>State</ion-label>
+                            <ion-input type="text" formControlName="venue_state"></ion-input>
+                          </ion-item>
+                          <ng-container *ngFor="let validation of validation_messages.venue_state">
+                            <div class="error-message" *ngIf="addMeetingForm.get('venue_state').hasError(validation.type) && (addMeetingForm.get('venue_state').dirty || addMeetingForm.get('venue_state').touched || submitAttempt)">
+                              {{ validation.message }}
+                            </div>
+                          </ng-container>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row *ngIf="addMeetingForm.controls['venue_country'].value == 'United States'">
+                        <ion-col>
+                            <ion-item no-padding color="accent">
+                              <ion-label floating>City</ion-label>
+                              <ion-select formControlName="venue_usa_city" interface=popover cancelText="Cancel" okText="OK">
+                                <ion-option *ngFor="let curcity of data.usacities" [value]="curcity.name">{{curcity.name}}</ion-option>
+                              </ion-select>
+                            </ion-item>
+                            <ng-container *ngFor="let validation of validation_messages.venue_usa_city">
+                                <div class="error-message" *ngIf="addMeetingForm.get('venue_usa_city').hasError(validation.type) && (addMeetingForm.get('venue_usa_city').dirty || addMeetingForm.get('venue_usa_city').touched || submitAttempt)">
+                                  {{ validation.message }}
+                                </div>
+                              </ng-container>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row *ngIf="addMeetingForm.controls['venue_country'].value != 'United States'">
+                        <ion-col>
+                          <ion-item no-padding color="accent">
+                            <ion-label floating>City</ion-label>
+                            <ion-input type="text" formControlName="venue_city"></ion-input>
+                          </ion-item>
+                          <ng-container *ngFor="let validation of validation_messages.venue_city">
+                            <div class="error-message" *ngIf="addMeetingForm.get('venue_city').hasError(validation.type) && (addMeetingForm.get('venue_city').dirty || addMeetingForm.get('venue_city').touched || submitAttempt)">
+                              {{ validation.message }}
+                            </div>
+                          </ng-container>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                          <ion-item no-padding color="accent">
+                            <ion-label floating>Address</ion-label>
+                            <!--ion-input type="text" formControlName="description"></ion-input-->
+                            <ion-textarea formControlName="venue_address" rows="3"></ion-textarea>
+                          </ion-item>
+                          <ng-container *ngFor="let validation of validation_messages.venue_address">
+                            <div class="error-message" *ngIf="addMeetingForm.get('venue_address').hasError(validation.type) && (addMeetingForm.get('venue_address').dirty || addMeetingForm.get('venue_address').touched || submitAttempt)">
+                              {{ validation.message }}
+                            </div>
+                          </ng-container>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col>
+                          <ion-item no-padding color="accent">
+                            <ion-label floating>Zipcode</ion-label>
+                            <!--ion-input type="text" formControlName="description"></ion-input-->
+                            <ion-input type="number" formControlName="venue_zipcode"></ion-input>
+                          </ion-item>
+                          <ng-container *ngFor="let validation of validation_messages.venue_zipcode">
+                            <div class="error-message" *ngIf="addMeetingForm.get('venue_zipcode').hasError(validation.type) && (addMeetingForm.get('venue_zipcode').dirty || addMeetingForm.get('venue_zipcode').touched || submitAttempt)">
+                              {{ validation.message }}
+                            </div>
+                          </ng-container>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col>
+                        <ion-item no-padding color="accent">
+                          <ion-label floating>Additional Information</ion-label>
+                          <!--ion-input type="text" formControlName="description"></ion-input-->
+                          <ion-textarea formControlName="additional_info" rows="5"></ion-textarea>
+                        </ion-item>
+                      </ion-col>
+                    </ion-row>
+  
+                    <ion-row>
+                      <ion-col width="100%" align="center">
+                        <button ion-button small round (click)="request()">REQUEST</button>
+                      </ion-col>
+                    </ion-row>
+            </form>
+          </div>
+      </ion-grid>
+  </ion-content>
