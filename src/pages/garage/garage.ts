@@ -1,22 +1,20 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { Component } from "@angular/core";
+import { IonicPage, NavController, ModalController } from "ionic-angular";
 import { ToastService } from "../../services/toast.service";
+import { ActionSheetController } from "ionic-angular";
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
-import { AlertController } from 'ionic-angular';
-import { LoadingController, Loading } from 'ionic-angular'
+import { LoadingController, Loading } from "ionic-angular";
 
 @IonicPage()
 @Component({
-  selector: 'page-garage',
-  templateUrl: 'garage.html',
+  selector: "page-garage",
+  templateUrl: "garage.html"
 })
 export class GaragePage {
-
-  data: any = {};
-
   loading: Loading;
 
+  data: any = {};
   member = {
     name: "Name from Server",
     profileImage: "assets/images/avatar/girl-avatar.png",
@@ -52,25 +50,25 @@ export class GaragePage {
   ];
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public toastCtrl: ToastService,
     private http: Http,
     private shareProvider: ShareProvider,
-    public loadingCtrl: LoadingController,
-    public modalCtrl: ModalController
-  ) { }
+    public navCtrl: NavController,
+    public toastCtrl: ToastService,
+    public modalCtrl: ModalController,
+    public actionSheetCtrl: ActionSheetController,
+    public loadingCtrl: LoadingController
+  ) {}
 
   ionViewDidLoad() {
     this.loading = this.loadingCtrl.create({
-      content: '',
+      content: ""
     });
     this.loading.present();
 
     //-----
     var decoded_response = null;
     var body = new FormData();
-    body.append('sessionid', this.shareProvider.sessionid);
+    body.append("sessionid", this.shareProvider.sessionid);
     this.http
       .post(this.shareProvider.server + "garage/garage.php", body)
       .subscribe(
@@ -81,27 +79,34 @@ export class GaragePage {
           if (decoded_response[0] == "true") {
             this.memberMotorcycleInfo = decoded_response[2];
             this.loading.dismissAll();
-          }
-          else {
-            if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
-              this.navCtrl.push('LoginPage');
+          } else {
+            if (
+              decoded_response[1] == "Session Expired." ||
+              decoded_response[1] == "Invalid Session."
+            ) {
+              this.navCtrl.push("LoginPage");
               this.loading.dismissAll();
-            }
-            else {
-              this.data.error = "Unknown problem occured.  Please contact administrator.";
-              console.log("Unknown problem occured.  Please contact administrator. - G001");
+            } else {
+              this.data.error =
+                "Unknown problem occured.  Please contact administrator.";
+              console.log(
+                "Unknown problem occured.  Please contact administrator. - G001"
+              );
               this.loading.dismissAll();
             }
           }
         },
         error => {
-          this.data.error = "Unknown problem occured.  Please contact administrator.";
-          console.log("Unknown problem occured.  Please contact administrator. - G002");
+          this.data.error =
+            "Unknown problem occured.  Please contact administrator.";
+          console.log(
+            "Unknown problem occured.  Please contact administrator. - G002"
+          );
           this.loading.dismissAll();
         }
       );
     //-----
-    console.log('ionViewDidLoad GaragePage');
+    console.log("ionViewDidLoad GaragePage");
   }
 
   imageTapped(post) {
@@ -109,12 +114,19 @@ export class GaragePage {
   }
 
   openQrCodeModal() {
-    this.modalCtrl.create('OdometerFormPage', { qrcodevalue: this.shareProvider.username + '|' + this.shareProvider.firstname + '|' + this.shareProvider.lastname }, { cssClass: 'inset-modal' })
-                  .present();
+    this.modalCtrl
+      .create(
+        "OdometerFormPage",
+        {
+          qrcodevalue:
+            this.shareProvider.username +
+            "|" +
+            this.shareProvider.firstname +
+            "|" +
+            this.shareProvider.lastname
+        },
+        { cssClass: "inset-modal" }
+      )
+      .present();
   }
-
-
-
-
-  
 }
