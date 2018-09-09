@@ -29,19 +29,8 @@
       <!-- Buttons  -->
       <ion-row nowrap justify-content-center>
 
-        <button ion-button small (click)="eventsPage()" style="color: #FCD736;">Events</button>
-        <!-- <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()">Following<ion-icon name="checkmark"></ion-icon></button> -->
-        <!-- <button ion-button [disabled]="underConstruction" *ngIf="!following" small color="purple" (click)="follow()" style="color: #FCD736;">Garage</button> -->
-        <button ion-button small color="purple" (click)="garagePage()" style="color: #FCD736;">Garage</button>
-        <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()" style="color: #FCD736;">Following
-          <ion-icon name="checkmark"></ion-icon>
-        </button>
-        <!-- <button ion-button [disabled]="underConstruction"*ngIf="!following" small color="purple" (click)="follow()">Follow</button>
-        <button ion-button *ngIf="following" class="follow-button" small color="purple" (click)="follow()">Following<ion-icon name="checkmark"></ion-icon></button> -->
-        <!--button ion-button *ngIf="!signingIn" small color="purple" (click)="signIn()">Sign In</button-->
-        <button ion-button *ngIf="signingIn" class="follow-button" small color="purple" (click)="signIn()" style="color: #FCD736;">Signing In
-          <ion-icon name="checkmark"></ion-icon>
-        </button>
+        <!--button ion-button small (click)="eventsPage()" style="color: #FCD736;">Events</button-->
+        <!--button ion-button small color="purple" (click)="garagePage()" style="color: #FCD736;">Garage</button-->
 
       </ion-row>
 
@@ -53,7 +42,7 @@
     </div>
     <hr/>
 
-    <ion-row class="profile-numbers">
+    <!--ion-row class="profile-numbers">
       <ion-col col-6>
         <p style="color: #FCD736;">Member Since</p>
         <span>{{member.memberSince}}</span>
@@ -62,22 +51,8 @@
         <p style="color: #FCD736;">Current Miles</p>
         <span>{{member.following}}</span>
       </ion-col>
-    </ion-row>
+    </ion-row-->
 
-    <!--div id="posts">
-      <ion-card *ngFor="let post of posts">
-        <ion-item style="background: whitesmoke">
-          <ion-avatar item-start>
-            <img [src]="member.profileImage">
-          </ion-avatar>
-          <h2 class="sticky">{{member.name}}</h2>
-          <p>{{post.date}}</p>
-        </ion-item>
-        <img [src]="post.postImageUrl" (click)="imageTapped(post)">
-        <ion-card-content style="background: whitesmoke">
-          <p>{{post.text}}</p>
-        </ion-card-content>
-      </ion-card>
-    </div-->
+    
   </div>
 </ion-content>
