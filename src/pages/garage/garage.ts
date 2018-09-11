@@ -112,21 +112,23 @@ export class GaragePage {
   imageTapped(post) {
     this.toastCtrl.create("Post image clicked");
   }
+  // FIRST ATTEMPT
+  // openGarageModal() {
+  //   let garageModal = this.modalCtrl.create("OdometerFormPage");
+  //   garageModal.present();
+  // }
+  // SECOND ATEMPT
+  openGarageModal() {
+    this.openModal2("OdometerFormPage");
+  }
+  openModal2(pageName) {
+    this.modalCtrl.create(pageName).present();
+  }
 
   openQrCodeModal() {
-    this.modalCtrl
-      .create(
-        "OdometerFormPage",
-        {
-          qrcodevalue:
-            this.shareProvider.username +
-            "|" +
-            this.shareProvider.firstname +
-            "|" +
-            this.shareProvider.lastname
-        },
-        { cssClass: "inset-modal" }
-      )
-      .present();
+    this.openModal("QrCodeModalPage");
+  }
+  openModal(pageName) {
+    this.modalCtrl.create(pageName).present();
   }
 }
