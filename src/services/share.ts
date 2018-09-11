@@ -44,7 +44,7 @@ export class ShareProvider {
       content: '',
     });
     this.loading.present();
-
+    var tmpbuttons = [];
     var decoded_response = "";
     var tmparr = null;
     var body = new FormData();
@@ -55,7 +55,7 @@ export class ShareProvider {
         if (decoded_response[0] == "true") {
           tmparr = decoded_response[2];
           //=========
-          var tmpbuttons = [];
+          tmpbuttons = [];
           var mybutton = {};
           var tmphandler = null;
           for(var i=0; i<tmparr.length; i++) {
@@ -95,6 +95,7 @@ export class ShareProvider {
             role: 'destructive',
             handler: () => {
               console.log('LOGOUT clicked');
+              this.logout(myNavCtrl);
             }
           };
           tmpbuttons.push(mybutton);
@@ -137,6 +138,41 @@ export class ShareProvider {
       buttons: ['OK']
     });
     alert.present();
+  }
+
+  logout(navCtrl) {
+    this.loading = this.loadingCtrl.create({
+      content: '',
+    });
+    this.loading.present();
+    var body = new FormData();
+    body.append('sessionid', this.sessionid);
+    this.http.post(this.server + "logout/logout.php", body).subscribe(
+      data => {
+        this.curentpage = 'LoginPage';
+        this.sessionid = '';
+        this.firstname = '';
+        this.lastname = '';
+        this.username = '';
+        this.role = '';
+        this.loading.dismissAll();
+        this.presentMessageOnlyAlert('Thank you for using LAMA app.  You have successfully loged out.');
+        navCtrl.pop();
+        //navCtrl.push("LoginPage", { data: 'Thank you for using LAMA app.  You have successfully loged out.' });
+      },
+      error => {
+        this.curentpage = 'LoginPage';
+        this.sessionid = '';
+        this.firstname = '';
+        this.lastname = '';
+        this.username = '';
+        this.role = '';
+        this.loading.dismissAll();
+        this.presentMessageOnlyAlert('Thank you for using LAMA app.  You have successfully loged out.');
+        navCtrl.pop();
+        //navCtrl.push("LoginPage", { data: 'Thank you for using LAMA app.  You have successfully loged out.' });
+      }
+    );
   }
 
 }
