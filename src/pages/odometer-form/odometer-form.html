@@ -11,32 +11,74 @@
         <div class="form">
           <form [formGroup]="odometerUpdateForm">
 
+            <ion-card>
+              <ion-card-header no-padding card-header>New License Info</ion-card-header>
+            <!-- Adding the feature to enter the Driver's License expiration date START-->
             <ion-item no-padding color="accent">
-              <ion-label>Upload New Driver's License Image</ion-label>
+              <ion-label>Enter Expiration Date</ion-label>
+              <ion-datetime formControlName="licenseExpirationDate" custom-datetime></ion-datetime>
             </ion-item>
-            <!-- Adding the feature to upload Driver's License Image from phone START-->
-
-            <!-- Adding the feature to upload Driver's License Image from phone END-->
+            <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.licenseExpirationDate">
+                  <div class="error-message" *ngIf="odometerUpdateForm.get('licenseExpirationDate').hasError(validation.type) && (odometerUpdateForm.get('licenseExpirationDate').dirty || odometerUpdateForm.get('licenseExpirationDate').touched || submitAttempt)">
+                    {{ validation.message }}
+                  </div>
+                </ng-container>
+              </div>
+            <!-- Adding the feature to enter the Driver's License expiration date END-->
+            <!-- Adding the feature to upload the Driver's License Image from phone START-->
+            <button ion-button small round (click)="uploadLicense()">Capture License Image</button>
+            <!-- <ion-item no-padding color="accent"><ion-label>Upload New Driver's License Image</ion-label></ion-item> -->
+            <!-- Adding the feature to upload the Driver's License Image from phone END-->
+            </ion-card>
 
             <hr>
+            <ion-card>
+              <ion-card-title no-padding card-header>New Insurance Info</ion-card-title>
+            <!-- Adding the feature to enter the Insurance expiration date START-->
             <ion-item no-padding color="accent">
-              <ion-label>Upload New Insurance Image</ion-label>
-            </ion-item>
+                <ion-label>Enter Expiration Date</ion-label>
+                <ion-datetime formControlName="insuranceExpirationDate" custom-datetime></ion-datetime>
+              </ion-item>
+              <div class="validation-errors">
+                  <ng-container *ngFor="let validation of validation_messages.insuranceExpirationDate">
+                    <div class="error-message" *ngIf="odometerUpdateForm.get('insuranceExpirationDate').hasError(validation.type) && (odometerUpdateForm.get('insuranceExpirationDate').dirty || odometerUpdateForm.get('insuranceExpirationDate').touched || submitAttempt)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+            <!-- Adding the feature to enter the Insurance expiration date END-->
             <!-- Adding the feature to upload Insurance Image from phone START-->
-            <button ion-button small round (click)="uploadInsurance()">Capture Insurance Picture</button>
+            <button ion-button small round (click)="uploadInsurance()">Capture Insurance Image</button>
+            <!-- <ion-item no-padding color="accent"><ion-label>Upload New Insurance Image</ion-label></ion-item> -->
             <!-- Adding the feature to upload Insurance Image from phone END-->
+            </ion-card>
 
             <hr>
+            <ion-card>
+              <ion-card-title no-padding card-header>New Registration Info</ion-card-title>
+            <!-- Adding the feature to enter the Registration expiration date START-->
             <ion-item no-padding color="accent">
-              <ion-label>Upload New Registration Image</ion-label>
-            </ion-item>
+                <ion-label>Enter Expiration Date</ion-label>
+                <ion-datetime formControlName="registrationExpirationDate" custom-datetime></ion-datetime>
+              </ion-item>
+              <div class="validation-errors">
+                  <ng-container *ngFor="let validation of validation_messages.registrationExpirationDate">
+                    <div class="error-message" *ngIf="odometerUpdateForm.get('registrationExpirationDate').hasError(validation.type) && (odometerUpdateForm.get('registrationExpirationDate').dirty || odometerUpdateForm.get('registrationExpirationDate').touched || submitAttempt)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+            <!-- Adding the feature to enter the Insurance expiration date END-->
             <!-- Adding the feature to upload Registration Image from phone START-->
-
+            <button ion-button small round (click)="uploadRegistration(i)">Capture Registration Image</button>
+            <!-- <ion-item no-padding color="accent"><ion-label>Upload New Registration Image</ion-label></ion-item> -->
             <!-- Adding the feature to upload Registration Image from phone END-->
-            <hr>
+            </ion-card>
 
+            <hr>
             <ion-item no-padding color="accent">
-              <ion-label>Upload New Odometer Mileage Image</ion-label>
+              <ion-label> Enter & Upload New Odometer Mileage</ion-label>
             </ion-item>
             <ion-item style="background: whitesmoke">
               <ion-label stacked>
@@ -45,7 +87,7 @@
               <ion-input formControlName="mileageUpdate" type="number"></ion-input>
             </ion-item>
             <!-- Adding the feature to upload odometer Image from phone START-->
-
+            <button ion-button small round (click)="uploadOdometer(i)">Capture Odometer Picture</button>
             <!-- Adding the feature to upload odometer Image from phone END-->
             <hr>
 

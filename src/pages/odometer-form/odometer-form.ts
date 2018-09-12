@@ -1,19 +1,6 @@
 import { Component } from "@angular/core";
-import {
-  IonicPage,
-  NavController,
-  NavParams,
-  ViewController,
-  ActionSheetController,
-  ToastController,
-  Platform
-} from "ionic-angular";
-import {
-  Validators,
-  FormBuilder,
-  FormGroup,
-  FormControl
-} from "@angular/forms";
+import { IonicPage, NavController, NavParams, ViewController, ActionSheetController, ToastController, Platform } from "ionic-angular";
+import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { Camera } from "@ionic-native/camera";
 import { FilePath } from "@ionic-native/file-path";
 import { File } from "@ionic-native/file";
@@ -26,6 +13,7 @@ import { ShareProvider } from "../../services/share";
 })
 export class OdometerFormPage {
   odometerUpdateForm: FormGroup;
+  submitAttempt: boolean = false;
 
   data: any = {};
   lastImageFullPath: string = "";
@@ -51,15 +39,19 @@ export class OdometerFormPage {
 
   ionViewWillLoad() {
     this.odometerUpdateForm = this.formBuilder.group({
-      mileageUpdate: new FormControl(
-        "",
-        Validators.compose([
-          Validators.required,
-          Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")
-        ])
-      ),
-      motorcycles: this.formBuilder.array([this.getInitialMotorcycle()])
+      mileageUpdate: new FormControl("", Validators.compose([Validators.required, Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")])),
+      motorcycles: this.formBuilder.array([this.getInitialMotorcycle()]),
+      licenseExpirationDate: ["", Validators.compose([Validators.required])],
+      insuranceExpirationDate: ["", Validators.compose([Validators.required])],
+      registrationExpirationDate: ["", Validators.compose([Validators.required])],
+
     });
+  }
+
+  validation_messages = {
+    'licenseExpirationDate': [{ type: 'required', message: 'Expiration Date is required.'}],
+    'insuranceExpirationDate': [{ type: 'required', message: 'Expiration Date is required.'}],
+    'registrationExpirationDate': [{ type: 'required', message: 'Expiration Date is required.'}],
   }
 
   getInitialMotorcycle() {
@@ -221,8 +213,26 @@ export class OdometerFormPage {
     toast.present();
   }
 
+  public uploadLicense() {
+    this.data.selectedimage = "license";
+    //this.presentActionSheet();
+    this.takePicture(this.camera.PictureSourceType.CAMERA);
+  }
+
+  public uploadOdometer(num) {
+    this.data.selectedimage = "odometer"+num;
+    //this.presentActionSheet();
+    this.takePicture(this.camera.PictureSourceType.CAMERA);
+  }
+
   public uploadInsurance() {
     this.data.selectedimage = "insurance";
+    //this.presentActionSheet();
+    this.takePicture(this.camera.PictureSourceType.CAMERA);
+  }
+
+  public uploadRegistration(num) {
+    this.data.selectedimage = "registration"+num;
     //this.presentActionSheet();
     this.takePicture(this.camera.PictureSourceType.CAMERA);
   }
