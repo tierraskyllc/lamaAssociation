@@ -83,12 +83,12 @@
             </ion-card>
 
             <hr>
-            <ion-item no-padding color="accent">
-              <ion-label> Enter & Upload New Odometer Mileage</ion-label>
-            </ion-item>
+            <ion-card>
+                <ion-card-header no-padding card-header>Enter & Update New Odometer Mileage</ion-card-header>
+            <!-- <ion-item no-padding color="accent"><ion-label>Enter & Upload New Odometer Mileage</ion-label></ion-item> -->
             <ion-item style="background: whitesmoke">
               <ion-label stacked>
-                <ion-icon name="cloud-upload"></ion-icon>Mileage Update
+                <ion-icon name="cloud-upload"></ion-icon>Update Mileage
               </ion-label>
               <ion-input formControlName="mileageUpdate" type="number"></ion-input>
             </ion-item>
@@ -97,9 +97,7 @@
             <button ion-button small round (click)="uploadOdometer(i)">Capture Odometer Picture</button>
             <!-- Adding the feature to upload odometer Image from phone END-->
             </div>
-            <hr>
-
-
+          </ion-card>
 
           </form>
         </div>
