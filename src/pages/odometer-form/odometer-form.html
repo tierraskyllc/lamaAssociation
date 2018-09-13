@@ -12,11 +12,11 @@
           <form [formGroup]="odometerUpdateForm">
 
             <ion-card>
-              <ion-card-header no-padding card-header>New License Info</ion-card-header>
+              <ion-card-header no-padding card-header>Update License</ion-card-header>
             <!-- Adding the feature to enter the Driver's License expiration date START-->
             <ion-item no-padding color="accent">
               <ion-label>Enter Expiration Date</ion-label>
-              <ion-datetime formControlName="licenseExpirationDate" custom-datetime></ion-datetime>
+              <ion-datetime formControlName="licenseExpirationDate" min="2018" max="2120-10-31"></ion-datetime>
             </ion-item>
             <div class="validation-errors">
                 <ng-container *ngFor="let validation of validation_messages.licenseExpirationDate">
@@ -26,19 +26,21 @@
                 </ng-container>
               </div>
             <!-- Adding the feature to enter the Driver's License expiration date END-->
+            <ion-row>
             <!-- Adding the feature to upload the Driver's License Image from phone START-->
             <button ion-button small round (click)="uploadLicense()">Capture License Image</button>
             <!-- <ion-item no-padding color="accent"><ion-label>Upload New Driver's License Image</ion-label></ion-item> -->
             <!-- Adding the feature to upload the Driver's License Image from phone END-->
-            </ion-card>
+            </ion-row>
+          </ion-card>
 
             <hr>
             <ion-card>
-              <ion-card-title no-padding card-header>New Insurance Info</ion-card-title>
+              <ion-card-title no-padding card-header>Update Insurance</ion-card-title>
             <!-- Adding the feature to enter the Insurance expiration date START-->
             <ion-item no-padding color="accent">
                 <ion-label>Enter Expiration Date</ion-label>
-                <ion-datetime formControlName="insuranceExpirationDate" custom-datetime></ion-datetime>
+                <ion-datetime formControlName="insuranceExpirationDate" min="2018" max="2120-10-31"></ion-datetime>
               </ion-item>
               <div class="validation-errors">
                   <ng-container *ngFor="let validation of validation_messages.insuranceExpirationDate">
@@ -56,11 +58,11 @@
 
             <hr>
             <ion-card>
-              <ion-card-title no-padding card-header>New Registration Info</ion-card-title>
+              <ion-card-title no-padding card-header>Update Registration</ion-card-title>
             <!-- Adding the feature to enter the Registration expiration date START-->
             <ion-item no-padding color="accent">
                 <ion-label>Enter Expiration Date</ion-label>
-                <ion-datetime formControlName="registrationExpirationDate" custom-datetime></ion-datetime>
+                <ion-datetime formControlName="registrationExpirationDate" min="2018" max="2120-10-31"></ion-datetime>
               </ion-item>
               <div class="validation-errors">
                   <ng-container *ngFor="let validation of validation_messages.registrationExpirationDate">
