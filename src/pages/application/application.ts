@@ -67,18 +67,18 @@ export class ApplicationPage {
     private http: Http,
     private shareProvider: ShareProvider,
     private alertCtrl: AlertController,
-    private camera: Camera, 
+    private camera: Camera,
     //private transfer: Transfer,
     private transfer: FileTransfer,
-    private file: File, 
-    private filePath: FilePath, 
-    public actionSheetCtrl: ActionSheetController, 
-    public toastCtrl: ToastController, 
-    public platform: Platform, 
+    private file: File,
+    private filePath: FilePath,
+    public actionSheetCtrl: ActionSheetController,
+    public toastCtrl: ToastController,
+    public platform: Platform,
     public loadingCtrl: LoadingController,
     //private photoViewer: PhotoViewer
     ) {
-      
+
       this.data.response = "";
       this.data.error = "";
       this.data.selectedimage = "";
@@ -218,7 +218,8 @@ export class ApplicationPage {
         this.getInitialMotorcycle()
       ])
     });
-    setInterval(() => {      
+
+    setInterval(() => {
       //console.log('timer');
       this.uploadImage();
       },2000);
@@ -583,7 +584,7 @@ export class ApplicationPage {
       saveToPhotoAlbum: false,
       correctOrientation: true
     };
-   
+
     // Get the data of an image
     this.camera.getPicture(options).then((imagePath) => {
       // Special handling for Android library
@@ -643,7 +644,7 @@ export class ApplicationPage {
     //this.presentMessageOnlyAlert(newFileName);
     return newFileName;
   }
-  
+
   // Copy the image to a local folder
   private copyFileToLocalDir(namePath, currentName, newFileName) {
     //this.presentMessageOnlyAlert(this.file.dataDirectory);
@@ -655,7 +656,7 @@ export class ApplicationPage {
       console.log('Error while storing file.  This error can be safely ignored.');
     });
   }
-  
+
   private presentToast(text) {
     let toast = this.toastCtrl.create({
       message: text,
@@ -664,7 +665,7 @@ export class ApplicationPage {
     });
     toast.present();
   }
-  
+
   // Always get the accurate path to your apps folder
   public pathForImage(img) {
     if (img === null) {
@@ -683,13 +684,13 @@ export class ApplicationPage {
       //this.presentToast(this.lastImageFullPath);
     // Destination URL
       var url = this.shareProvider.server + "application/upload.php";
-    
+
       // File for Upload
       var targetPath = this.pathForImage(this.lastImage);
-    
+
       // File name only
       var filename = this.lastImage;
-    
+
       var options = {
         fileKey: "file",
         fileName: filename,
@@ -697,14 +698,14 @@ export class ApplicationPage {
         mimeType: "multipart/form-data",
         params : {'fileName': filename, 'sessionid': this.shareProvider.sessionid}
       };
-    
+
       const fileTransfer: FileTransferObject = this.transfer.create();
-    
+
       this.loading = this.loadingCtrl.create({
         content: 'Uploading...',
       });
       this.loading.present();
-    
+
       // Use the FileTransfer to upload the image
       fileTransfer.upload(this.lastImageFullPath, url, options).then((data) => {
         this.loading.dismissAll();

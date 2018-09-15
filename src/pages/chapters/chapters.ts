@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
-
+import { IonicPage, ModalController } from "ionic-angular";
 
 @IonicPage()
 @Component({
@@ -113,8 +112,17 @@ export class ChaptersPage {
   },
   ]
 
-  constructor() {
+  constructor(
+    public modalCtrl: ModalController
+  ) {
     this.animateClass = { 'zoom-in': true };
+  }
+
+  openAddChapterModal() {
+    this.openModal("ChapterAddPage");
+  }
+  openModal(pageName) {
+    this.modalCtrl.create(pageName).present();
   }
 
 
