@@ -9,6 +9,9 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 })
 export class ChapterAddPage {
 
+
+  submitAttempt: boolean = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController,) {
   }
 
