@@ -61,6 +61,10 @@ export class ProfilePage {
     this.navCtrl.push("GaragePage");
   }
 
+  chaptersPage() {
+    this.navCtrl.push("ChaptersPage");
+  }
+
   openQrCodeModal() {
     this.openModal("QrCodeModalPage");
   }

@@ -55,8 +55,6 @@ export class JoinUsPage {
       intlchapter: ["", Validators.compose([Validators.required])]
     });
 
-
-
   }
 
   validation_messages = {

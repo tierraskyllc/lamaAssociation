@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Add New Chapter</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding style="text-align: center; align-content: center; align-items: center; vertical-align: middle;">
+  <ion-grid style="vertical-align: middle;">
+
+    <ion-row center style="vertical-align: middle;">
+      <ion-col style="vertical-align: middle;">
+
+        <ion-label>Please select a chapter association</ion-label>
+
+        <ion-list radio-group padding-top no-lines>
+          <ion-item><ion-label>National</ion-label><ion-radio float-right value="usa"></ion-radio></ion-item>
+          <ion-label>OR</ion-label>
+          <ion-item><ion-label>International</ion-label><ion-radio value="international"></ion-radio></ion-item>
+          <!-- <p class="invalidmsg" *ngIf="(submitAttempt && !joinUsForm.controls.selection.valid)">Are you signing up for a National chapter or an International chapter?</p> -->
+        </ion-list>
+
+        <ion-item>
+          <ion-label>Enter Chapter's Region</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item><hr>
+
+        <ion-item>
+            <ion-label>Enter Chapter's State</ion-label>
+            <ion-input type="text"></ion-input>
+        </ion-item><hr>
+
+        <ion-item>
+              <ion-label>Enter Chapter's Name</ion-label>
+              <ion-input type="text" placeholder="City Name Only"></ion-input>
+          </ion-item><hr>
+
+          <ion-item>
+              <ion-label>Enter Chapter's President </ion-label>
+              <ion-input type="text"></ion-input>
+          </ion-item><hr>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <button ion-button full color="danger" (click)="dismiss()">Add New Chapter</button>
+</ion-footer>

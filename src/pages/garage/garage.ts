@@ -5,6 +5,7 @@ import { ActionSheetController } from "ionic-angular";
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
 import { LoadingController, Loading } from "ionic-angular";
+import { Validators, FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
 
 @IonicPage()
 @Component({
@@ -27,6 +28,8 @@ export class GaragePage {
     following: 1051,
     memberSince: 2003
   };
+
+  garageForm: FormGroup;
 
   memberMotorcycleInfo = [
     /*{
@@ -56,8 +59,15 @@ export class GaragePage {
     public toastCtrl: ToastService,
     public modalCtrl: ModalController,
     public actionSheetCtrl: ActionSheetController,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    public formBuilder: FormBuilder,
   ) {}
+
+  ionViewWillLoad() {
+    this.garageForm = this.formBuilder.group({
+      motorcycles: this.formBuilder.array([this.getInitialMotorcycle()])
+    });
+  }
 
   ionViewDidLoad() {
     this.loading = this.loadingCtrl.create({
@@ -113,20 +123,38 @@ export class GaragePage {
     this.toastCtrl.create("Post image clicked");
   }
 
+  getInitialMotorcycle() {
+    return this.formBuilder.group({
+      color: [''],
+      year: [''],
+      make: [''],
+      model: [''],
+      licensePlate: [''],
+      currentMileage: [''],
+      odometerPic: [''],
+      odometerPicURL: [''],
+      registrationPic: [''],
+      registrationPicURL: ['']
+    });
+  }
+
+  addMotorcycle() {
+    const control = <FormArray>this.garageForm.controls['motorcycles'];
+    control.push(this.getInitialMotorcycle());
+    //this.displayMotorCycles();
+  }
+
+  openGarageModal() {
+    this.openModal2("OdometerFormPage");
+  }
+  openModal2(pageName) {
+    this.modalCtrl.create(pageName).present();
+  }
+
   openQrCodeModal() {
-    this.modalCtrl
-      .create(
-        "OdometerFormPage",
-        {
-          qrcodevalue:
-            this.shareProvider.username +
-            "|" +
-            this.shareProvider.firstname +
-            "|" +
-            this.shareProvider.lastname
-        },
-        { cssClass: "inset-modal" }
-      )
-      .present();
+    this.openModal("QrCodeModalPage");
+  }
+  openModal(pageName) {
+    this.modalCtrl.create(pageName).present();
   }
 }

@@ -1,0 +1,42 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>chapters</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+
+      <ion-col>
+        <ion-buttons end><button style="background: transparent;" (click)="openAddChapterModal()"><ion-icon color="secondary" name="add-circle" style="zoom:2;"></ion-icon></button></ion-buttons>
+          <ion-item>
+              <ion-label>Select View</ion-label>
+              <ion-select interface=popover>
+                <ion-option value="f">All</ion-option>
+                <ion-option value="m">Alphabetical</ion-option>
+                <ion-option value="f">Most Members</ion-option>
+                <ion-option value="m">Most Damas</ion-option>
+                <ion-option value="f">Most Spouses</ion-option>
+                <ion-option value="m">Most Prospects</ion-option>
+                <ion-option value="f">Most Associates</ion-option>
+                <ion-option value="m">Most Miles</ion-option>
+              </ion-select>
+            </ion-item>
+
+        <ion-list no-margin>
+          <ion-item *ngFor="let chapter of chapters; let i = index;">
+            <ion-avatar item-start>
+              <img [src]="chapter.image" alt="{{chapter.memberChapter}}">
+            </ion-avatar>
+            <h2 item-title>L.A.M.A. {{chapter.memberChapter}}</h2>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+</ion-content>

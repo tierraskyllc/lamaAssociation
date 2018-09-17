@@ -1,13 +1,17 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>garage</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
 <ion-content padding class="transparent-header">
+
+    <ion-row>
+        <ion-col width="100%" align="center">
+            <ion-buttons end><button style="background: transparent;" (click)="addMotorcycle()"><ion-icon color="secondary" name="add-circle" style="zoom:2;"></ion-icon></button></ion-buttons>
+        </ion-col>
+      </ion-row>
   <div id="posts">
     <ion-card *ngFor="let motorcycleInfo of memberMotorcycleInfo">
       <ion-item style="background: whitesmoke">
@@ -27,11 +31,16 @@
       </ion-card-content>
 
       <ion-row>
-        <button ion-button block (click)="openQrCodeModal()">
-          <ion-icon name="finger-print" style="color: #FCD736;">Update Odometer now</ion-icon>
+        <button ion-button block (click)="openGarageModal()">
+          <ion-icon name="finger-print" style="color: #FCD736;">Update Motorcycle Info</ion-icon>
         </button>
     </ion-row>
-    
+    <!-- <ion-row>
+      <button ion-button block (click)="openQrCodeModal()">
+        <ion-icon name="finger-print" style="color: #FCD736;">Here To Sign-In</ion-icon>
+      </button>
+    </ion-row> -->
+
     </ion-card>
   </div>
 </ion-content>
