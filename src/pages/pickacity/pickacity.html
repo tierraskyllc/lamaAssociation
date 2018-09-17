@@ -1,0 +1,26 @@
+<ion-header>
+    <!-- use ion-toolbar for a normal toolbar and ion-navbar for navigation -->
+    <ion-navbar>
+      <ion-title>Select City</ion-title>
+      <!--button ion-button full color="danger" (click)="dismiss()">Go Back</button-->
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content padding style="text-align: center; align-content: center; align-items: center; vertical-align: middle;">
+      <ion-grid style="vertical-align: middle;">
+        <ion-row left style="vertical-align: middle;">
+          <ion-col style="vertical-align: middle;">
+              <ion-list padding radio-group>
+                  <ion-item *ngFor="let curcity of data.cities">
+                    <ion-label >{{ curcity.name }}</ion-label>
+                    <ion-radio value="{{ curcity.name }}" (click)="selectMe(curcity.name)"></ion-radio>
+                  </ion-item>
+                </ion-list>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+  </ion-content>
+  
+  <ion-footer>
+      <button ion-button full color="danger" (click)="dismiss()">Go Back</button>
+  </ion-footer>

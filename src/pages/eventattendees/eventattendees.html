@@ -15,8 +15,15 @@
 
 <ion-content padding>
   <ion-grid>
-    
-    <div>
+    <ion-row>
+        <ion-col width="100%" align="center">
+            <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="search()"></ion-searchbar>
+        </ion-col>
+    </ion-row>
+    <div *ngIf="this.data.selection=='livefeed'">
+        <ion-row>
+            <ion-col align="center" (click)="livefeed()" col-6><h4><u>LIVE FEED</u></h4></ion-col><ion-col align="center" (click)="sortbyname()" col-6><h4><u>SORT BY NAME</u></h4></ion-col>
+        </ion-row>
         <ion-row *ngIf="!(items.length > 0)">
             <ion-col width="100%" align="center">
                 <h3>No One Has SignedIn For This Event</h3>
@@ -31,6 +38,63 @@
             </ion-col>
         </ion-row>
         <ion-row *ngFor="let item of items">
+            <ion-col align="left" col-6 style="color: #FCD736;">
+            {{item["first_name"]}}&nbsp;{{item["last_name"]}}
+            <br>
+            {{item["title"]}}
+            <br>
+            {{item["chapter_name"]}}
+            </ion-col>
+            <ion-col align="center" col-6 style="color: #FCD736;">
+                {{item["dttm_signedin"]}}
+            </ion-col>
+        </ion-row>
+    </div>
+    <div *ngIf="this.data.selection=='searchfeed'">
+        <ion-row *ngIf="!(searchitems.length > 0)">
+            <ion-col width="100%" align="center">
+                <h3>{{data.searchattendeestitle}}</h3>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="(searchitems.length > 0)">
+            <ion-col align="left" col-6>
+            <h4>Attendee's Information</h4>
+            </ion-col>
+            <ion-col align="center" col-6>
+            <h4>Date & Time</h4>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngFor="let item of searchitems">
+            <ion-col align="left" col-6 style="color: #FCD736;">
+            {{item["first_name"]}}&nbsp;{{item["last_name"]}}
+            <br>
+            {{item["title"]}}
+            <br>
+            {{item["chapter_name"]}}
+            </ion-col>
+            <ion-col align="center" col-6 style="color: #FCD736;">
+                {{item["dttm_signedin"]}}
+            </ion-col>
+        </ion-row>
+    </div>
+    <div *ngIf="this.data.selection=='sortfeed'">
+        <ion-row>
+                <ion-col align="center" (click)="livefeed()" col-6><h4><u>LIVE FEED</u></h4></ion-col><ion-col align="center" (click)="sortbyname()" col-6><h4><u>SORT BY NAME</u></h4></ion-col>
+        </ion-row>
+        <ion-row *ngIf="!(sortitems.length > 0)">
+            <ion-col width="100%" align="center">
+                <h3>No One Has SignedIn For This Event</h3>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="(sortitems.length > 0)">
+            <ion-col align="left" col-6>
+            <h4>Attendee's Information</h4>
+            </ion-col>
+            <ion-col align="center" col-6>
+            <h4>Date & Time</h4>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngFor="let item of sortitems">
             <ion-col align="left" col-6 style="color: #FCD736;">
             {{item["first_name"]}}&nbsp;{{item["last_name"]}}
             <br>

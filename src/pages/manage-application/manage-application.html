@@ -87,20 +87,21 @@
           </ion-row>
   
           <ion-row *ngIf="applicationForm.controls['country_phone'].controls['country'].value['name'] == 'United States'">
-            <ion-col>
-                <ion-item no-padding color="accent">
-                  <ion-label floating>City</ion-label>
-                  <ion-select formControlName="usacity" interface=popover cancelText="Cancel" okText="OK">
-                    <ion-option *ngFor="let curcity of data.usacities" [value]="curcity.name" [selected]="formdata.city == curcity.name">{{curcity.name}}</ion-option>
-                  </ion-select>
-                </ion-item>
-                <ng-container *ngFor="let validation of validation_messages.usacity">
-                  <div class="error-message" *ngIf="applicationForm.get('usacity').hasError(validation.type) && (applicationForm.get('usacity').dirty || applicationForm.get('usacity').touched || submitAttempt)">
-                    {{ validation.message }}
-                  </div>
-                </ng-container>
-            </ion-col>
-          </ion-row>
+          <ion-col>
+              <ion-item no-padding color="accent">
+                <ion-label floating>City</ion-label>
+                <!--ion-select formControlName="usacity" interface=popover cancelText="Cancel" okText="OK">
+                  <ion-option *ngFor="let curcity of data.usacities" [value]="curcity.name">{{curcity.name}}</ion-option>
+                </ion-select-->
+                <ion-input type="text" formControlName="usacity" [disabled]=true (tap)="pickUSACity()"></ion-input>
+              </ion-item>
+              <ng-container *ngFor="let validation of validation_messages.usacity">
+                <div class="error-message" *ngIf="applicationForm.get('usacity').hasError(validation.type) && (applicationForm.get('usacity').dirty || applicationForm.get('usacity').touched || submitAttempt)">
+                  {{ validation.message }}
+                </div>
+              </ng-container>
+          </ion-col>
+        </ion-row>
   
           <ion-row  *ngIf="applicationForm.controls['country_phone'].controls['country'].value['name'] != 'United States'">
             <ion-col>
@@ -224,7 +225,26 @@
               </div>
             </ion-col>
           </ion-row>
-  
+          
+          <ion-row>
+            <ion-col>
+              <div>
+                <ion-item no-padding color="accent">
+                  <ion-label floating>Type of Membership</ion-label>
+                  <ion-select formControlName="typeOfMembership" interface="popover" cancelText="Cancel" okText="OK" (ionChange)="setValidationForMotorcycleInfo()">
+                    <ion-option *ngFor="let typeOfMembership of typeOfMemberships" [value]="typeOfMembership">{{ typeOfMembership }}</ion-option>
+                  </ion-select>
+                </ion-item>
+                <ng-container *ngFor="let validation of validation_messages.typeOfMembership">
+                  <div class="error-message" *ngIf="applicationForm.get('typeOfMembership').hasError(validation.type) && (applicationForm.get('typeOfMembership').dirty || applicationForm.get('typeOfMembership').touched || submitAttempt)">
+                    {{ validation.message }}
+                  </div>
+                </ng-container>
+              </div>
+            </ion-col>
+        </ion-row>
+
+        <div *ngIf="applicationForm.controls['typeOfMembership'].value != 'Associate/Asociado'">
           <ion-row>
             <ion-col width="100%" align="center">
               <ion-label>Motorcycle Information</ion-label>
@@ -248,20 +268,31 @@
               </div>
             </ion-col>
           </ion-row>
+          
+          <ion-row>
+            <ion-col>
+              <div>
+                <ion-item no-padding color="accent">
+                  <ion-label floating>License Expiration Date</ion-label>
+                  <ion-datetime formControlName="licenseexpdt" max="{{ data.maxyear }}" custom-datetime></ion-datetime>
+                </ion-item>
+                <ng-container *ngFor="let validation of validation_messages.licenseexpdt">
+                  <div class="error-message" *ngIf="applicationForm.get('licenseexpdt').hasError(validation.type) && (applicationForm.get('licenseexpdt').dirty || applicationForm.get('licenseexpdt').touched || submitAttempt)">
+                    {{ validation.message }}
+                  </div>
+                </ng-container>
+              </div>
+            </ion-col>
+          </ion-row>
 
           <ion-row *ngIf="applicationForm.controls['haveMotorcycleLicense'].value == 'Yes'">
             <ion-col width="100%" align="center">
               <button ion-button small round (click)="uploadLicense()">Capture License Picture</button>
             </ion-col>
             <ion-col>
-              <ion-buttons end><button style="background: transparent;" (click)="displayLicensePic()"><ion-icon color="secondary" name="refresh" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+              <ion-buttons end><button style="background: transparent;" (click)="displayLicensePic()"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
             </ion-col>
           </ion-row>
-          <ion-row *ngIf="this.data.licensePicURL">
-            <ion-col width="100%" align="center">
-              <img [src]="this.data.licensePicURL" style="max-width: 100%; height: auto;">
-            </ion-col>
-        </ion-row>
   
           <ion-row>
             <ion-col>
@@ -278,20 +309,6 @@
                   </div>
                 </ng-container>
               </div>
-            </ion-col>
-          </ion-row>
-
-          <ion-row *ngIf="applicationForm.controls['haveMotorcycleInsurance'].value == 'Yes'">
-            <ion-col width="100%" align="center">
-              <button ion-button small round (click)="uploadInsurance()">Capture Insurance Picture</button>
-            </ion-col>
-            <ion-col>
-              <ion-buttons end><button style="background: transparent;" (click)="displayInsurancePic()"><ion-icon color="secondary" name="refresh" style="zoom:1.3;"></ion-icon></button></ion-buttons>
-            </ion-col>
-          </ion-row>
-          <ion-row *ngIf="this.data.insurancePicURL">
-            <ion-col width="100%" align="center">
-              <img [src]="this.data.insurancePicURL" style="max-width: 100%; height: auto;">
             </ion-col>
           </ion-row>
   
@@ -316,7 +333,7 @@
             <ion-col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12>
                 <ion-list formArrayName="motorcycles" no-lines>
                   <div *ngFor="let applicationForm1 of applicationForm.controls.motorcycles.controls; let i=index">
-                    <div [formGroupName]="i">
+                    <div [formGroupName]="i" style="border-style: dotted; border-color: #FCD736; border-radius: 15px; border-width: 1px;">
                       <ion-row>
                         <ion-col>
                             <ion-card-header no-padding card-header>Motorcycle #{{ i + 1 }}</ion-card-header>
@@ -329,74 +346,157 @@
                         <!-- <ion-icon color="danger" name="trash" (click)="removeMotorcycle(i)"></ion-icon> -->
                       <ion-row>
                         <ion-col>
+                        <div>
                           <ion-item no-padding color="accent">
                             <ion-label>Year: </ion-label>
                             <ion-input type="number" formControlName="year" required placeholder="-enter-"></ion-input>
                           </ion-item>
-                        </ion-col>
+                          <div class="validation-errors" *ngIf="applicationForm1.get('year').value=='' && (applicationForm1.get('year').dirty || applicationForm1.get('year').touched || submitAttempt)">
+                              <ng-container>
+                                  <div class="error-message" *ngIf="applicationForm1.get('year').value=='' && (applicationForm1.get('year').dirty || applicationForm1.get('year').touched || submitAttempt)">
+                                    Required.
+                                  </div>
+                              </ng-container>
+                            </div>
+                        </div>
+                      </ion-col>
                         <ion-col>
+                        <div>
                           <ion-item no-padding color="accent">
                             <ion-label>Color: </ion-label>
                             <ion-input type="text" formControlName="color" required placeholder="-enter-"></ion-input>
                           </ion-item>
-                        </ion-col>
+                          <div class="validation-errors" *ngIf="applicationForm1.get('color').value=='' && (applicationForm1.get('color').dirty || applicationForm1.get('color').touched || submitAttempt)">
+                              <ng-container>
+                                  <div class="error-message" *ngIf="applicationForm1.get('color').value=='' && (applicationForm1.get('color').dirty || applicationForm1.get('color').touched || submitAttempt)">
+                                    Required.
+                                  </div>
+                              </ng-container>
+                            </div>
+                        </div>
+                      </ion-col>
                       </ion-row>
                       <ion-item no-padding color="accent">
                           <ion-label>Make: </ion-label>
                         <ion-input type="text" formControlName="make" required placeholder="-enter-"></ion-input>
                       </ion-item>
-                      <ion-item no-padding color="accent">
-                          <ion-label>Model: </ion-label>
-                        <ion-input type="text" formControlName="model" required placeholder="-enter-"></ion-input>
-                      </ion-item>
-                      <ion-item no-padding color="accent">
-                          <ion-label>License Plate#: </ion-label>
-                        <ion-input type="text" formControlName="licensePlate" required placeholder="-enter-"></ion-input>
-                      </ion-item>
-                      <ion-item no-padding color="accent">
-                          <ion-label>Current Mileage: </ion-label>
-                        <ion-input type="number" formControlName="currentMileage" placeholder="000000"></ion-input>
-                      </ion-item>
-                      <ion-row>
-                        <ion-col>
-                            <button ion-button small round (click)="uploadOdometer(i)">Capture Odometer Picture</button>
+                      <div class="validation-errors" *ngIf="applicationForm1.get('make').value=='' && (applicationForm1.get('make').dirty || applicationForm1.get('make').touched || submitAttempt)">
+                        <ng-container>
+                            <div class="error-message" *ngIf="applicationForm1.get('make').value=='' && (applicationForm1.get('make').dirty || applicationForm1.get('make').touched || submitAttempt)">
+                              Make is required.
+                            </div>
+                        </ng-container>
+                      </div>
+                    <ion-item no-padding color="accent">
+                        <ion-label>Model: </ion-label>
+                      <ion-input type="text" formControlName="model" required placeholder="-enter-"></ion-input>
+                    </ion-item>
+                    <div class="validation-errors" *ngIf="applicationForm1.get('model').value=='' && (applicationForm1.get('model').dirty || applicationForm1.get('model').touched || submitAttempt)">
+                        <ng-container>
+                            <div class="error-message" *ngIf="applicationForm1.get('model').value=='' && (applicationForm1.get('model').dirty || applicationForm1.get('model').touched || submitAttempt)">
+                              Model is required.
+                            </div>
+                        </ng-container>
+                      </div>
+                    <ion-item no-padding color="accent">
+                        <ion-label>License Plate#: </ion-label>
+                      <ion-input type="text" formControlName="licensePlate" required placeholder="-enter-"></ion-input>
+                    </ion-item>
+                    <div class="validation-errors" *ngIf="applicationForm1.get('licensePlate').value=='' && (applicationForm1.get('licensePlate').dirty || applicationForm1.get('licensePlate').touched || submitAttempt)">
+                        <ng-container>
+                            <div class="error-message" *ngIf="applicationForm1.get('licensePlate').value=='' && (applicationForm1.get('licensePlate').dirty || applicationForm1.get('licensePlate').touched || submitAttempt)">
+                              License Plate is required.
+                            </div>
+                        </ng-container>
+                      </div>
+                    <ion-item no-padding color="accent">
+                        <ion-label>Current Mileage: </ion-label>
+                      <ion-input type="number" formControlName="currentMileage" placeholder="000000"></ion-input>
+                    </ion-item>
+                    <div class="validation-errors" *ngIf="applicationForm1.get('currentMileage').value=='' && (applicationForm1.get('currentMileage').dirty || applicationForm1.get('currentMileage').touched || submitAttempt)">
+                        <ng-container>
+                            <div class="error-message" *ngIf="applicationForm1.get('currentMileage').value=='' && (applicationForm1.get('currentMileage').dirty || applicationForm1.get('currentMileage').touched || submitAttempt)">
+                              Current Mileage is required.
+                            </div>
+                        </ng-container>
+                      </div>
+                    <ion-row>
+                      <ion-col>
+                          <button ion-button small round (click)="uploadOdometer(i)">Capture Odometer Picture</button>
+                      </ion-col>
+                      <ion-col>
+                        <ion-buttons end><button style="background: transparent;" (click)="displayOdometerPic(i)"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+                      </ion-col>
+                    </ion-row>
+                    <!--1:&nbsp;{{this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']}}-->
+                    <!--ion-row *ngIf="this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']">
+                        <ion-col width="100%" align="center">
+                          <img [src]="this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']" style="max-width: 100%; height: auto;">
                         </ion-col>
-                        <ion-col>
-                          <ion-buttons end><button style="background: transparent;" (click)="displayOdometerPic(i)"><ion-icon color="secondary" name="refresh" style="zoom:1.3;"></ion-icon></button></ion-buttons>
-                        </ion-col>
-                      </ion-row>
-                      <!--1:&nbsp;{{this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']}}-->
-                      <ion-row *ngIf="this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']">
-                          <ion-col width="100%" align="center">
-                            <img [src]="this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']" style="max-width: 100%; height: auto;">
-                          </ion-col>
-                      </ion-row>
-  
-                      <ion-row>
-                        <ion-col>
-                            <button ion-button small round (click)="uploadRegistration(i)">Capture Registration Picture</button>
-                        </ion-col>
-                        <ion-col>
-                          <ion-buttons end><button style="background: transparent;" (click)="displayRegistrationPic(i)"><ion-icon color="secondary" name="refresh" style="zoom:1.3;"></ion-icon></button></ion-buttons>
-                        </ion-col>
-                      </ion-row>
-                      <!--1:&nbsp;{{this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']}}-->
-                      <ion-row *ngIf="this.applicationForm.controls['motorcycles'].value[i]['registrationPicURL']">
-                          <ion-col width="100%" align="center">
-                            <img [src]="this.applicationForm.controls['motorcycles'].value[i]['registrationPicURL']" style="max-width: 100%; height: auto;">
-                          </ion-col>
-                      </ion-row>
-                    </div>
+                    </ion-row-->
+                    <ion-row>
+                      <ion-col>
+                        <div>
+                          <ion-item no-padding color="accent">
+                            <ion-label floating>Registration Expiration Date</ion-label>
+                            <ion-datetime formControlName="registrationexpdt" max="{{ data.maxyear }}" custom-datetime></ion-datetime>
+                          </ion-item>
+                          <div class="validation-errors" *ngIf="applicationForm1.get('registrationexpdt').value=='' && (applicationForm1.get('registrationexpdt').dirty || applicationForm1.get('registrationexpdt').touched || submitAttempt)">
+                            <ng-container>
+                                <div class="error-message" *ngIf="applicationForm1.get('registrationexpdt').value=='' && (applicationForm1.get('registrationexpdt').dirty || applicationForm1.get('registrationexpdt').touched || submitAttempt)">
+                                  Registration Expiration Date is required.
+                                </div>
+                            </ng-container>
+                          </div>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col>
+                          <button ion-button small round (click)="uploadRegistration(i)">Capture Registration Picture</button>
+                      </ion-col>
+                      <ion-col>
+                        <ion-buttons end><button style="background: transparent;" (click)="displayRegistrationPic(i)"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+                      </ion-col>
+                    </ion-row>
+                    
+                    <ion-row>
+                      <ion-col>
+                        <div>
+                          <ion-item no-padding color="accent">
+                            <ion-label floating>Insurance Expiration Date</ion-label>
+                            <ion-datetime formControlName="insuranceexpdt" max="{{ data.maxyear }}" custom-datetime></ion-datetime>
+                          </ion-item>
+                          <div class="validation-errors" *ngIf="applicationForm1.get('insuranceexpdt').value=='' && (applicationForm1.get('insuranceexpdt').dirty || applicationForm1.get('insuranceexpdt').touched || submitAttempt)">
+                              <ng-container>
+                                  <div class="error-message" *ngIf="applicationForm1.get('insuranceexpdt').value=='' && (applicationForm1.get('insuranceexpdt').dirty || applicationForm1.get('insuranceexpdt').touched || submitAttempt)">
+                                    Insurance Expiration Date is required.
+                                  </div>
+                              </ng-container>
+                            </div>
+                        </div>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col>
+                          <button ion-button small round (click)="uploadInsurance(i)">Capture Insurance Picture</button>
+                      </ion-col>
+                      <ion-col>
+                        <ion-buttons end><button style="background: transparent;" (click)="displayInsurancePic(i)"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+                      </ion-col>
+                    </ion-row>
                   </div>
-                </ion-list>
-            </ion-col>
-          </ion-row>
+                </div>
+              </ion-list>
+          </ion-col>
+        </ion-row>
   
           <ion-row>
               <ion-col width="100%" align="center">
                 <button ion-button small (click)="addMotorcycle()" color="dark" type="button">Add Another Motorcycle</button>
               </ion-col>
           </ion-row>
+        </div>
           <br>
           <ion-row>
             <ion-col width="100%" align="center">
@@ -412,7 +512,7 @@
                 <ion-item no-padding color="accent">
                   <ion-label floating>Do you belong to another Riding Club?</ion-label>
                   <ion-select formControlName="anyOtherClub" interface="popover">
-                    <ion-option (ionSelect)="changeValidationForAnyOtherClub()" *ngFor="let anyOtherClub of yesOrNo" [value]="anyOtherClub" [selected]="formdata.any_other_club == anyOtherClub">{{ anyOtherClub }}</ion-option>
+                    <ion-option (ionSelect)="changeValidationForAnyOtherClub()" *ngFor="let anyOtherClub of yesOrNo" [value]="anyOtherClub">{{ anyOtherClub }}</ion-option>
                   </ion-select>
                 </ion-item>
                 <ng-container *ngFor="let validation of validation_messages.anyOtherClub">
@@ -629,7 +729,7 @@
                 </ng-container>
               </div>
   
-              <div>
+              <!--div>
                 <ion-item no-padding color="accent">
                   <ion-label floating>Type of Membership</ion-label>
                   <ion-select formControlName="typeOfMembership" interface="popover" cancelText="Cancel" okText="OK">
@@ -641,7 +741,7 @@
                     {{ validation.message }}
                   </div>
                 </ng-container>
-              </div>
+              </div-->
   
               <div>
                 <ion-item no-padding color="accent">

@@ -22,6 +22,10 @@ export class EventattendeesPage {
 
   data: any = {};
   items: any;
+  searchitems: any;
+  sortitems: any;
+  searchTerm: string = '';
+  searchTimer: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -31,6 +35,9 @@ export class EventattendeesPage {
       this.data.lama_events_id = navParams.get('lama_events_id');
       this.data.maxid = 0;
       this.items = [];
+      this.searchitems = [];
+      this.sortitems = [];
+      this.data.selection = 'livefeed';
   }
 
   ionViewDidLoad() {
@@ -42,7 +49,7 @@ export class EventattendeesPage {
     this.data.intervalvar = setInterval(() => {      
       //console.log('timer');
       this.getMoreEventAttendees();
-      },3000);
+      },5000);
   }
 
   ionViewWillEnter() {
@@ -58,7 +65,7 @@ export class EventattendeesPage {
       content: '',
     });
     this.loading.present();
-
+    this.data.items = [];
     var decoded_response = "";
     var body = new FormData();
     body.append('sessionid', this.shareProvider.sessionid);
@@ -90,6 +97,7 @@ export class EventattendeesPage {
               }
             }
             this.items = decoded_response[2];
+            this.data.selection = 'livefeed';
             this.loading.dismissAll();
           }
           else {
@@ -178,6 +186,80 @@ export class EventattendeesPage {
           //this.loading.dismissAll();
         }
       );
+  }
+
+  search() {
+    clearTimeout(this.searchTimer);
+    this.searchTimer = setTimeout(() => {      
+      //console.log('timer');
+      this.actualsearch();
+      },1000);
+  }
+
+  actualsearch() {
+    if(this.searchTerm == '') {
+      this.livefeed();
+    }
+    else {
+      /*this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();*/
+      clearInterval(this.data.intervalvar);
+      this.data.searchattendeestitle = "No attendee found for search term: " + this.searchTerm;
+      this.searchitems = [];
+      for(var i=0; i<this.items.length; i++) {
+        if((this.items[i]['first_name'].toUpperCase().includes(this.searchTerm.toUpperCase())) || (this.items[i]['last_name'].toUpperCase().includes(this.searchTerm.toUpperCase())) || (this.items[i]['title'].toUpperCase().includes(this.searchTerm.toUpperCase())) || (this.items[i]['chapter_name'].toUpperCase().includes(this.searchTerm.toUpperCase())) || (this.items[i]['dttm_signedin'].toUpperCase().includes(this.searchTerm.toUpperCase()))) {
+          this.searchitems[this.searchitems.length] = this.items[i];
+        }
+      }
+      this.data.selection = 'searchfeed';
+      //this.loading.dismissAll();
+    }
+  }
+
+  livefeed() {
+    this.getEventAttendees();
+    this.data.intervalvar = setInterval(() => {      
+      //console.log('timer');
+      this.getMoreEventAttendees();
+      },5000);
+  }
+
+  sortbyname() {
+    /*this.loading = this.loadingCtrl.create({
+      content: '',
+    });
+    this.loading.present();*/
+    clearInterval(this.data.intervalvar);
+    this.sortitems = [];
+    this.items.sort(function(x, y) {
+        var a = x.first_name.toUpperCase();
+        var b = y.first_name.toUpperCase();
+        if(a > b) {
+          return 1;
+        }
+        if(a < b) {
+          return -1;
+        }
+        return 0;
+      }
+    );
+    /*this.items.sort(function(x, y) {
+        var a = x.last_name.toUpperCase();
+        var b = y.last_name.toUpperCase();
+        if(a > b) {
+          return 1;
+        }
+        if(a < b) {
+          return -1;
+        }
+        return 0;
+      }
+    );*/
+    this.sortitems = this.items;
+    //this.loading.dismissAll();
+    this.data.selection = 'sortfeed';
   }
 
 }

@@ -43,14 +43,14 @@ export class JoinUsPage {
     });
 
     this.joinUsForm = this.formBuilder.group({
-      firstname: ["", Validators.compose([Validators.required, Validators.maxLength(16), Validators.pattern("[a-zA-Z ]*")])],
-      lastname: ["", Validators.compose([Validators.required, Validators.maxLength(16), Validators.pattern("[a-zA-Z ]*")])],
+      firstname: ["", Validators.compose([Validators.required, Validators.maxLength(40), Validators.pattern("[a-zA-Z0-9 \.\']*")])],
+      lastname: ["", Validators.compose([Validators.required, Validators.maxLength(40), Validators.pattern("[a-zA-Z0-9 \.\']*")])],
       email: new FormControl("", Validators.compose([Validators.required, Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")])),
       matching_passwords: this.matching_passwords_group,
       selection: ["", Validators.compose([Validators.required])],
       region: ["", Validators.compose([Validators.required])],
-      state: ["", Validators.compose([Validators.required, Validators.minLength(1)])],
-      chapter: ["", Validators.compose([Validators.required, Validators.minLength(1)])],
+      state: ["", Validators.compose([Validators.required])],
+      chapter: ["", Validators.compose([Validators.required])],
       country: ["", Validators.compose([Validators.required])],
       intlchapter: ["", Validators.compose([Validators.required])]
     });
@@ -90,11 +90,11 @@ export class JoinUsPage {
     this.joinUsForm.get("region").updateValueAndValidity();
     this.joinUsForm
       .get("state")
-      .setValidators([Validators.required, Validators.minLength(1)]);
+      .setValidators([Validators.required]);
     this.joinUsForm.get("state").updateValueAndValidity();
     this.joinUsForm
       .get("chapter")
-      .setValidators([Validators.required, Validators.minLength(1)]);
+      .setValidators([Validators.required]);
     this.joinUsForm.get("chapter").updateValueAndValidity();
   }
 
@@ -117,6 +117,17 @@ export class JoinUsPage {
 
   submit() {
     this.submitAttempt = true;
+    //console.log(this.joinUsForm.valid);
+    //console.log('firstname: ' + this.joinUsForm.controls.firstname.valid);
+    //console.log('lastname: ' + this.joinUsForm.controls.lastname.valid);
+    //console.log('email: ' + this.joinUsForm.controls.email.valid);
+    //console.log('password: ' + this.joinUsForm.controls.password.valid);
+    //console.log('selection: ' + this.joinUsForm.controls.selection.valid);
+    //console.log('region: ' + this.joinUsForm.controls.region.valid);
+    //console.log('state: ' + this.joinUsForm.controls.state.valid);
+    //console.log('chapter: ' + this.joinUsForm.controls.chapter.valid);
+    //console.log('country: ' + this.joinUsForm.controls.country.valid);
+    //console.log('intlchapter: ' + this.joinUsForm.controls.intlchapter.valid);
     if (this.joinUsForm.valid) {
       var body = new FormData();
       var json_encoded_response = "";

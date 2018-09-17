@@ -12,7 +12,7 @@ import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
-//import { PhotoViewer } from '@ionic-native/photo-viewer';
+import { PhotoViewer } from '@ionic-native/photo-viewer';
 //import { Transfer } from '@ionic-native/transfer';
 
 @NgModule({
@@ -41,7 +41,7 @@ import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
     FileTransfer,
     FileTransferObject,
     QRScanner,
-    //PhotoViewer,
+    PhotoViewer,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

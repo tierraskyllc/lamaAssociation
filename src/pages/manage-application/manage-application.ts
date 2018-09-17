@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { AgeValidator } from  '../../validators/age';
 import { PhoneValidator } from './../../validators/phone.validator';
 import { Country } from './manage-application.model';
@@ -8,13 +8,12 @@ import emailMask from 'text-mask-addons/dist/emailMask';
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
 import { AlertController } from 'ionic-angular';
-
 import { ActionSheetController, ToastController, Platform, LoadingController, Loading } from 'ionic-angular';
 import { File } from '@ionic-native/file';
-//import { Transfer, TransferObject } from '@ionic-native/transfer';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
+import { PhotoViewer } from '@ionic-native/photo-viewer';
 
 /**
  * Generated class for the ManageApplicationPage page.
@@ -83,7 +82,9 @@ export class ManageApplicationPage {
     public actionSheetCtrl: ActionSheetController, 
     public toastCtrl: ToastController, 
     public platform: Platform, 
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    private photoViewer: PhotoViewer,
+    public modalCtrl: ModalController
   ) {
 
       this.data.lama_applications_id = navParams.get('lama_applications_id');
@@ -95,11 +96,12 @@ export class ManageApplicationPage {
       this.data.licensepic = "";
       this.data.insurancePicURL = "";
       this.data.licensePicURL = "";
+      this.data.motorcyclesobjects = [];
       this.data.isappsubmited = false;
       this.data.submittedtext = "";
-
       this.data.usastates = [];
       this.data.usacities = [];
+      this.data.maxyear = new Date().getFullYear() + 25;
 
       /*this.loading = this.loadingCtrl.create({
         content: '',
@@ -141,6 +143,7 @@ export class ManageApplicationPage {
     }
 
   ionViewDidLoad() {
+    this.setValidationForMotorcycleInfo();
     console.log('ionViewDidLoad ManageApplicationPage');
     //this.getApplicationDetails();
   }
@@ -197,10 +200,11 @@ export class ManageApplicationPage {
       placeOfBirth: ['', Validators.compose([Validators.required, Validators.maxLength(40)])],
       yearsRiding: ['', Validators.required],
       haveMotorcycleLicense: ["", Validators.compose([Validators.required])],
+      licenseexpdt: ["", Validators.compose([Validators.required])],
       haveMotorcycleInsurance: ["", Validators.compose([Validators.required])],
-      modelOfMotorcycle1: new FormControl(this.modelOfMotorcycles[0], Validators.required),
-      modelOfMotorcycle2: new FormControl(this.modelOfMotorcycles[0], Validators.required),
-      modelOfMotorcycle3: new FormControl(this.modelOfMotorcycles[0], Validators.required),
+      //modelOfMotorcycle1: new FormControl(this.modelOfMotorcycles[0], Validators.required),
+      //modelOfMotorcycle2: new FormControl(this.modelOfMotorcycles[0], Validators.required),
+      //modelOfMotorcycle3: new FormControl(this.modelOfMotorcycles[0], Validators.required),
       //licensePlate1: ['', Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')])],
       //licensePlate2: ['', Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')])],
       //licensePlate3: ['', Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')])],
@@ -223,9 +227,7 @@ export class ManageApplicationPage {
       typeOfChapter: ["", Validators.compose([Validators.required])],
       applicationStatus: ["", Validators.compose([Validators.required])],
       note: [''],
-      motorcycles: this.formBuilder.array([
-        //this.getInitialMotorcycle()
-      ])
+      motorcycles: this.formBuilder.array([])
     });
 
     //this.getApplicationDetails();
@@ -237,26 +239,25 @@ export class ManageApplicationPage {
       this.uploadImage();
       },2000);
 
-      setTimeout(() => {      
+      /*setTimeout(() => {      
         //console.log('timer');
         this.displayOdometerAndRegistrationPics();
-        },5000);
+        },5000);*/
 
       this.changeValidationForAnyOtherClub();
   }
 
   getInitialMotorcycle() {
+    this.data.motorcyclesobjects.push({"odometerPic":'', "registrationPic":'', "insurancePic":''});
     return this.formBuilder.group({
-      color: [''],
-      year: [''],
-      make: [''],
-      model: [''],
-      licensePlate: [''],
-      currentMileage: [''],
-      odometerPic: [''],
-      odometerPicURL: [''],
-      registrationPic: [''],
-      registrationPicURL: ['']
+      color: ['', Validators.compose([Validators.required])],
+      year: ['', Validators.compose([Validators.required])],
+      make: ['', Validators.compose([Validators.required])],
+      model: ['', Validators.compose([Validators.required])],
+      licensePlate: ['', Validators.compose([Validators.required])],
+      currentMileage: ['', Validators.compose([Validators.required])],
+      registrationexpdt: ['', Validators.compose([Validators.required])],
+      insuranceexpdt: ['', Validators.compose([Validators.required])]
     });
   }
 
@@ -269,6 +270,7 @@ export class ManageApplicationPage {
   removeMotorcycle(i: number) {
     const control = <FormArray>this.applicationForm.controls['motorcycles'];
     control.removeAt(i);
+    this.data.motorcyclesobjects.splice(i, 1);
   }
 
   validation_messages = {
@@ -283,6 +285,7 @@ export class ManageApplicationPage {
     'zipCode': [{type: 'required', message: 'Zip Code is required.'}, {type: 'pattern', message: 'Enter a valid Zip Code.'}],
     'phone': [{ type: 'required', message: 'Phone is required.' }, { type: 'validCountryPhone', message: 'Phone incorrect for the country selected' }],
     'dateofbirth': [{ type: 'required', message: 'Date of Birth is required.'}],
+    'licenseexpdt': [{ type: 'required', message: 'License expiration date is required.'}],
     'gender': [{ type: 'required', message: 'Gender is required.' }],
     'haveMotorcycleLicense': [{ type: 'required', message: 'Please select Yes or No.' }],
     'haveMotorcycleInsurance': [{ type: 'required', message: 'Please select Yes or No.' }],
@@ -544,6 +547,7 @@ export class ManageApplicationPage {
       body.append('memberTitle', this.applicationForm.controls['memberTitle'].value);
       body.append('typeOfMembership', this.applicationForm.controls['typeOfMembership'].value);
       body.append('typeOfChapter', this.applicationForm.controls['typeOfChapter'].value);
+      body.append('licenseexpdt', this.applicationForm.controls['licenseexpdt'].value);
       body.append('licensepic', this.data.licensepic);
       body.append('insurancepic', this.data.insurancepic);
       body.append('application_status', this.applicationForm.controls['applicationStatus'].value);
@@ -551,7 +555,7 @@ export class ManageApplicationPage {
       //-----
       var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
       for (var i = 0; i < motorcyclesobjects.length; i++) {
-        if(!((motorcyclesobjects[i]['year'] == '') && (motorcyclesobjects[i]['color'] == '') && (motorcyclesobjects[i]['make'] == '') && (motorcyclesobjects[i]['model'] == '') && (motorcyclesobjects[i]['licensePlate'] == '') && (motorcyclesobjects[i]['currentMileage'] == '') && (motorcyclesobjects[i]['odometerPic'] == '') && (motorcyclesobjects[i]['registrationPic'] == ''))) {
+        if(!((motorcyclesobjects[i]['year'] == '') && (motorcyclesobjects[i]['color'] == '') && (motorcyclesobjects[i]['make'] == '') && (motorcyclesobjects[i]['model'] == '') && (motorcyclesobjects[i]['licensePlate'] == '') && (motorcyclesobjects[i]['currentMileage'] == ''))) {
           //this.data.error = motorcyclesobjects[i]['year'] + ' ' + motorcyclesobjects[i]['color'] + ' ' + motorcyclesobjects[i]['make'] + ' ' + motorcyclesobjects[i]['model'] + ' ' + motorcyclesobjects[i]['licensePlate'] + ' ' + motorcyclesobjects[i]['currentMileage'];
           body.append('year'+i, motorcyclesobjects[i]['year']);
           body.append('color'+i, motorcyclesobjects[i]['color']);
@@ -559,8 +563,11 @@ export class ManageApplicationPage {
           body.append('model'+i, motorcyclesobjects[i]['model']);
           body.append('licensePlate'+i, motorcyclesobjects[i]['licensePlate']);
           body.append('currentMileage'+i, motorcyclesobjects[i]['currentMileage']);
-          body.append('odometerPic'+i, motorcyclesobjects[i]['odometerPic']);
-          body.append('registrationPic'+i, motorcyclesobjects[i]['registrationPic']);
+          body.append('odometerPic'+i, this.data.motorcyclesobjects[i]['odometerPic']);
+          body.append('registrationPic'+i, this.data.motorcyclesobjects[i]['registrationPic']);
+          body.append('registrationexpdt'+i, motorcyclesobjects[i]['registrationexpdt']);
+          body.append('insurancePic'+i, this.data.motorcyclesobjects[i]['insurancePic']);
+          body.append('insuranceexpdt'+i, motorcyclesobjects[i]['insuranceexpdt']);
         }
       }
       //-----
@@ -684,13 +691,21 @@ export class ManageApplicationPage {
       var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
       for (var i = 0; i < motorcyclesobjects.length; i++) {
         if(this.data.selectedimage == 'odometer'+i) {
-          var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
-          motorcyclesobjects[i]['odometerPic'] = newFileName;
+          //var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
+          ////motorcyclesobjects[i]['odometerPic'] = newFileName;
+          this.data.motorcyclesobjects[i]['odometerPic'] = newFileName;
           break;
         }
         if(this.data.selectedimage == 'registration'+i) {
-          var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
-          motorcyclesobjects[i]['registrationPic'] = newFileName;
+          //var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
+          ////motorcyclesobjects[i]['registrationPic'] = newFileName;
+          this.data.motorcyclesobjects[i]['registrationPic'] = newFileName;
+          break;
+        }
+        if(this.data.selectedimage == 'insurance'+i) {
+          //var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
+          ////motorcyclesobjects[i]['insurancePic'] = newFileName;
+          this.data.motorcyclesobjects[i]['insurancePic'] = newFileName;
           break;
         }
       }
@@ -772,19 +787,25 @@ export class ManageApplicationPage {
           //console.log(this.data.selectedimage);
           var num = this.data.selectedimage.match(/^odometer([0-9]+)$/)[1];
           //console.log(num);
-          this.displayOdometerPic(num);
+          //this.displayOdometerPic(num);
         }
         else if(/^registration[0-9]+$/.test(this.data.selectedimage)) {
           //console.log(this.data.selectedimage);
           var num = this.data.selectedimage.match(/^registration([0-9]+)$/)[1];
           //console.log(num);
-          this.displayRegistrationPic(num);
+          //this.displayRegistrationPic(num);
+        }
+        else if(/^insurance[0-9]+$/.test(this.data.selectedimage)) {
+          //console.log(this.data.selectedimage);
+          var num = this.data.selectedimage.match(/^insurance([0-9]+)$/)[1];
+          //console.log(num);
+          //this.displayRegistrationPic(num);
         }
         else if(this.data.selectedimage == 'license') {
-          this.displayLicensePic();
+          //this.displayLicensePic();
         }
         else if(this.data.selectedimage == 'insurance') {
-          this.displayInsurancePic();
+          //this.displayInsurancePic();
         }
       }, (err) => {
         this.loading.dismissAll();
@@ -800,8 +821,8 @@ export class ManageApplicationPage {
     this.takePicture(this.camera.PictureSourceType.CAMERA);
   }
 
-  public uploadInsurance() {
-    this.data.selectedimage = "insurance";
+  public uploadInsurance(num) {
+    this.data.selectedimage = "insurance"+num;
     //this.presentActionSheet();
     this.takePicture(this.camera.PictureSourceType.CAMERA);
   }
@@ -819,9 +840,9 @@ export class ManageApplicationPage {
   }
 
   public displayOdometerPic(num) {
-    console.log("Called displayOdometerPic with num=" + num);
-    var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
-    if((motorcyclesobjects[num]['odometerPic'] == null) || (motorcyclesobjects[num]['odometerPic'] == '')) {
+    ////var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
+    ////if((motorcyclesobjects[num]['odometerPic'] == null) || (motorcyclesobjects[num]['odometerPic'] == '')) {
+    if((this.data.motorcyclesobjects[num]['odometerPic'] == null) || (this.data.motorcyclesobjects[num]['odometerPic'] == '')) {
       this.presentToast('You have not uploaded odometer pic for this motorcycle yet.  You must upload one.');
     }
     else {
@@ -833,7 +854,8 @@ export class ManageApplicationPage {
 
       var body = new FormData();
       body.append('sessionid', this.shareProvider.sessionid);
-      body.append('docname', motorcyclesobjects[num]['odometerPic']);
+      ////body.append('docname', motorcyclesobjects[num]['odometerPic']);
+      body.append('docname', this.data.motorcyclesobjects[num]['odometerPic']);
       this.http.post(this.shareProvider.server + "docdownload/tempsession.php", body).subscribe(
         data => {
           var decoded_response = JSON.parse(data["_body"]);
@@ -841,9 +863,10 @@ export class ManageApplicationPage {
           if (decoded_response[0] == "true") {
             //console.log(decoded_response[1]);
             //----------
-            var docurl = this.shareProvider.server + "docdownload/downloaddoc.php?temporaryshortsessionid=" + decoded_response[1] + "&docname=" + motorcyclesobjects[num]['odometerPic'];
-            motorcyclesobjects[num]['odometerPicURL'] = docurl;
-            console.log(motorcyclesobjects[num]['odometerPicURL']);
+            var docurl = this.shareProvider.server + "docdownload/downloaddoc.php?temporaryshortsessionid=" + decoded_response[1] + "&docname=" + this.data.motorcyclesobjects[num]['odometerPic'];
+            //motorcyclesobjects[num]['odometerPicURL'] = docurl;
+            this.photoViewer.show(docurl, 'Odometer Picture', {share: false});
+            //console.log(motorcyclesobjects[num]['odometerPicURL']);
             //this.photoViewer.show(docurl, 'Motorcycle # '+ num + ' odometer picture', {share: false});
             //this.photoViewer.show(docurl);
             //----------
@@ -868,13 +891,13 @@ export class ManageApplicationPage {
   }
 
   public displayRegistrationPic(num) {
-    console.log("Called displayRegistrationPic with num=" + num);
-    var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
-    if((motorcyclesobjects[num]['registrationPic'] == null) || (motorcyclesobjects[num]['registrationPic'] == '')) {
+    ////var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
+    ////if((motorcyclesobjects[num]['registrationPic'] == null) || (motorcyclesobjects[num]['registrationPic'] == '')) {
+    if((this.data.motorcyclesobjects[num]['registrationPic'] == null) || (this.data.motorcyclesobjects[num]['registrationPic'] == '')) {
       this.presentToast('You have not uploaded registration pic for this motorcycle yet.  You must upload one.');
     }
     else {
-      //this.presentToast('I\'ll try to upload odometer pic here.');
+      //this.presentToast('I\'ll try to upload registration pic here.');
       this.loading = this.loadingCtrl.create({
         content: '',
       });
@@ -882,7 +905,8 @@ export class ManageApplicationPage {
 
       var body = new FormData();
       body.append('sessionid', this.shareProvider.sessionid);
-      body.append('docname', motorcyclesobjects[num]['registrationPic']);
+      ////body.append('docname', motorcyclesobjects[num]['registrationPic']);
+      body.append('docname', this.data.motorcyclesobjects[num]['registrationPic']);
       this.http.post(this.shareProvider.server + "docdownload/tempsession.php", body).subscribe(
         data => {
           var decoded_response = JSON.parse(data["_body"]);
@@ -890,10 +914,11 @@ export class ManageApplicationPage {
           if (decoded_response[0] == "true") {
             //console.log(decoded_response[1]);
             //----------
-            var docurl = this.shareProvider.server + "docdownload/downloaddoc.php?temporaryshortsessionid=" + decoded_response[1] + "&docname=" + motorcyclesobjects[num]['registrationPic'];
-            motorcyclesobjects[num]['registrationPicURL'] = docurl;
-            console.log(motorcyclesobjects[num]['registrationPicURL']);
-            //this.photoViewer.show(docurl, 'Motorcycle # '+ num + ' odometer picture', {share: false});
+            var docurl = this.shareProvider.server + "docdownload/downloaddoc.php?temporaryshortsessionid=" + decoded_response[1] + "&docname=" + this.data.motorcyclesobjects[num]['registrationPic'];
+            //motorcyclesobjects[num]['registrationPicURL'] = docurl;
+            this.photoViewer.show(docurl, 'Registration Picture', {share: false});
+            //console.log(motorcyclesobjects[num]['registrationPicURL']);
+            //this.photoViewer.show(docurl, 'Motorcycle # '+ num + ' registration picture', {share: false});
             //this.photoViewer.show(docurl);
             //----------
             this.loading.dismissAll();
@@ -901,7 +926,7 @@ export class ManageApplicationPage {
           else {
             //this.data.error = "Unknown problem occured.  Please contact administrator.";
             this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
-            console.log("Unknown problem occured.  Please contact administrator.  Code: APP-118");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: APP-108");
             this.loading.dismissAll();
           }
         },
@@ -909,7 +934,7 @@ export class ManageApplicationPage {
           //this.data.error = "Unknown problem occured.  Please contact administrator.";
           //console.log("Oooops!");
           this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
-          console.log("Unknown problem occured.  Please contact administrator.  Code: APP-119");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: APP-109");
           this.loading.dismissAll();
         }
       );
@@ -937,8 +962,9 @@ export class ManageApplicationPage {
             //console.log(decoded_response[1]);
             //----------
             var docurl = this.shareProvider.server + "docdownload/downloaddoc.php?temporaryshortsessionid=" + decoded_response[1] + "&docname=" + this.data.licensepic;
-            this.data.licensePicURL = docurl;
-            console.log(this.data.licensePicURL);
+            //this.data.licensePicURL = docurl;
+            this.photoViewer.show(docurl, 'License Picture', {share: false});
+            //console.log(this.data.licensePicURL);
             //this.photoViewer.show(docurl, 'Motorcycle # '+ num + ' odometer picture', {share: false});
             //this.photoViewer.show(docurl);
             //----------
@@ -962,11 +988,14 @@ export class ManageApplicationPage {
     }
   }
 
-  public displayInsurancePic() {
-    if((this.data.insurancepic == null) || (this.data.insurancepic == '')) {
-      this.presentToast('You have not uploaded insurance pic yet.  You must upload one.');
+  public displayInsurancePic(num) {
+    ////var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
+    ////if((motorcyclesobjects[num]['insurancePic'] == null) || (motorcyclesobjects[num]['insurancePic'] == '')) {
+    if((this.data.motorcyclesobjects[num]['insurancePic'] == null) || (this.data.motorcyclesobjects[num]['insurancePic'] == '')) {
+      this.presentToast('You have not uploaded insurance pic for this motorcycle yet.  You must upload one.');
     }
     else {
+      //this.presentToast('I\'ll try to upload insurance pic here.');
       this.loading = this.loadingCtrl.create({
         content: '',
       });
@@ -974,7 +1003,8 @@ export class ManageApplicationPage {
 
       var body = new FormData();
       body.append('sessionid', this.shareProvider.sessionid);
-      body.append('docname', this.data.insurancepic);
+      ////body.append('docname', motorcyclesobjects[num]['insurancePic']);
+      body.append('docname', this.data.motorcyclesobjects[num]['insurancePic']);
       this.http.post(this.shareProvider.server + "docdownload/tempsession.php", body).subscribe(
         data => {
           var decoded_response = JSON.parse(data["_body"]);
@@ -982,10 +1012,11 @@ export class ManageApplicationPage {
           if (decoded_response[0] == "true") {
             //console.log(decoded_response[1]);
             //----------
-            var docurl = this.shareProvider.server + "docdownload/downloaddoc.php?temporaryshortsessionid=" + decoded_response[1] + "&docname=" + this.data.insurancepic;
-            this.data.insurancePicURL = docurl;
-            console.log(this.data.insurancePicURL);
-            //this.photoViewer.show(docurl, 'Motorcycle # '+ num + ' odometer picture', {share: false});
+            var docurl = this.shareProvider.server + "docdownload/downloaddoc.php?temporaryshortsessionid=" + decoded_response[1] + "&docname=" + this.data.motorcyclesobjects[num]['insurancePic'];
+            //motorcyclesobjects[num]['insurancePicURL'] = docurl;
+            this.photoViewer.show(docurl, 'Insurance Picture', {share: false});
+            //console.log(motorcyclesobjects[num]['insurancePicURL']);
+            //this.photoViewer.show(docurl, 'Motorcycle # '+ num + ' insurance picture', {share: false});
             //this.photoViewer.show(docurl);
             //----------
             this.loading.dismissAll();
@@ -993,7 +1024,7 @@ export class ManageApplicationPage {
           else {
             //this.data.error = "Unknown problem occured.  Please contact administrator.";
             this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
-            console.log("Unknown problem occured.  Please contact administrator.  Code: APP-138");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: APP-108");
             this.loading.dismissAll();
           }
         },
@@ -1001,7 +1032,7 @@ export class ManageApplicationPage {
           //this.data.error = "Unknown problem occured.  Please contact administrator.";
           //console.log("Oooops!");
           this.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
-          console.log("Unknown problem occured.  Please contact administrator.  Code: APP-139");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: APP-109");
           this.loading.dismissAll();
         }
       );
@@ -1085,6 +1116,8 @@ export class ManageApplicationPage {
             this.formdata.have_motor_cycle_license = decoded_response[2]["have_motor_cycle_license"];
             this.applicationForm.controls['haveMotorcycleLicense'].setValue(decoded_response[2]["have_motor_cycle_license"]);
             this.formdata.have_motor_cycle_insurance = decoded_response[2]["have_motor_cycle_insurance"];
+            this.formdata.licenseexpdt = decoded_response[2]["licenseexpdt"];
+            this.applicationForm.controls['licenseexpdt'].setValue(decoded_response[2]["licenseexpdt"]);
             this.applicationForm.controls['haveMotorcycleInsurance'].setValue(decoded_response[2]["have_motor_cycle_insurance"]);
             this.formdata.years_riding = decoded_response[2]["years_riding"];
             this.formdata.any_other_club = decoded_response[2]["any_other_club"];
@@ -1127,25 +1160,10 @@ export class ManageApplicationPage {
             this.applicationForm.controls['note'].setValue(decoded_response[2]["note"]);
             this.formdata.dttmaccepted = decoded_response[2]["dttmaccepted"];
             this.formdata.dttmcreated = decoded_response[2]["dttmcreated"];
-            this.formdata.motorcycles = decoded_response[2]["motorcycles"];
-            //this.formdata.temporaryshortsessionid = decoded_response[2]["temporaryshortsessionid"];
 
-            //this.formdata.licensepicurl = this.shareProvider.server + "application/fetchdocpic.php?temporaryshortsessionid=" + this.formdata.temporaryshortsessionid + "&doctype=licensepic&docname=" + this.formdata.licensepic;
-            //this.formdata.insurancepicurl = this.shareProvider.server + "application/fetchdocpic.php?temporaryshortsessionid=" + this.formdata.temporaryshortsessionid + "&doctype=insurancepic&docname=" + this.formdata.insurancepic;
-            this.displayLicensePic();
-            this.displayInsurancePic();
-
-            for (var i = 0; i < this.formdata.motorcycles.length; i++) {
-              this.displayMotorcycle(this.formdata.motorcycles[i]['color'], this.formdata.motorcycles[i]['year'], this.formdata.motorcycles[i]['make'], this.formdata.motorcycles[i]['model'], this.formdata.motorcycles[i]['license_plate'], this.formdata.motorcycles[i]['current_mileage'], this.formdata.motorcycles[i]['odometerpic'], this.formdata.motorcycles[i]['registrationpic']);
-              //this.displayOdometerPic(i);
-              //this.displayRegistrationPic(i);
+            for (var i = 0; i < decoded_response[2]["motorcycles"].length; i++) {
+              this.displayMotorcycle(decoded_response[2]["motorcycles"][i]['color'], decoded_response[2]["motorcycles"][i]['year'], decoded_response[2]["motorcycles"][i]['make'], decoded_response[2]["motorcycles"][i]['model'], decoded_response[2]["motorcycles"][i]['license_plate'], decoded_response[2]["motorcycles"][i]['current_mileage'], decoded_response[2]["motorcycles"][i]['odometerpic'], decoded_response[2]["motorcycles"][i]['registrationexpdt'], decoded_response[2]["motorcycles"][i]['registrationpic'], decoded_response[2]["motorcycles"][i]['insuranceexpdt'], decoded_response[2]["motorcycles"][i]['insurancepic']);
             }
-
-            /*for (var i = 0; i < this.formdata.motorcycles.length; i++) {
-              //this.displayMotorcycle(this.formdata.motorcycles[i]['color'], this.formdata.motorcycles[i]['year'], this.formdata.motorcycles[i]['make'], this.formdata.motorcycles[i]['model'], this.formdata.motorcycles[i]['license_plate'], this.formdata.motorcycles[i]['current_mileage'], this.formdata.motorcycles[i]['odometerpic'], this.formdata.motorcycles[i]['registrationpic']);
-              this.displayOdometerPic(i);
-              this.displayRegistrationPic(i);
-            }*/
 
             this.loading.dismissAll();
           }
@@ -1174,8 +1192,57 @@ export class ManageApplicationPage {
       );
     //-----
   }
+  
+  setValidationForMotorcycleInfo() {
+    if(this.applicationForm.controls.typeOfMembership.value == 'Associate/Asociado') {
+      var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
+      var looplen = motorcyclesobjects.length - 1;
+      for (var i = looplen; i >= 0; i--) {
+        this.removeMotorcycle(i);
+      }
+      this.applicationForm.get("haveMotorcycleLicense").setValidators([]);
+      this.applicationForm.get("haveMotorcycleLicense").updateValueAndValidity();
+      this.applicationForm.get("haveMotorcycleInsurance").setValidators([]);
+      this.applicationForm.get("haveMotorcycleInsurance").updateValueAndValidity();
+      this.applicationForm.get("yearsRiding").setValidators([]);
+      this.applicationForm.get("yearsRiding").updateValueAndValidity();
+      this.applicationForm.get("licenseexpdt").setValidators([]);
+      this.applicationForm.get("licenseexpdt").updateValueAndValidity();
+    }
+    else {
+      this.applicationForm.get("haveMotorcycleLicense").setValidators([Validators.compose([Validators.required])]);
+      this.applicationForm.get("haveMotorcycleLicense").updateValueAndValidity();
+      this.applicationForm.get("haveMotorcycleInsurance").setValidators([Validators.compose([Validators.required])]);
+      this.applicationForm.get("haveMotorcycleInsurance").updateValueAndValidity();
+      this.applicationForm.get("yearsRiding").setValidators([Validators.compose([Validators.required])]);
+      this.applicationForm.get("yearsRiding").updateValueAndValidity();
+      this.applicationForm.get("licenseexpdt").setValidators([Validators.compose([Validators.required])]);
+      this.applicationForm.get("licenseexpdt").updateValueAndValidity();
+    }
+  }
+  
+  pickUSACity() {
+    console.log('pickUSACity clicked');
+    this.loading = this.loadingCtrl.create({
+      content: '',
+    });
+    this.loading.present().then(() => {
+      let cityModal = this.modalCtrl.create("PickacityPage", { cities: this.data.usacities, myloadingcontroller: this.loading });
+      cityModal.onDidDismiss(returneddata => {
+        //console.log(returneddata.selectedcity);
+        if(returneddata.selectedcity.toString() !== "undefined") {
+          this.applicationForm.get("usacity").setValue(returneddata.selectedcity);
+        }
+        else {
+          this.applicationForm.get("usacity").setValue('');
+        }
+      });
+      cityModal.present();
+    })
+  }
 
-  getMotorcycle(color, year, make, model, licensePlate, currentMileage, odometerPic, registrationPic) {
+  getMotorcycle(color, year, make, model, licensePlate, currentMileage, odometerPic, registrationexpdt, registrationPic, insuranceexpdt, insurancePic) {
+    this.data.motorcyclesobjects.push({"odometerPic":odometerPic, "registrationPic":registrationPic, "insurancePic":insurancePic});
     return this.formBuilder.group({
       color: [color],
       year: [year],
@@ -1183,16 +1250,14 @@ export class ManageApplicationPage {
       model: [model],
       licensePlate: [licensePlate],
       currentMileage: [currentMileage],
-      odometerPic: [odometerPic],
-      registrationPic: [registrationPic],
-      odometerPicURL: [''],
-      registrationPicURL: ['']
+      registrationexpdt: [registrationexpdt],
+      insuranceexpdt: [insuranceexpdt]
     });
   }
 
-  displayMotorcycle(color, year, make, model, licensePlate, currentMileage, odometerPic, registrationPic) {
+  displayMotorcycle(color, year, make, model, licensePlate, currentMileage, odometerPic, registrationexpdt, registrationPic, insuranceexpdt, insurancePic) {
     const control = <FormArray>this.applicationForm.controls['motorcycles'];
-    control.push(this.getMotorcycle(color, year, make, model, licensePlate, currentMileage, odometerPic, registrationPic));
+    control.push(this.getMotorcycle(color, year, make, model, licensePlate, currentMileage, odometerPic, registrationexpdt, registrationPic, insuranceexpdt, insurancePic));
     //this.displayMotorCycles();
   }
 
