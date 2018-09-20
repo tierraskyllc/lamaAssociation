@@ -31,26 +31,7 @@ export class GaragePage {
 
   garageForm: FormGroup;
 
-  memberMotorcycleInfo = [
-    /*{
-      //postImageUrl: "assets/images/background/f6b.jpg",
-      year: "Year1",
-      make: "Make1",
-      model: "Model1",
-      color: "Color1",
-      total_miles: "Miles1",
-      //date: "Date1",
-    },
-    {
-      //postImageUrl: "assets/images/background/m109r.jpg",
-      year: "Year2",
-      make: "Make2",
-      model: "Model2",
-      color: "Color2",
-      total_miles: "Miles2",
-      //date: "Date2",
-    },*/
-  ];
+  memberMotorcycleInfo = [];
 
   constructor(
     private http: Http,
@@ -61,7 +42,11 @@ export class GaragePage {
     public actionSheetCtrl: ActionSheetController,
     public loadingCtrl: LoadingController,
     public formBuilder: FormBuilder,
-  ) {}
+  ) {
+      this.data.response = "";
+      this.data.error = "";
+      this.data.motorcyclesobjects = [];
+  }
 
   ionViewWillLoad() {
     this.garageForm = this.formBuilder.group({
@@ -124,24 +109,22 @@ export class GaragePage {
   }
 
   getInitialMotorcycle() {
+    this.data.motorcyclesobjects.push({"odometerPic":'', "registrationPic":'', "insurancePic":''});
     return this.formBuilder.group({
-      color: [''],
-      year: [''],
-      make: [''],
-      model: [''],
-      licensePlate: [''],
-      currentMileage: [''],
-      odometerPic: [''],
-      odometerPicURL: [''],
-      registrationPic: [''],
-      registrationPicURL: ['']
+      color: ['', Validators.compose([Validators.required])],
+      year: ['', Validators.compose([Validators.required])],
+      make: ['', Validators.compose([Validators.required])],
+      model: ['', Validators.compose([Validators.required])],
+      licensePlate: ['', Validators.compose([Validators.required])],
+      currentMileage: ['', Validators.compose([Validators.required])],
+      registrationexpdt: ['', Validators.compose([Validators.required])],
+      insuranceexpdt: ['', Validators.compose([Validators.required])]
     });
   }
 
   addMotorcycle() {
     const control = <FormArray>this.garageForm.controls['motorcycles'];
     control.push(this.getInitialMotorcycle());
-    //this.displayMotorCycles();
   }
 
   openGarageModal() {
