@@ -5,7 +5,7 @@ import { ActionSheetController } from "ionic-angular";
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
 import { LoadingController, Loading } from "ionic-angular";
-import { Validators, FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
+import { Validators, FormBuilder, FormGroup, FormArray } from '@angular/forms';
 
 @IonicPage()
 @Component({
@@ -45,13 +45,66 @@ export class GaragePage {
   ) {
       this.data.response = "";
       this.data.error = "";
+      this.data.licensepic = "";
       this.data.motorcyclesobjects = [];
+      this.data.maxyear = new Date().getFullYear() + 25;
   }
 
   ionViewWillLoad() {
     this.garageForm = this.formBuilder.group({
+      licenseexpdt: ["", Validators.compose([Validators.required])],
       motorcycles: this.formBuilder.array([this.getInitialMotorcycle()])
     });
+    //-----
+    this.loading = this.loadingCtrl.create({
+      content: ""
+    });
+    this.loading.present();
+    //-----
+    var decoded_response = "";
+    var body = new FormData();
+    body.append("sessionid", this.shareProvider.sessionid);
+    this.http
+      .post(this.shareProvider.server + "profile/profileinfo.php", body)
+      .subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          console.log(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.garageForm.controls['licenseexpdt'].setValue(decoded_response[2]["licenseexpdt"]);
+            this.data.licensepic = decoded_response[2]["licensepic"];
+            this.loading.dismissAll();
+          } else {
+            if (
+              decoded_response[1] == "Session Expired." ||
+              decoded_response[1] == "Invalid Session."
+            ) {
+              this.navCtrl.push("LoginPage");
+              this.loading.dismissAll();
+            } else {
+              this.data.error =
+                "Unknown problem occured.  Please contact administrator.";
+              console.log(
+                "Unknown problem occured.  Please contact administrator. - G001"
+              );
+              this.loading.dismissAll();
+            }
+          }
+        },
+        error => {
+          this.data.error =
+            "Unknown problem occured.  Please contact administrator.";
+          console.log(
+            "Unknown problem occured.  Please contact administrator. - G002"
+          );
+          this.loading.dismissAll();
+        }
+      );
+    //-----
+  }
+
+  validation_messages = {
+    'licenseexpdt': [{ type: 'required', message: 'License expiration date is required.'}]
   }
 
   ionViewDidLoad() {
