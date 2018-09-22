@@ -19,10 +19,13 @@
             <div style="border-style: dotted; border-color: #FCD736; border-radius: 15px; border-width: 1px;" class="form">
               <form [formGroup]="garageForm">
                 <ion-grid>
+                  <ion-row *ngIf="data.license_exp_alert_msg !== ''">
+                    <ion-col style="color: red;">{{ data.license_exp_alert_msg }}</ion-col>
+                  </ion-row>
                   <ion-row>
                       <ion-item no-padding color="accent">
                         <ion-label floating>License Expiration Date</ion-label>
-                        <ion-datetime formControlName="licenseexpdt" max="{{ data.maxyear }}" custom-datetime></ion-datetime>
+                        <ion-datetime formControlName="licenseexpdt" max="{{ data.maxyear }}" custom-datetime [disabled]="data.license_exp_alert_msg == ''"></ion-datetime>
                       </ion-item>
                       <ng-container *ngFor="let validation of validation_messages.licenseexpdt">
                           <div class="error-message" *ngIf="garageForm.get('licenseexpdt').hasError(validation.type) && (garageForm.get('licenseexpdt').dirty || garageForm.get('licenseexpdt').touched || submitAttempt)">
@@ -30,7 +33,7 @@
                           </div>
                       </ng-container>
                   </ion-row>
-                  <ion-row>
+                  <ion-row *ngIf="data.license_exp_alert_msg !== ''">
                       <ion-col width="100%" align="center">
                         <button ion-button small round (click)="uploadLicense()">Capture License Picture</button>
                       </ion-col>

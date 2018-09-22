@@ -73,6 +73,7 @@ export class GaragePage {
           if (decoded_response[0] == "true") {
             this.garageForm.controls['licenseexpdt'].setValue(decoded_response[2]["licenseexpdt"]);
             this.data.licensepic = decoded_response[2]["licensepic"];
+            this.data.license_exp_alert_msg = decoded_response[2]["license_exp_alert_msg"];
             this.loading.dismissAll();
           } else {
             if (
