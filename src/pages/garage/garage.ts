@@ -48,6 +48,7 @@ export class GaragePage {
       this.data.licensepic = "";
       this.data.motorcyclesobjects = [];
       this.data.maxyear = new Date().getFullYear() + 25;
+      this.data.motorcycleformgroups = [];
   }
 
   ionViewWillLoad() {
@@ -127,6 +128,13 @@ export class GaragePage {
           //console.log(data["_body"]);
           if (decoded_response[0] == "true") {
             this.memberMotorcycleInfo = decoded_response[2];
+            for(var i = 0; i < decoded_response[2].length; i++) {
+              this.data.motorcycleformgroups[i] = this.formBuilder.group({
+                                                    registrationexpdt: [decoded_response[2][i]['registrationexpdt']],
+                                                    miles: [decoded_response[2][i]['miles']],
+                                                    insuranceexpdt: [decoded_response[2][i]['insuranceexpdt']],
+                                                  });
+            }
             this.loading.dismissAll();
           } else {
             if (
@@ -184,6 +192,7 @@ export class GaragePage {
   openGarageModal() {
     this.openModal2("OdometerFormPage");
   }
+
   openModal2(pageName) {
     this.modalCtrl.create(pageName).present();
   }
@@ -191,7 +200,17 @@ export class GaragePage {
   openQrCodeModal() {
     this.openModal("QrCodeModalPage");
   }
+
   openModal(pageName) {
     this.modalCtrl.create(pageName).present();
   }
+
+  displayLicensePic() {
+    this.shareProvider.displayPic(this.data.licensepic, 'License Pic');
+  }
+
+  uploadLicense() {
+    this.memberMotorcycleInfo['licensepic'] = this.shareProvider.takePicture('license');
+  }
+
 }
