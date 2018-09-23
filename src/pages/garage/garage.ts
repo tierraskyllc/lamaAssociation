@@ -42,6 +42,8 @@ export class GaragePage {
   lastImageFullPath: string = "";
   isUploadImageRunning: boolean = false;
 
+  submitAttempt: boolean = false;
+
   constructor(
     private http: Http,
     private shareProvider: ShareProvider,
@@ -148,10 +150,16 @@ export class GaragePage {
           if (decoded_response[0] == "true") {
             this.memberMotorcycleInfo = decoded_response[2];
             for(var i = 0; i < decoded_response[2].length; i++) {
+              if(decoded_response[2][i]['registrationexpdt'] == '0000-00-00') {
+                this.memberMotorcycleInfo[i]['registrationexpdt'] = null;
+              }
+              if(decoded_response[2][i]['insuranceexpdt'] == '0000-00-00') {
+                this.memberMotorcycleInfo[i]['insuranceexpdt'] = null;
+              }
               this.data.motorcycleformgroups[i] = this.formBuilder.group({
-                                                    registrationexpdt: [decoded_response[2][i]['registrationexpdt']],
-                                                    miles: [decoded_response[2][i]['miles']],
-                                                    insuranceexpdt: [decoded_response[2][i]['insuranceexpdt']],
+                                                    registrationexpdt: [decoded_response[2][i]['registrationexpdt'], Validators.compose([Validators.required])],
+                                                    miles: [decoded_response[2][i]['miles'], Validators.compose([Validators.required])],
+                                                    insuranceexpdt: [decoded_response[2][i]['insuranceexpdt'], Validators.compose([Validators.required])]
                                                   });
             }
             this.loading.dismissAll();
@@ -228,9 +236,35 @@ export class GaragePage {
     this.shareProvider.displayPic(this.data.licensepic, 'License Pic');
   }
 
+  displayOdometerPic(i) {
+    this.shareProvider.displayPic(this.memberMotorcycleInfo[i]['odometerpic'], 'Odometer Pic for ' + this.memberMotorcycleInfo[i]['make'] + ' ' + this.memberMotorcycleInfo[i]['model'] + ' ' + this.memberMotorcycleInfo[i]['year']);
+  }
+
+  displayRegistrationPic(i) {
+    this.shareProvider.displayPic(this.memberMotorcycleInfo[i]['registrationpic'], 'Registration Pic for ' + this.memberMotorcycleInfo[i]['make'] + ' ' + this.memberMotorcycleInfo[i]['model'] + ' ' + this.memberMotorcycleInfo[i]['year']);
+  }
+
+  displayInsurancePic(i) {
+    this.shareProvider.displayPic(this.memberMotorcycleInfo[i]['insurancepic'], 'Insurance Pic for ' + this.memberMotorcycleInfo[i]['make'] + ' ' + this.memberMotorcycleInfo[i]['model'] + ' ' + this.memberMotorcycleInfo[i]['year']);
+  }
+
   public uploadLicense() {
     this.data.selectedimage = "license";
-    //this.presentActionSheet();
+    this.takePicture(this.camera.PictureSourceType.CAMERA);
+  }
+
+  public uploadOdometerPic(i) {
+    this.data.selectedimage = "odometer"+i;
+    this.takePicture(this.camera.PictureSourceType.CAMERA);
+  }
+
+  public uploadRegistrationPic(i) {
+    this.data.selectedimage = "registration"+i;
+    this.takePicture(this.camera.PictureSourceType.CAMERA);
+  }
+
+  public uploadInsurancePic(i) {
+    this.data.selectedimage = "insurance"+i;
     this.takePicture(this.camera.PictureSourceType.CAMERA);
   }
 
@@ -257,19 +291,11 @@ export class GaragePage {
             this.lastImageFullPath = correctPath + currentName;
           });
       } else {
-        //this.presentMessageOnlyAlert('checkpoint-1');
-        //this.presentMessageOnlyAlert(imagePath);
         var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-        //this.presentMessageOnlyAlert('checkpoint-2');
         var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-        //this.presentMessageOnlyAlert('checkpoint-3');
-        //this.presentMessageOnlyAlert(correctPath);
-        //this.presentMessageOnlyAlert(currentName);
         this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
-        //this.presentMessageOnlyAlert('checkpoint-4');
         this.lastImageFullPath = imagePath;
       }
-      //this.uploadImage();
     }, (err) => {
       this.presentToast('Error while selecting image.' + err);
     });
@@ -287,29 +313,21 @@ export class GaragePage {
       this.data.insurancepic = newFileName;
     }
     else {
-      //var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
       for (var i = 0; i < this.memberMotorcycleInfo.length; i++) {
         if(this.data.selectedimage == 'odometer'+i) {
-          //var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
-          ////motorcyclesobjects[i]['odometerPic'] = newFileName;
-          this.memberMotorcycleInfo[i]['odometerPic'] = newFileName;
+          this.memberMotorcycleInfo[i]['odometerpic'] = newFileName;
           break;
         }
         if(this.data.selectedimage == 'registration'+i) {
-          //var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
-          ////motorcyclesobjects[i]['registrationPic'] = newFileName;
-          this.memberMotorcycleInfo[i]['registrationPic'] = newFileName;
+          this.memberMotorcycleInfo[i]['registrationpic'] = newFileName;
           break;
         }
         if(this.data.selectedimage == 'insurance'+i) {
-          //var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
-          ////motorcyclesobjects[i]['insurancePic'] = newFileName;
-          this.memberMotorcycleInfo[i]['insurancePic'] = newFileName;
+          this.memberMotorcycleInfo[i]['insurancepic'] = newFileName;
           break;
         }
       }
     }
-    //this.presentMessageOnlyAlert(newFileName);
     return newFileName;
   }
   
@@ -344,12 +362,8 @@ export class GaragePage {
   }
 
   public uploadImage() {
-    //this.presentToast('Inside uploadImage');
     if((this.lastImage != "") && (this.lastImageFullPath != "") && (this.isUploadImageRunning != true)) {
-      //this.presentToast('Inside uploadImage');
       this.isUploadImageRunning = true;
-      //this.presentToast(this.lastImage);
-      //this.presentToast(this.lastImageFullPath);
     // Destination URL
       var url = this.shareProvider.server + "application/upload.php";
     
@@ -378,38 +392,38 @@ export class GaragePage {
       fileTransfer.upload(this.lastImageFullPath, url, options).then((data) => {
         this.loading.dismissAll();
         this.presentToast('Image succesful uploaded.');
-        //this.presentToast(this.lastImage);
         this.lastImage = "";
         this.lastImageFullPath = "";
         this.isUploadImageRunning = false;
-        if(/^odometer[0-9]+$/.test(this.data.selectedimage)) {
-          //console.log(this.data.selectedimage);
-          var num = this.data.selectedimage.match(/^odometer([0-9]+)$/)[1];
-          //console.log(num);
-          //this.displayOdometerPic(num);
-        }
-        else if(/^registration[0-9]+$/.test(this.data.selectedimage)) {
-          //console.log(this.data.selectedimage);
-          var num = this.data.selectedimage.match(/^registration([0-9]+)$/)[1];
-          //console.log(num);
-          //this.displayRegistrationPic(num);
-        }
-        else if(/^insurance[0-9]+$/.test(this.data.selectedimage)) {
-          //console.log(this.data.selectedimage);
-          var num = this.data.selectedimage.match(/^insurance([0-9]+)$/)[1];
-          //console.log(num);
-          //this.displayRegistrationPic(num);
-        }
-        else if(this.data.selectedimage == 'license') {
-          //this.displayLicensePic();
-        }
-        else if(this.data.selectedimage == 'insurance') {
-          //this.displayInsurancePic();
-        }
+        //this.presentToast(this.data.licensepic);
+        //this.presentToast(JSON.stringify(data));
       }, (err) => {
         this.loading.dismissAll();
         this.presentToast('Error while uploading image(s).');
         this.isUploadImageRunning = false;
+        if(this.data.selectedimage == 'license') {
+          this.data.licensepic = '';
+          //this.presentToast(this.data.licensepic);
+        }
+        else if(this.data.selectedimage == 'insurance') {
+          this.data.insurancepic = '';
+        }
+        else {
+          for (var i = 0; i < this.memberMotorcycleInfo.length; i++) {
+            if(this.data.selectedimage == 'odometer'+i) {
+              this.memberMotorcycleInfo[i]['odometerpic'] = '';
+              break;
+            }
+            if(this.data.selectedimage == 'registration'+i) {
+              this.memberMotorcycleInfo[i]['registrationpic'] = '';
+              break;
+            }
+            if(this.data.selectedimage == 'insurance'+i) {
+              this.memberMotorcycleInfo[i]['insurancepic'] = '';
+              break;
+            }
+          }
+        }
       });
     }
   }
