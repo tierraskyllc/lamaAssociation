@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { IonicPage, NavController, ModalController } from "ionic-angular";
 import { ToastService } from "../../services/toast.service";
 import { ActionSheetController } from "ionic-angular";
@@ -14,9 +14,12 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 @IonicPage()
 @Component({
   selector: "page-garage",
-  templateUrl: "garage.html"
+  templateUrl: "garage.html",
 })
 export class GaragePage {
+
+  @ViewChild('content') content:any;
+
   loading: Loading;
 
   data: any = {};
@@ -35,7 +38,7 @@ export class GaragePage {
   };
 
   garageForm: FormGroup;
-
+  newMotorcycleForm: FormGroup;
   memberMotorcycleInfo = [];
 
   lastImage: string = "";
@@ -66,13 +69,24 @@ export class GaragePage {
       this.data.motorcyclesobjects = [];
       this.data.maxyear = new Date().getFullYear() + 25;
       this.data.motorcycleformgroups = [];
+      //this.data.isNewMotorcycleHidden = false;
   }
 
   ionViewWillLoad() {
     this.garageForm = this.formBuilder.group({
-      licenseexpdt: ["", Validators.compose([Validators.required])],
-      motorcycles: this.formBuilder.array([this.getInitialMotorcycle()])
+      licenseexpdt: ["", Validators.compose([Validators.required])]
     });
+    //-----
+    this.newMotorcycleForm = this.formBuilder.group({
+      color: ['', Validators.compose([Validators.required])],
+      year: ['', Validators.compose([Validators.required])],
+      make: ['', Validators.compose([Validators.required])],
+      model: ['', Validators.compose([Validators.required])],
+      licensePlate: ['', Validators.compose([Validators.required])],
+      currentMileage: ['', Validators.compose([Validators.required])],
+      registrationexpdt: ['', Validators.compose([Validators.required])],
+      insuranceexpdt: ['', Validators.compose([Validators.required])]
+    })
     //-----
     this.loading = this.loadingCtrl.create({
       content: ""
@@ -197,23 +211,22 @@ export class GaragePage {
     this.toastCtrl.create("Post image clicked");
   }
 
-  getInitialMotorcycle() {
-    this.data.motorcyclesobjects.push({"odometerPic":'', "registrationPic":'', "insurancePic":''});
-    return this.formBuilder.group({
-      color: ['', Validators.compose([Validators.required])],
-      year: ['', Validators.compose([Validators.required])],
-      make: ['', Validators.compose([Validators.required])],
-      model: ['', Validators.compose([Validators.required])],
-      licensePlate: ['', Validators.compose([Validators.required])],
-      currentMileage: ['', Validators.compose([Validators.required])],
-      registrationexpdt: ['', Validators.compose([Validators.required])],
-      insuranceexpdt: ['', Validators.compose([Validators.required])]
-    });
-  }
-
   addMotorcycle() {
-    const control = <FormArray>this.garageForm.controls['motorcycles'];
-    control.push(this.getInitialMotorcycle());
+    //if(this.data.isNewMotorcycleHidden) {
+      this.data.newmotorcycleodometerpic = '';
+      this.data.newmotorcycleregistrationpic = '';
+      this.data.newmotorcycleinsurancepic = '';
+      this.newMotorcycleForm.controls['color'].setValue('');
+      this.newMotorcycleForm.controls['year'].setValue('');
+      this.newMotorcycleForm.controls['make'].setValue('');
+      this.newMotorcycleForm.controls['model'].setValue('');
+      this.newMotorcycleForm.controls['licensePlate'].setValue('');
+      this.newMotorcycleForm.controls['currentMileage'].setValue('');
+      this.newMotorcycleForm.controls['registrationexpdt'].setValue('');
+      this.newMotorcycleForm.controls['insuranceexpdt'].setValue('');
+      this.data.isNewMotorcycleHidden = false;
+      this.content.scrollToBottom();
+    //}
   }
 
   openGarageModal() {
