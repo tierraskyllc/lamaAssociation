@@ -87,6 +87,16 @@ export class GaragePage {
       registrationexpdt: ['', Validators.compose([Validators.required])],
       insuranceexpdt: ['', Validators.compose([Validators.required])]
     })
+
+    this.loadProfileInfo();
+    
+    setInterval(() => {      
+      //console.log('timer');
+      this.uploadImage();
+      },2000);
+  }
+
+  loadProfileInfo() {
     //-----
     this.loading = this.loadingCtrl.create({
       content: ""
@@ -103,6 +113,7 @@ export class GaragePage {
           decoded_response = JSON.parse(data["_body"]);
           console.log(data["_body"]);
           if (decoded_response[0] == "true") {
+            this.data.lama_members_id = decoded_response[2]["lama_members_id"];
             this.garageForm.controls['licenseexpdt'].setValue(decoded_response[2]["licenseexpdt"]);
             this.data.licensepic = decoded_response[2]["licensepic"];
             this.data.license_exp_alert_msg = decoded_response[2]["license_exp_alert_msg"];
@@ -134,10 +145,6 @@ export class GaragePage {
         }
       );
     //-----
-    setInterval(() => {      
-      //console.log('timer');
-      this.uploadImage();
-      },2000);
   }
 
   validation_messages = {
@@ -205,10 +212,6 @@ export class GaragePage {
       );
     //-----
     console.log("ionViewDidLoad GaragePage");
-  }
-
-  imageTapped(post) {
-    this.toastCtrl.create("Post image clicked");
   }
 
   addMotorcycle() {
@@ -279,6 +282,54 @@ export class GaragePage {
   public uploadInsurancePic(i) {
     this.data.selectedimage = "insurance"+i;
     this.takePicture(this.camera.PictureSourceType.CAMERA);
+  }
+
+  submitLicense() {
+    //this.shareProvider.presentMessageOnlyAlert(this.data.licensepic);
+    //this.shareProvider.presentMessageOnlyAlert(this.garageForm.controls['licenseexpdt'].value);
+    if(this.garageForm.valid) {
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+
+      var body = new FormData();
+      var json_encoded_response = "";
+      var decoded_response = "";
+      body.append('sessionid', this.shareProvider.sessionid);
+      body.append('lama_members_id', this.data.lama_members_id);
+      body.append('expdt', this.garageForm.controls['licenseexpdt'].value);
+      body.append('license_pic', this.data.licensepic);
+      //------------------------------------------------------------------
+      this.http.post(this.shareProvider.server + "garage/updatelicense.php", body).subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          //console.log(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.shareProvider.presentMessageOnlyAlert("You've successfully update your license information.");
+            this.loading.dismissAll();
+            this.loadProfileInfo();
+          }
+          else {
+            //this.data.error = "Unknown problem occured.  Please contact administrator.";
+            this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-008");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: garage-008");
+            this.loading.dismissAll();
+          }
+        },
+        error => {
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //console.log("Oooops!");
+          this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-009");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: garage-009");
+          this.loading.dismissAll();
+        }
+      );
+      //------------------------------------------------------------------
+    }
+    else {
+      this.shareProvider.presentMessageOnlyAlert('Did you miss one or more required fields?');
+    }
   }
 
   //====================================================================================
