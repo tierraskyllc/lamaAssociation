@@ -94,7 +94,7 @@
                             <ion-input type="number" formControlName="miles"></ion-input>
                           </ion-item>
                           <ng-container>
-                              <div class="error-message" *ngIf="(memberMotorcycleInfo[i]['miles'] == null || memberMotorcycleInfo[i]['miles'] == '')">
+                              <div class="error-message" *ngIf="data.motorcycleformgroups[i].get('miles').hasError('required')">
                                 Odometer reading is required.
                               </div>
                           </ng-container>
@@ -136,8 +136,8 @@
                                 <ion-datetime formControlName="registrationexpdt" max="{{ data.maxyear }}" custom-datetime [disabled]="motorcycleInfo.registration_exp_alert_msg == ''"></ion-datetime>
                               </ion-item>
                               <ng-container>
-                                  <div class="error-message" *ngIf="(memberMotorcycleInfo[i]['registrationexpdt'] == null || memberMotorcycleInfo[i]['registrationexpdt'] == '')">
-                                    Registration expiration date is required.
+                                  <div class="error-message" *ngIf="data.motorcycleformgroups[i].get('registrationexpdt').hasError('required')">
+                                    Odometer reading is required.
                                   </div>
                               </ng-container>
                             </ion-col>
@@ -178,8 +178,8 @@
                                   <ion-datetime formControlName="insuranceexpdt" max="{{ data.maxyear }}" custom-datetime [disabled]="motorcycleInfo.insurance_exp_alert_msg == ''"></ion-datetime>
                                 </ion-item>
                                 <ng-container>
-                                    <div class="error-message" *ngIf="(memberMotorcycleInfo[i]['insuranceexpdt'] == null || memberMotorcycleInfo[i]['insuranceexpdt'] == '')">
-                                      Insurance expiration date is required.
+                                    <div class="error-message" *ngIf="data.motorcycleformgroups[i].get('insuranceexpdt').hasError('required')">
+                                      Odometer reading is required.
                                     </div>
                                 </ng-container>
                               </ion-col>
