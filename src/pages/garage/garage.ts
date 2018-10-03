@@ -252,6 +252,18 @@ export class GaragePage {
     this.shareProvider.displayPic(this.data.licensepic, 'License Pic');
   }
 
+  displayOdometerPicForNewMotorcycle() {
+    this.shareProvider.displayPic(this.data.odometerpic, 'Odometer Pic');
+  }
+
+  displayRegistrationPicForNewMotorcycle() {
+    this.shareProvider.displayPic(this.data.registrationpic, 'Registration Pic');
+  }
+
+  displayInsurancePicForNewMotorcycle() {
+    this.shareProvider.displayPic(this.data.insurancepic, 'Insurance Pic');
+  }
+
   displayOdometerPic(i) {
     this.shareProvider.displayPic(this.memberMotorcycleInfo[i]['odometerpic'], 'Odometer Pic for ' + this.memberMotorcycleInfo[i]['make'] + ' ' + this.memberMotorcycleInfo[i]['model'] + ' ' + this.memberMotorcycleInfo[i]['year']);
   }
@@ -274,13 +286,28 @@ export class GaragePage {
     this.takePicture(this.camera.PictureSourceType.CAMERA);
   }
 
+  public uploadOdometerPicForNewMotorcycle() {
+    this.data.selectedimage = "odometer";
+    this.takePicture(this.camera.PictureSourceType.CAMERA);
+  }
+
   public uploadRegistrationPic(i) {
     this.data.selectedimage = "registration"+i;
     this.takePicture(this.camera.PictureSourceType.CAMERA);
   }
 
+  public uploadRegistrationPicForNewMotorcycle() {
+    this.data.selectedimage = "registration";
+    this.takePicture(this.camera.PictureSourceType.CAMERA);
+  }
+
   public uploadInsurancePic(i) {
     this.data.selectedimage = "insurance"+i;
+    this.takePicture(this.camera.PictureSourceType.CAMERA);
+  }
+
+  public uploadInsurancePicForNewMotorcycle() {
+    this.data.selectedimage = "insurance";
     this.takePicture(this.camera.PictureSourceType.CAMERA);
   }
 
@@ -473,6 +500,61 @@ export class GaragePage {
     }
   }
 
+  submitNewMotorcycle() {
+    if(this.newMotorcycleForm.valid || (this.data.odometerpic == null) || (this.data.odometerpic == '') || (this.data.registrationpic == null) || (this.data.registrationpic == '') || (this.data.insurancepic == null) || (this.data.insurancepic == '')) {
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+
+      var body = new FormData();
+      var json_encoded_response = "";
+      var decoded_response = "";
+      body.append('sessionid', this.shareProvider.sessionid);
+      body.append('lama_members_id', this.data.lama_members_id);
+      body.append('year', this.newMotorcycleForm.controls['year'].value);
+      body.append('color', this.newMotorcycleForm.controls['color'].value);
+      body.append('make', this.newMotorcycleForm.controls['make'].value);
+      body.append('model', this.newMotorcycleForm.controls['model'].value);
+      body.append('license_plate', this.newMotorcycleForm.controls['licensePlate'].value);
+      body.append('miles', this.newMotorcycleForm.controls['currentMileage'].value);
+      body.append('registrationexpdt', this.newMotorcycleForm.controls['registrationexpdt'].value);
+      body.append('insuranceexpdt', this.newMotorcycleForm.controls['insuranceexpdt'].value);
+      body.append('odometerpic', this.data.odometerpic);
+      body.append('registrationpic', this.data.registrationpic);
+      body.append('insurancepic', this.data.insurancepic);
+      //------------------------------------------------------------------
+      this.http.post(this.shareProvider.server + "garage/addnewmotorcycle.php", body).subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          //console.log(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.shareProvider.presentMessageOnlyAlert("You've successfully submitted request to add a new motorcycle to your garage.");
+            this.loading.dismissAll();
+            this.loadProfileInfo();
+          }
+          else {
+            //this.data.error = "Unknown problem occured.  Please contact administrator.";
+            this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-048");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: garage-048");
+            this.loading.dismissAll();
+          }
+        },
+        error => {
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //console.log("Oooops!");
+          this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-049");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: garage-049");
+          this.loading.dismissAll();
+        }
+      );
+      //------------------------------------------------------------------
+    }
+    else {
+      this.shareProvider.presentMessageOnlyAlert('Did you miss one or more required fields?');
+    }
+  }
+  
   //====================================================================================
 
   public takePicture(sourceType) {
@@ -516,6 +598,12 @@ export class GaragePage {
     }
     else if(this.data.selectedimage == 'insurance') {
       this.data.insurancepic = newFileName;
+    }
+    else if(this.data.selectedimage == 'odometer') {
+      this.data.odometer = newFileName;
+    }
+    else if(this.data.selectedimage == 'registration') {
+      this.data.registration = newFileName;
     }
     else {
       for (var i = 0; i < this.memberMotorcycleInfo.length; i++) {
