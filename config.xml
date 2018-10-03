@@ -96,8 +96,9 @@
     <plugin name="cordova-plugin-qrscanner" spec="^2.6.0" />
     <plugin name="com-sarriaroman-photoviewer" spec="^1.1.18" />
     <allow-navigation href="http://192.168.1.211:8100" />
-    <engine name="ios" spec="4.5.4" />
-    <engine name="android" spec="7.0.0" />
     <allow-navigation href="http://192.168.1.213:8100" />
     <allow-navigation href="http://192.168.1.214:8100" />
+    <allow-navigation href="http://192.168.1.216:8100" />
+    <engine name="ios" spec="4.5.4" />
+    <engine name="android" spec="7.0.0" />
 </widget>

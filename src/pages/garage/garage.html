@@ -201,7 +201,7 @@
                                   <ion-buttons end><button style="background: transparent;" (click)="displayInsurancePic(i)"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
                                 </ion-col>
                             </ion-row>
-                            <ion-row *ngIf="motorcycleInfo['insurance_exp_alert_msg'] !== ''">
+                            <ion-row *ngIf="motorcycleInfo['insurance_exp_alert_msg'] !== '' && motorcycleInfo['insurance_exp_alert_msg'] !== 'In Review'">
                               <ion-col col-12 style="text-align: center;">
                                 <button ion-button default-button (click)="submitInsuranceChanges(i)">Submit</button>
                               </ion-col>
