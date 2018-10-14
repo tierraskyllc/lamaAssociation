@@ -90,6 +90,12 @@ export class ShareProvider {
                 console.log('Manage Events (SignIn)' + ' clicked');
               }
             }
+            if(tmparr[i] == 'Manage Chapters') {
+              tmphandler = () => {
+                myNavCtrl.push("ManageChaptersPage");
+                console.log('Manage Chapters' + ' clicked');
+              }
+            }
             mybutton = {
               text: tmparr[i],
               handler: tmphandler
