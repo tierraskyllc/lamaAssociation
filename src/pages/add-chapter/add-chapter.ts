@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
 import { AlertController } from 'ionic-angular';
 import { ToastController, LoadingController, Loading } from 'ionic-angular';
+import { IonicSelectableComponent } from 'ionic-selectable';
 
 /**
  * Generated class for the AddChapterPage page.
@@ -20,6 +21,8 @@ import { ToastController, LoadingController, Loading } from 'ionic-angular';
 })
 export class AddChapterPage {
 
+  @ViewChild('cityComponent') cityComponent: IonicSelectableComponent;
+
   data: any = {};
   submitAttempt: boolean = false;
   isNational: boolean = false;
@@ -34,7 +37,8 @@ export class AddChapterPage {
     private shareProvider: ShareProvider,
     private alertCtrl: AlertController,
     public toastCtrl: ToastController,
-    public loadingCtrl: LoadingController) {
+    public loadingCtrl: LoadingController
+  ) {
       var addtype = navParams.get('addtype');
       if(addtype == 'international') {
         this.isNational = false;
@@ -47,6 +51,7 @@ export class AddChapterPage {
       this.data.usaregions = [];
       this.data.usastates = [];
       this.data.usacity = [];
+      this.data.citycomponentitems = [];
   }
 
   validation_messages = {
@@ -164,6 +169,88 @@ export class AddChapterPage {
     this.data.usastates = [];
     this.chapterForm.controls.city.setValue('');
     this.data.usacity = [];
+  }
+
+  searchCity(event: {
+    component: IonicSelectableComponent,
+    text: string
+  }) {
+    let text = event.text.trim();
+    text = text.replace(/^(0+)/g, '');
+    if (!text) {
+      event.component.items = [];
+      return;
+    }
+    else {
+      event.component.items = [];
+      /*event.component.items = [
+        {id: 1, name: 'City1'},
+        {id: 2, name: 'City2'},
+        {id: 3, name: 'City3'},
+        {id: 4, name: 'City4'},
+      ];*/
+      var decoded_response = "";
+      var body = new FormData();
+      var usastate = this.chapterForm.controls.state.value;
+      body.append('sessionid', this.shareProvider.sessionid);
+      body.append("usastate", usastate);
+      body.append("searchtext", text);
+      this.http
+        .post(this.shareProvider.server + "chapters/usacitiesbystate.php", body)
+        .subscribe(
+          data => {
+            //console.log(data["_body"]);
+            decoded_response = JSON.parse(data["_body"]);
+            if(decoded_response[0]) {
+              //console.log(decoded_response[2])
+              //this.data.citycomponentitems = event.component.items;
+              this.data.usacity = decoded_response[2];
+              event.component.items = [decoded_response[2]];
+            }
+          },
+          error => {
+            console.log("Oooops!");
+          }
+        );
+    }
+  }
+
+  storeID(event: {
+    component: IonicSelectableComponent,
+    value: any
+  }) {
+    this.data.selectedusacityid = event.value.id;
+  }
+
+  add() {
+    //console.log('city: ' + this.data.selectedusacityid);
+    var decoded_response = "";
+      var body = new FormData();
+      body.append('sessionid', this.shareProvider.sessionid);
+      body.append("name", this.chapterForm.controls.name.value);
+      body.append("description", this.chapterForm.controls.description.value);
+      body.append("lama_usa_regions_id", this.chapterForm.controls.region.value);
+      body.append("lama_usa_states_id", this.chapterForm.controls.state.value);
+      body.append("lama_usa_cities_id", this.data.selectedusacityid);
+      body.append("lama_international_regions_id", this.chapterForm.controls.country.value);
+      body.append("intl_region", this.chapterForm.controls.intlregion.value);
+      body.append("intl_state", this.chapterForm.controls.intlstate.value);
+      body.append("intl_city", this.chapterForm.controls.intlcity.value);
+      body.append("intl_zipcode", this.chapterForm.controls.intlzipcode.value);
+      this.http
+        .post(this.shareProvider.server + "chapters/addchapter.php", body)
+        .subscribe(
+          data => {
+            console.log(data["_body"]);
+            decoded_response = JSON.parse(data["_body"]);
+            if(decoded_response[0]) {
+              this.shareProvider.presentMessageOnlyAlert("You have successfully added a new chapter.");
+            }
+          },
+          error => {
+            console.log("Oooops!");
+          }
+        );
   }
 
 }

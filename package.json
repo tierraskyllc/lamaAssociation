@@ -51,6 +51,7 @@
     "google-libphonenumber": "^3.1.11",
     "ionic-angular": "3.9.2",
     "ionic-native": "^2.9.0",
+    "ionic-selectable": "^3.0.3",
     "ionicons": "3.0.0",
     "ngx-qrcode2": "0.0.9",
     "ngx-qrcode3": "^0.3.0",

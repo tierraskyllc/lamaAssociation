@@ -63,7 +63,7 @@
                     <ion-item no-padding color="accent">
                         <ion-label floating>State</ion-label>
                         <ion-select formControlName="state" interface=popover>
-                          <ion-option (ionSelect)="populateUSACitiesByState()" *ngFor="let curstate of data.usastates" [value]="curstate.id">{{curstate.name}}</ion-option>
+                          <ion-option *ngFor="let curstate of data.usastates" [value]="curstate.id">{{curstate.name}}</ion-option>
                         </ion-select>
                     </ion-item>
                     <ng-container *ngFor="let validation of validation_messages.state">
@@ -76,10 +76,20 @@
               <ion-row>
                   <ion-col>
                     <ion-item no-padding color="accent">
-                        <ion-label floating>City</ion-label>
-                        <ion-select formControlName="city" interface=popover>
+                        <ion-label floating>City & Zipcode</ion-label>
+                        <!--ion-select formControlName="city" interface=popover>
                           <ion-option *ngFor="let curcity of data.usacity" [value]="curcity.id">{{curcity.name}}</ion-option>
-                        </ion-select>
+                        </ion-select-->
+                        <ionic-selectable #cityComponent formControlName="city"
+                            item-content
+                            [items]="data.usacity"
+                            itemValueField="id"
+                            itemTextField="namepluszipcode"
+                            [canSearch]="true"
+                            [searchDebounce]="1000"
+                            (onSearch)="searchCity($event)"
+                            (onChange)="storeID($event)">
+                        </ionic-selectable>
                     </ion-item>
                     <ng-container *ngFor="let validation of validation_messages.city">
                         <div class="error-message" *ngIf="chapterForm.get('city').hasError(validation.type) && (chapterForm.get('city').dirty || chapterForm.get('city').touched || submitAttempt)">
@@ -147,7 +157,7 @@
               <ion-row>
                     <ion-col>
                       <ion-item no-padding color="accent">
-                          <ion-label floating>City</ion-label>
+                          <ion-label floating>Zipcode</ion-label>
                           <ion-input type="text" formControlName="intlzipcode"></ion-input>
                       </ion-item>
                       <ng-container *ngFor="let validation of validation_messages.intlzipcode">
