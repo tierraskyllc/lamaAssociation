@@ -38,7 +38,7 @@ export class ManageChaptersPage {
   }
 
   ionViewWillLoad() {
-    this.getChapters();
+    //this.getChapters();
   }
 
   ionViewDidLoad() {
@@ -148,6 +148,10 @@ export class ManageChaptersPage {
 
   addChapter() {
     this.navCtrl.push("AddChapterPage", { addtype: this.data.addtype });
+  }
+
+  openChapter(lama_chapters_id) {
+    this.navCtrl.push("ManageChapterPage", { addtype: this.data.addtype, lama_chapters_id: lama_chapters_id });
   }
 
 }

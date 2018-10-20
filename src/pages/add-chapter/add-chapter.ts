@@ -43,6 +43,7 @@ export class AddChapterPage {
       if(addtype == 'international') {
         this.isNational = false;
         this.isInternational = true;
+        this.populateAllCountries();
       }
       else {
         this.isNational = true;
@@ -127,6 +128,28 @@ export class AddChapterPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddChapterPage');
+  }
+
+  populateAllCountries() {
+    var decoded_response = "";
+    var body = new FormData();
+    body.append('sessionid', this.shareProvider.sessionid);
+    this.http
+      .post(this.shareProvider.server + "chapters/listallcountries.php", body)
+      .subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          if (decoded_response[0]) {
+            this.data.intlcountry = decoded_response[2];
+          }
+          else {
+            this.data.intlcountry = [];
+          }
+        },
+        error => {
+          console.log("Oooops!");
+        }
+      );
   }
 
   populateUSARegions() {
@@ -243,12 +266,18 @@ export class AddChapterPage {
           data => {
             console.log(data["_body"]);
             decoded_response = JSON.parse(data["_body"]);
-            if(decoded_response[0]) {
+            if(decoded_response[0] == "true") {
               this.shareProvider.presentMessageOnlyAlert("You have successfully added a new chapter.");
+              this.navCtrl.pop();
+            }
+            else {
+              console.log("Problem adding chapter.  Please contact administrator.");
+              this.shareProvider.presentMessageOnlyAlert("Problem adding chapter.  Please contact administrator.");
             }
           },
           error => {
-            console.log("Oooops!");
+            console.log("Problem adding chapter.  Please contact administrator.");
+            this.shareProvider.presentMessageOnlyAlert("Problem adding chapter.  Please contact administrator.");
           }
         );
   }

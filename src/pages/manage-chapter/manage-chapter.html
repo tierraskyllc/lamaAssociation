@@ -6,161 +6,173 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Manage Chapter</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-    <form [formGroup]="chapterForm">
-        <ion-row>
-            <ion-col>
-                <ion-item no-padding color="accent">
-                    <ion-label floating>Chapter Name</ion-label>
-                    <ion-input type="text" formControlName="name"></ion-input>
-                </ion-item>
-                <ng-container *ngFor="let validation of validation_messages.name">
-                    <div class="error-message" *ngIf="chapterForm.get('name').hasError(validation.type) && (chapterForm.get('name').dirty || chapterForm.get('name').touched || submitAttempt)">
-                      {{ validation.message }}
-                    </div>
-                </ng-container>
-            </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col>
-                <ion-item no-padding color="accent">
-                    <ion-label floating>Description</ion-label>
-                    <ion-textarea formControlName="description"></ion-textarea>
-                </ion-item>
-                <ng-container *ngFor="let validation of validation_messages.description">
-                    <div class="error-message" *ngIf="chapterForm.get('description').hasError(validation.type) && (chapterForm.get('description').dirty || chapterForm.get('description').touched || submitAttempt)">
-                      {{ validation.message }}
-                    </div>
-                </ng-container>
-            </ion-col>
-        </ion-row>
-        <div *ngIf="isNational">
-            <ion-row>
+    <ion-navbar>
+      <ion-title>Manage Chapter</ion-title>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content padding>
+    <div class="form">
+      <form [formGroup]="chapterForm">
+          <ion-row>
               <ion-col>
-                <ion-item no-padding color="accent">
-                    <ion-label floating>Region</ion-label>
-                    <ion-select formControlName="region" interface=popover>
-                      <ion-option (ionSelect)="populateUSAStatesByRegion()" *ngFor="let curregion of data.usaregions" [value]="curregion.id">{{curregion.name}}</ion-option>
-                    </ion-select>
-                </ion-item>
-                <ng-container *ngFor="let validation of validation_messages.region">
-                    <div class="error-message" *ngIf="chapterForm.get('region').hasError(validation.type) && (chapterForm.get('region').dirty || chapterForm.get('region').touched || submitAttempt)">
-                      {{ validation.message }}
-                    </div>
-                </ng-container>
+                  <ion-item no-padding color="accent">
+                      <ion-label floating>Chapter Name</ion-label>
+                      <ion-input type="text" formControlName="name"></ion-input>
+                  </ion-item>
+                  <ng-container *ngFor="let validation of validation_messages.name">
+                      <div class="error-message" *ngIf="chapterForm.get('name').hasError(validation.type) && (chapterForm.get('name').dirty || chapterForm.get('name').touched || submitAttempt)">
+                        {{ validation.message }}
+                      </div>
+                  </ng-container>
               </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>
+          </ion-row>
+          <ion-row>
+              <ion-col>
                   <ion-item no-padding color="accent">
-                      <ion-label floating>State</ion-label>
-                      <ion-select formControlName="state" interface=popover>
-                        <ion-option (ionSelect)="populateUSACitiesByState()" *ngFor="let curstate of data.usastates" [value]="curstate.id">{{curstate.name}}</ion-option>
-                      </ion-select>
+                      <ion-label floating>Description</ion-label>
+                      <ion-textarea formControlName="description"></ion-textarea>
                   </ion-item>
-                  <ng-container *ngFor="let validation of validation_messages.state">
-                      <div class="error-message" *ngIf="chapterForm.get('state').hasError(validation.type) && (chapterForm.get('state').dirty || chapterForm.get('state').touched || submitAttempt)">
+                  <ng-container *ngFor="let validation of validation_messages.description">
+                      <div class="error-message" *ngIf="chapterForm.get('description').hasError(validation.type) && (chapterForm.get('description').dirty || chapterForm.get('description').touched || submitAttempt)">
                         {{ validation.message }}
                       </div>
                   </ng-container>
-                </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>
-                  <ion-item no-padding color="accent">
-                      <ion-label floating>City</ion-label>
-                      <ion-select formControlName="city" interface=popover>
-                        <ion-option *ngFor="let curcity of data.usacity" [value]="curcity.id">{{curcity.name}}</ion-option>
-                      </ion-select>
-                  </ion-item>
-                  <ng-container *ngFor="let validation of validation_messages.city">
-                      <div class="error-message" *ngIf="chapterForm.get('city').hasError(validation.type) && (chapterForm.get('city').dirty || chapterForm.get('city').touched || submitAttempt)">
-                        {{ validation.message }}
-                      </div>
-                  </ng-container>
-                </ion-col>
-            </ion-row>
-        </div>
-        <div *ngIf="isInternational">
-            <ion-row>
-                <ion-col>
-                  <ion-item no-padding color="accent">
-                      <ion-label floating>Country</ion-label>
-                      <ion-select formControlName="country" interface=popover>
-                        <ion-option *ngFor="let curcountry of data.intlcountry" [value]="curcountry.id">{{curcountry.name}}</ion-option>
-                      </ion-select>
-                  </ion-item>
-                  <ng-container *ngFor="let validation of validation_messages.country">
-                      <div class="error-message" *ngIf="chapterForm.get('country').hasError(validation.type) && (chapterForm.get('country').dirty || chapterForm.get('country').touched || submitAttempt)">
-                        {{ validation.message }}
-                      </div>
-                  </ng-container>
-                </ion-col>
-            </ion-row>
-            <ion-row>
+              </ion-col>
+          </ion-row>
+          <div *ngIf="isNational">
+              <ion-row>
                 <ion-col>
                   <ion-item no-padding color="accent">
                       <ion-label floating>Region</ion-label>
-                      <ion-input type="text" formControlName="intlregion"></ion-input>
+                      <ion-select formControlName="region" interface=popover>
+                        <ion-option (ionSelect)="populateUSAStatesByRegion()" *ngFor="let curregion of data.usaregions" [value]="curregion.id">{{curregion.name}}</ion-option>
+                      </ion-select>
                   </ion-item>
-                  <ng-container *ngFor="let validation of validation_messages.intlregion">
-                      <div class="error-message" *ngIf="chapterForm.get('intlregion').hasError(validation.type) && (chapterForm.get('intlregion').dirty || chapterForm.get('intlregion').touched || submitAttempt)">
+                  <ng-container *ngFor="let validation of validation_messages.region">
+                      <div class="error-message" *ngIf="chapterForm.get('region').hasError(validation.type) && (chapterForm.get('region').dirty || chapterForm.get('region').touched || submitAttempt)">
                         {{ validation.message }}
                       </div>
                   </ng-container>
                 </ion-col>
-            </ion-row>
-            <ion-row>
+              </ion-row>
+              <ion-row>
                   <ion-col>
                     <ion-item no-padding color="accent">
                         <ion-label floating>State</ion-label>
-                        <ion-input type="text" formControlName="intlstate"></ion-input>
+                        <ion-select formControlName="state" interface=popover>
+                          <ion-option *ngFor="let curstate of data.usastates" [value]="curstate.id">{{curstate.name}}</ion-option>
+                        </ion-select>
                     </ion-item>
-                    <ng-container *ngFor="let validation of validation_messages.intlstate">
-                        <div class="error-message" *ngIf="chapterForm.get('intlstate').hasError(validation.type) && (chapterForm.get('intlstate').dirty || chapterForm.get('intlstate').touched || submitAttempt)">
+                    <ng-container *ngFor="let validation of validation_messages.state">
+                        <div class="error-message" *ngIf="chapterForm.get('state').hasError(validation.type) && (chapterForm.get('state').dirty || chapterForm.get('state').touched || submitAttempt)">
                           {{ validation.message }}
                         </div>
                     </ng-container>
                   </ion-col>
-            </ion-row>
-            <ion-row>
+              </ion-row>
+              <ion-row>
                   <ion-col>
                     <ion-item no-padding color="accent">
-                        <ion-label floating>City</ion-label>
-                        <ion-input type="text" formControlName="intlcity"></ion-input>
+                        <ion-label floating>City & Zipcode</ion-label>
+                        <!--ion-select formControlName="city" interface=popover>
+                          <ion-option *ngFor="let curcity of data.usacity" [value]="curcity.id">{{curcity.name}}</ion-option>
+                        </ion-select-->
+                        <ionic-selectable #cityComponent formControlName="city"
+                            item-content
+                            [items]="data.usacity"
+                            itemValueField="id"
+                            itemTextField="namepluszipcode"
+                            [canSearch]="true"
+                            [searchDebounce]="1000"
+                            (onSearch)="searchCity($event)"
+                            (onChange)="storeID($event)">
+                        </ionic-selectable>
                     </ion-item>
-                    <ng-container *ngFor="let validation of validation_messages.intlcity">
-                        <div class="error-message" *ngIf="chapterForm.get('intlcity').hasError(validation.type) && (chapterForm.get('intlcity').dirty || chapterForm.get('intlcity').touched || submitAttempt)">
+                    <ng-container *ngFor="let validation of validation_messages.city">
+                        <div class="error-message" *ngIf="chapterForm.get('city').hasError(validation.type) && (chapterForm.get('city').dirty || chapterForm.get('city').touched || submitAttempt)">
                           {{ validation.message }}
                         </div>
                     </ng-container>
                   </ion-col>
-            </ion-row>
-            <ion-row>
-                <ion-col>
-                  <ion-item no-padding color="accent">
-                      <ion-label floating>City</ion-label>
-                      <ion-input type="text" formControlName="intlzipcode"></ion-input>
-                  </ion-item>
-                  <ng-container *ngFor="let validation of validation_messages.intlzipcode">
-                      <div class="error-message" *ngIf="chapterForm.get('intlzipcode').hasError(validation.type) && (chapterForm.get('intlzipcode').dirty || chapterForm.get('intlzipcode').touched || submitAttempt)">
-                        {{ validation.message }}
-                      </div>
-                  </ng-container>
-                </ion-col>
+              </ion-row>
+          </div>
+          <div *ngIf="isInternational">
+              <ion-row>
+                  <ion-col>
+                    <ion-item no-padding color="accent">
+                        <ion-label floating>Country</ion-label>
+                        <ion-select formControlName="country" interface=popover>
+                          <ion-option *ngFor="let curcountry of data.intlcountry" [value]="curcountry.id">{{curcountry.name}}</ion-option>
+                        </ion-select>
+                    </ion-item>
+                    <ng-container *ngFor="let validation of validation_messages.country">
+                        <div class="error-message" *ngIf="chapterForm.get('country').hasError(validation.type) && (chapterForm.get('country').dirty || chapterForm.get('country').touched || submitAttempt)">
+                          {{ validation.message }}
+                        </div>
+                    </ng-container>
+                  </ion-col>
+              </ion-row>
+              <ion-row>
+                  <ion-col>
+                    <ion-item no-padding color="accent">
+                        <ion-label floating>Region</ion-label>
+                        <ion-input type="text" formControlName="intlregion"></ion-input>
+                    </ion-item>
+                    <ng-container *ngFor="let validation of validation_messages.intlregion">
+                        <div class="error-message" *ngIf="chapterForm.get('intlregion').hasError(validation.type) && (chapterForm.get('intlregion').dirty || chapterForm.get('intlregion').touched || submitAttempt)">
+                          {{ validation.message }}
+                        </div>
+                    </ng-container>
+                  </ion-col>
+              </ion-row>
+              <ion-row>
+                    <ion-col>
+                      <ion-item no-padding color="accent">
+                          <ion-label floating>State</ion-label>
+                          <ion-input type="text" formControlName="intlstate"></ion-input>
+                      </ion-item>
+                      <ng-container *ngFor="let validation of validation_messages.intlstate">
+                          <div class="error-message" *ngIf="chapterForm.get('intlstate').hasError(validation.type) && (chapterForm.get('intlstate').dirty || chapterForm.get('intlstate').touched || submitAttempt)">
+                            {{ validation.message }}
+                          </div>
+                      </ng-container>
+                    </ion-col>
+              </ion-row>
+              <ion-row>
+                    <ion-col>
+                      <ion-item no-padding color="accent">
+                          <ion-label floating>City</ion-label>
+                          <ion-input type="text" formControlName="intlcity"></ion-input>
+                      </ion-item>
+                      <ng-container *ngFor="let validation of validation_messages.intlcity">
+                          <div class="error-message" *ngIf="chapterForm.get('intlcity').hasError(validation.type) && (chapterForm.get('intlcity').dirty || chapterForm.get('intlcity').touched || submitAttempt)">
+                            {{ validation.message }}
+                          </div>
+                      </ng-container>
+                    </ion-col>
+              </ion-row>
+              <ion-row>
+                    <ion-col>
+                      <ion-item no-padding color="accent">
+                          <ion-label floating>Zipcode</ion-label>
+                          <ion-input type="number" formControlName="intlzipcode"></ion-input>
+                      </ion-item>
+                      <ng-container *ngFor="let validation of validation_messages.intlzipcode">
+                          <div class="error-message" *ngIf="chapterForm.get('intlzipcode').hasError(validation.type) && (chapterForm.get('intlzipcode').dirty || chapterForm.get('intlzipcode').touched || submitAttempt)">
+                            {{ validation.message }}
+                          </div>
+                      </ng-container>
+                    </ion-col>
+              </ion-row>
+          </div>
+          <ion-row>
+              <ion-col width="100%" align="center">
+                <button ion-button small round (click)="update()">UPDATE</button>
+              </ion-col>
           </ion-row>
-        </div>
-        <ion-row>
-            <ion-col width="100%" align="center">
-              <button ion-button small round (click)="update()">UPDATE</button>
-            </ion-col>
-        </ion-row>
-    </form>
-</ion-content>
+      </form>
+    </div>
+  </ion-content>
