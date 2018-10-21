@@ -53,7 +53,7 @@ export class ManageChapterPage {
       this.data.usaregions = [];
       this.data.usastates = [];
       this.data.usacity = [];
-      this.data.citycomponentitems = [];
+      //this.data.citycomponentitems = [];
   }
 
   validation_messages = {
@@ -141,11 +141,15 @@ export class ManageChapterPage {
       .subscribe(
         data => {
           decoded_response = JSON.parse(data["_body"]);
-          if (decoded_response[0]) {
+          if (decoded_response[0] == "true") {
             this.data.intlcountry = decoded_response[2];
           }
           else {
             this.data.intlcountry = [];
+            if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
+              this.navCtrl.push("LoginPage", { data: 'Please login again.' });
+              //this.loading.dismissAll();
+            }
           }
         },
         error => {
@@ -224,13 +228,17 @@ export class ManageChapterPage {
         .post(this.shareProvider.server + "chapters/usacitiesbystate.php", body)
         .subscribe(
           data => {
-            console.log(data["_body"]);
+            //console.log(data["_body"]);
             decoded_response = JSON.parse(data["_body"]);
-            if(decoded_response[0]) {
+            if(decoded_response[0] == "true") {
               //console.log(decoded_response[2])
               //this.data.citycomponentitems = event.component.items;
               this.data.usacity = decoded_response[2];
               event.component.items = [decoded_response[2]];
+            }
+            if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
+              this.navCtrl.push("LoginPage", { data: 'Please login again.' });
+              //this.loading.dismissAll();
             }
           },
           error => {
@@ -267,15 +275,21 @@ export class ManageChapterPage {
         .post(this.shareProvider.server + "chapters/updatechapter.php", body)
         .subscribe(
           data => {
-            console.log(data["_body"]);
+            //console.log(data["_body"]);
             decoded_response = JSON.parse(data["_body"]);
             if(decoded_response[0] == "true") {
               this.navCtrl.pop();
               this.shareProvider.presentMessageOnlyAlert("You have successfully added a new chapter.");
             }
             else {
-              console.log("Problem updating chapter.  Please contact administrator.");
-              this.shareProvider.presentMessageOnlyAlert("Problem updating chapter.  Please contact administrator.");
+              if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
+                this.navCtrl.push("LoginPage", { data: 'Please login again.' });
+                //this.loading.dismissAll();
+              }
+              else {
+                console.log("Problem updating chapter.  Please contact administrator.");
+                this.shareProvider.presentMessageOnlyAlert("Problem updating chapter.  Please contact administrator.");
+              }
             }
           },
           error => {
@@ -291,12 +305,12 @@ export class ManageChapterPage {
       var body = new FormData();
       body.append('sessionid', this.shareProvider.sessionid);
       body.append('lama_chapters_id', this.data.lama_chapters_id);
-      console.log(this.data.lama_chapters_id);
+      //console.log(this.data.lama_chapters_id);
       this.http
         .post(this.shareProvider.server + "chapters/getchapter.php", body)
         .subscribe(
           data => {
-            console.log(data["_body"]);
+            //console.log(data["_body"]);
             decoded_response = JSON.parse(data["_body"]);
             if(decoded_response[0] == "true") {
               this.chapterForm.controls.name.setValue(decoded_response[2]['name']);
@@ -304,9 +318,11 @@ export class ManageChapterPage {
               this.chapterForm.controls.region.setValue(decoded_response[2]['lama_usa_regions_id']);
               this.populateUSAStatesByRegion();
               this.chapterForm.controls.state.setValue(decoded_response[2]['lama_usa_states_id']);
-              this.data.usacity = [{"id":2370,"0":2370,"name":"Newark","1":"Newark","description":"","2":"","lama_usa_states_id":31,"3":31,"zipcode":"7101","4":"7101","state":"New Jersey","5":"New Jersey","county":"Essex","6":"Essex","namepluszipcode":"Newark 7101"}];
-              this.cityComponent.items = [[{"id":2370,"namepluszipcode":"Newark 7101"}]];
-              this.chapterForm.controls.city.setValue({"id":2370,"namepluszipcode":"Newark 7101"});
+              this.data.usacity = [decoded_response[2]['lama_usa_city_details']];
+              if(this.cityComponent != null) {
+                this.cityComponent.items = [decoded_response[2]['lama_usa_city_details']];
+              }
+              this.chapterForm.controls.city.setValue({"id":decoded_response[2]['lama_usa_city_details']["id"],"namepluszipcode":decoded_response[2]['lama_usa_city_details']["namepluszipcode"]});
               this.chapterForm.controls.country.setValue(decoded_response[2]['lama_international_regions_id']);
               this.chapterForm.controls.intlregion.setValue(decoded_response[2]['intl_region']);
               this.chapterForm.controls.intlstate.setValue(decoded_response[2]['intl_state']);
@@ -314,8 +330,14 @@ export class ManageChapterPage {
               this.chapterForm.controls.intlzipcode.setValue(decoded_response[2]['intl_zipcode']);
             }
             else {
-              console.log("Problem getting chapter details.  Please contact administrator.");
-              this.shareProvider.presentMessageOnlyAlert("Problem getting chapter details.  Please contact administrator.");
+              if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
+                this.navCtrl.push("LoginPage", { data: 'Please login again.' });
+                //this.loading.dismissAll();
+              }
+              else {
+                console.log("Problem getting chapter details.  Please contact administrator.");
+                this.shareProvider.presentMessageOnlyAlert("Problem getting chapter details.  Please contact administrator.");
+              }
             }
           },
           error => {

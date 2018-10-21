@@ -63,7 +63,7 @@ export class ManageChaptersPage {
       .post(this.shareProvider.server + "chapters/listchapters.php", body)
       .subscribe(
         data => {
-          console.log(data["_body"]);
+          //console.log(data["_body"]);
           var mydt, mm, dd, yyyy = null;
           decoded_response = JSON.parse(data["_body"]);
           if (decoded_response[0] == "true") {
