@@ -154,8 +154,8 @@ export class ManagegaragesPage {
       },1000);
   }
 
-  openGarage(lama_members_id) {
-    this.navCtrl.push("ManageGaragePage", { lama_members_id: lama_members_id });
+  openGarage(lama_members_id, username) {
+    this.navCtrl.push("ManagegaragePage", { lama_members_id: lama_members_id, username: username });
   }
 
 }

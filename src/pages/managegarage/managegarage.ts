@@ -1,5 +1,5 @@
 import { Component, ViewChild } from "@angular/core";
-import { IonicPage, NavController, ModalController } from "ionic-angular";
+import { IonicPage, NavController, ModalController, NavParams } from "ionic-angular";
 import { ToastService } from "../../services/toast.service";
 import { ActionSheetController } from "ionic-angular";
 import { Http } from "@angular/http";
@@ -11,12 +11,19 @@ import { FilePath } from '@ionic-native/file-path';
 import { File } from '@ionic-native/file';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 
+/**
+ * Generated class for the ManagegaragePage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+
 @IonicPage()
 @Component({
-  selector: "page-garage",
-  templateUrl: "garage.html",
+  selector: 'page-managegarage',
+  templateUrl: 'managegarage.html',
 })
-export class GaragePage {
+export class ManagegaragePage {
 
   @ViewChild('content') content:any;
 
@@ -61,8 +68,11 @@ export class GaragePage {
     private filePath: FilePath,
     private file: File,
     public toastCtrl1: ToastController,
-    private transfer: FileTransfer
+    private transfer: FileTransfer,
+    public navParams: NavParams,
   ) {
+      this.data.lama_members_id = navParams.get('lama_members_id');
+      this.data.username = navParams.get('username');
       this.data.response = "";
       this.data.error = "";
       this.data.licensepic = "";
@@ -106,8 +116,10 @@ export class GaragePage {
     var decoded_response = "";
     var body = new FormData();
     body.append("sessionid", this.shareProvider.sessionid);
+    body.append("lama_members_id", this.data.lama_members_id);
+    body.append("username", this.data.username);
     this.http
-      .post(this.shareProvider.server + "profile/profileinfo.php", body)
+      .post(this.shareProvider.server + "profile/userprofileinfo.php", body)
       .subscribe(
         data => {
           decoded_response = JSON.parse(data["_body"]);
@@ -167,8 +179,10 @@ export class GaragePage {
     var decoded_response = null;
     var body = new FormData();
     body.append("sessionid", this.shareProvider.sessionid);
+    body.append("lama_members_id", this.data.lama_members_id);
+    body.append("username", this.data.username);
     this.http
-      .post(this.shareProvider.server + "garage/garage.php", body)
+      .post(this.shareProvider.server + "garage/usergarage.php", body)
       .subscribe(
         data => {
           console.log(data["_body"]);
@@ -254,30 +268,58 @@ export class GaragePage {
   }
 
   displayLicensePic() {
+    if((this.data.licensepic == null) || (this.data.licensepic == '')) {
+      this.shareProvider.presentMessageOnlyAlert('You must upload picture.');
+      return;
+    }
     this.shareProvider.displayPic(this.data.licensepic, 'License Pic');
   }
 
   displayOdometerPicForNewMotorcycle() {
+    if((this.data.odometerpic == null) || (this.data.odometerpic == '')) {
+      this.shareProvider.presentMessageOnlyAlert('You must upload picture.');
+      return;
+    }
     this.shareProvider.displayPic(this.data.odometerpic, 'Odometer Pic');
   }
 
   displayRegistrationPicForNewMotorcycle() {
+    if((this.data.registrationpic == null) || (this.data.registrationpic == '')) {
+      this.shareProvider.presentMessageOnlyAlert('You must upload picture.');
+      return;
+    }
     this.shareProvider.displayPic(this.data.registrationpic, 'Registration Pic');
   }
 
   displayInsurancePicForNewMotorcycle() {
+    if((this.data.insurancepic == null) || (this.data.insurancepic == '')) {
+      this.shareProvider.presentMessageOnlyAlert('You must upload picture.');
+      return;
+    }
     this.shareProvider.displayPic(this.data.insurancepic, 'Insurance Pic');
   }
 
   displayOdometerPic(i) {
+    if((this.memberMotorcycleInfo[i]['odometerpic'] == null) || (this.memberMotorcycleInfo[i]['odometerpic'] == '')) {
+      this.shareProvider.presentMessageOnlyAlert('You must upload picture.');
+      return;
+    }
     this.shareProvider.displayPic(this.memberMotorcycleInfo[i]['odometerpic'], 'Odometer Pic for ' + this.memberMotorcycleInfo[i]['make'] + ' ' + this.memberMotorcycleInfo[i]['model'] + ' ' + this.memberMotorcycleInfo[i]['year']);
   }
 
   displayRegistrationPic(i) {
+    if((this.memberMotorcycleInfo[i]['registrationpic'] == null) || (this.memberMotorcycleInfo[i]['registrationpic'] == '')) {
+      this.shareProvider.presentMessageOnlyAlert('You must upload picture.');
+      return;
+    }
     this.shareProvider.displayPic(this.memberMotorcycleInfo[i]['registrationpic'], 'Registration Pic for ' + this.memberMotorcycleInfo[i]['make'] + ' ' + this.memberMotorcycleInfo[i]['model'] + ' ' + this.memberMotorcycleInfo[i]['year']);
   }
 
   displayInsurancePic(i) {
+    if((this.memberMotorcycleInfo[i]['insurancepic'] == null) || (this.memberMotorcycleInfo[i]['insurancepic'] == '')) {
+      this.shareProvider.presentMessageOnlyAlert('You must upload picture.');
+      return;
+    }
     this.shareProvider.displayPic(this.memberMotorcycleInfo[i]['insurancepic'], 'Insurance Pic for ' + this.memberMotorcycleInfo[i]['make'] + ' ' + this.memberMotorcycleInfo[i]['model'] + ' ' + this.memberMotorcycleInfo[i]['year']);
   }
 
@@ -333,12 +375,12 @@ export class GaragePage {
       body.append('expdt', this.garageForm.controls['licenseexpdt'].value);
       body.append('license_pic', this.data.licensepic);
       //------------------------------------------------------------------
-      this.http.post(this.shareProvider.server + "garage/updatelicense.php", body).subscribe(
+      this.http.post(this.shareProvider.server + "garage/updateuserlicense.php", body).subscribe(
         data => {
           decoded_response = JSON.parse(data["_body"]);
           //console.log(data["_body"]);
           if (decoded_response[0] == "true") {
-            this.shareProvider.presentMessageOnlyAlert("You've successfully update your license information.");
+            this.shareProvider.presentMessageOnlyAlert("You've successfully updated license information.");
             this.loading.dismissAll();
             this.loadProfileInfo();
             this.loadGarageInfo();
@@ -381,7 +423,7 @@ export class GaragePage {
       body.append('miles', this.data.motorcycleformgroups[num].get('miles').value);
       body.append('odometerpic', this.memberMotorcycleInfo[num]['odometerpic'])
       //------------------------------------------------------------------
-      this.http.post(this.shareProvider.server + "garage/updatemiles.php", body).subscribe(
+      this.http.post(this.shareProvider.server + "garage/updateusermiles.php", body).subscribe(
         data => {
           decoded_response = JSON.parse(data["_body"]);
           //console.log(data["_body"]);
@@ -429,7 +471,7 @@ export class GaragePage {
       body.append('registrationexpdt', this.data.motorcycleformgroups[num].get('registrationexpdt').value);
       body.append('registrationpic', this.memberMotorcycleInfo[num]['registrationpic'])
       //------------------------------------------------------------------
-      this.http.post(this.shareProvider.server + "garage/updateregistration.php", body).subscribe(
+      this.http.post(this.shareProvider.server + "garage/updateuserregistration.php", body).subscribe(
         data => {
           decoded_response = JSON.parse(data["_body"]);
           //console.log(data["_body"]);
@@ -477,7 +519,7 @@ export class GaragePage {
       body.append('insuranceexpdt', this.data.motorcycleformgroups[num].get('insuranceexpdt').value);
       body.append('insurancepic', this.memberMotorcycleInfo[num]['insurancepic'])
       //------------------------------------------------------------------
-      this.http.post(this.shareProvider.server + "garage/updateinsurance.php", body).subscribe(
+      this.http.post(this.shareProvider.server + "garage/updateuserinsurance.php", body).subscribe(
         data => {
           decoded_response = JSON.parse(data["_body"]);
           //console.log(data["_body"]);
@@ -534,7 +576,7 @@ export class GaragePage {
       body.append('registrationpic', this.data.registrationpic);
       body.append('insurancepic', this.data.insurancepic);
       //------------------------------------------------------------------
-      this.http.post(this.shareProvider.server + "garage/addnewmotorcycle.php", body).subscribe(
+      this.http.post(this.shareProvider.server + "garage/addnewusermotorcycle.php", body).subscribe(
         data => {
           decoded_response = JSON.parse(data["_body"]);
           //console.log(data["_body"]);
@@ -742,6 +784,100 @@ export class GaragePage {
           }
         }
       });
+    }
+  }
+
+  approveLicense() {
+    //this.shareProvider.presentMessageOnlyAlert(this.data.licensepic);
+    //this.shareProvider.presentMessageOnlyAlert(this.garageForm.controls['licenseexpdt'].value);
+    if(this.garageForm.valid) {
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+
+      var body = new FormData();
+      var json_encoded_response = "";
+      var decoded_response = "";
+      body.append('sessionid', this.shareProvider.sessionid);
+      body.append('lama_members_id', this.data.lama_members_id);
+      //------------------------------------------------------------------
+      this.http.post(this.shareProvider.server + "garage/approveuserlicense.php", body).subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          //console.log(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.shareProvider.presentMessageOnlyAlert("You've successfully approved license information.");
+            this.loading.dismissAll();
+            this.loadProfileInfo();
+            this.loadGarageInfo();
+          }
+          else {
+            //this.data.error = "Unknown problem occured.  Please contact administrator.";
+            this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-008");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: garage-008");
+            this.loading.dismissAll();
+          }
+        },
+        error => {
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //console.log("Oooops!");
+          this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-009");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: garage-009");
+          this.loading.dismissAll();
+        }
+      );
+      //------------------------------------------------------------------
+    }
+    else {
+      this.shareProvider.presentMessageOnlyAlert('Did you miss one or more required fields?');
+    }
+  }
+  
+  rejectLicense() {
+    //this.shareProvider.presentMessageOnlyAlert(this.data.licensepic);
+    //this.shareProvider.presentMessageOnlyAlert(this.garageForm.controls['licenseexpdt'].value);
+    if(this.garageForm.valid) {
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+
+      var body = new FormData();
+      var json_encoded_response = "";
+      var decoded_response = "";
+      body.append('sessionid', this.shareProvider.sessionid);
+      body.append('lama_members_id', this.data.lama_members_id);
+      //------------------------------------------------------------------
+      this.http.post(this.shareProvider.server + "garage/rejectuserlicense.php", body).subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          //console.log(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.shareProvider.presentMessageOnlyAlert("You've successfully rejected license information.");
+            this.loading.dismissAll();
+            this.loadProfileInfo();
+            this.loadGarageInfo();
+          }
+          else {
+            //this.data.error = "Unknown problem occured.  Please contact administrator.";
+            this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-008");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: garage-008");
+            this.loading.dismissAll();
+          }
+        },
+        error => {
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //console.log("Oooops!");
+          this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-009");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: garage-009");
+          this.loading.dismissAll();
+        }
+      );
+      //------------------------------------------------------------------
+    }
+    else {
+      this.shareProvider.presentMessageOnlyAlert('Did you miss one or more required fields?');
     }
   }
 
