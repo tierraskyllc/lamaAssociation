@@ -1,0 +1,120 @@
+<!--
+  Generated template for the ManageChaptersPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Manage Garages</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+      <!--ion-row>
+          <ion-col width="100%" align="center">
+              <ion-buttons end><button style="background: transparent;" (click)="addChapter()"><ion-icon color="secondary" name="add-circle" style="zoom:2;"></ion-icon></button></ion-buttons>
+          </ion-col>
+      </ion-row-->
+      <ion-row>
+          <ion-col width="100%" align="center">
+              <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="search()"></ion-searchbar>
+          </ion-col>
+      </ion-row>
+      <div *ngIf="data.searchgarageflag">
+          <ion-row>
+              <ion-col width="100%" align="center">
+                  <h3>{{data.searchgaragetitle}}</h3>
+              </ion-col>
+          </ion-row>
+          <!--ion-row *ngIf="(searcheditems.length > 0)">
+              <ion-col align="center" col-10>
+                  <h4>Chapter Information</h4>    
+              </ion-col>
+              <ion-col align="center" col-2>
+                  <h4>View</h4>    
+              </ion-col>
+          </ion-row-->
+          <ion-row *ngFor="let item of searcheditems">
+              <ion-col col-12>
+                <ion-grid style="border-style: solid; border-color: #FCD736; border-radius: 15px; border-width: 1px;">
+                    <ion-row>
+                        <ion-col>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col col-10 style="color: #FCD736;">
+                            {{ item['first_name'] }}&nbsp;{{ item['last_name'] }}
+                        </ion-col>
+                        <ion-col align="center" col-2 style="color: #FCD736;">
+                            <ion-buttons end><button style="background: transparent;" (click)="openGarage(item['lama_members_id'])"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col col-10 style="color: #FCD736;">
+                            <!--span>{{ item['city'] }}</span-->
+                            <span *ngIf="item['name'] !=='' && item['name'] !== null">{{ item['name'] }}</span>
+                            <span *ngIf="item['ManageGaragesStatus'] !=='' && item['ManageGaragesStatus'] !== null" style="color:red;">&nbsp;&nbsp;({{ item['ManageGaragesStatus'] }})</span>
+                            <!--span *ngIf="item['zipcode'] !=='' && item['zipcode'] !== null">,&nbsp;{{ item['zipcode'] }}</span-->
+                        </ion-col>
+                        <ion-col col-2>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+              </ion-col>
+          </ion-row>
+      </div>
+      <div *ngIf="!data.searchgarageflag">
+          <!--ion-row *ngIf="(items.length > 0)">
+              <ion-col align="center" col-10>
+                  <h4>Chapter Information</h4>    
+              </ion-col>
+              <ion-col align="center" col-2>
+                  <h4>View</h4>    
+              </ion-col>
+          </ion-row-->
+          <ion-row *ngIf="items.length > 0">
+            <ion-col width="100%" align="center">
+                <h3>Requests Pending for Review:</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="items.length <= 0">
+            <ion-col width="100%" align="center">
+                <h3>No requests are pending for review.</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngFor="let item of items">
+              <ion-col col-12>
+                <ion-grid style="border-style: solid; border-color: #FCD736; border-radius: 15px; border-width: 1px;">
+                    <ion-row>
+                        <ion-col>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col col-10 style="color: #FCD736;">
+                            {{ item['first_name'] }}&nbsp;{{ item['last_name'] }}
+                        </ion-col>
+                        <ion-col align="center" col-2>
+                            <ion-buttons end><button style="background: transparent;" (click)="openGarage(item['lama_members_id'])"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col col-10 style="color: #FCD736;">
+                            <!--span>{{ item['city'] }}</span-->
+                            <span *ngIf="item['name'] !=='' && item['name'] !== null">{{ item['name'] }}</span>
+                            <!--span *ngIf="item['region'] !=='' && item['region'] !== null">,&nbsp;{{ item['region'] }}</span-->
+                            <!--span *ngIf="item['zipcode'] !=='' && item['zipcode'] !== null">,&nbsp;{{ item['zipcode'] }}</span-->
+                        </ion-col>
+                        <ion-col col-2>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+              </ion-col>
+          </ion-row>
+      </div>
+  </ion-grid>
+</ion-content>

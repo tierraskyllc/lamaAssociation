@@ -96,6 +96,12 @@ export class ShareProvider {
                 console.log('Manage Chapters' + ' clicked');
               }
             }
+            if(tmparr[i] == 'Manage Garages') {
+              tmphandler = () => {
+                myNavCtrl.push("ManagegaragesPage");
+                console.log('Manage Garages' + ' clicked');
+              }
+            }
             mybutton = {
               text: tmparr[i],
               handler: tmphandler
