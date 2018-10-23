@@ -790,7 +790,7 @@ export class ManagegaragePage {
   approveLicense() {
     //this.shareProvider.presentMessageOnlyAlert(this.data.licensepic);
     //this.shareProvider.presentMessageOnlyAlert(this.garageForm.controls['licenseexpdt'].value);
-    if(this.garageForm.valid) {
+    if(true) {
       this.loading = this.loadingCtrl.create({
         content: '',
       });
@@ -829,15 +829,12 @@ export class ManagegaragePage {
       );
       //------------------------------------------------------------------
     }
-    else {
-      this.shareProvider.presentMessageOnlyAlert('Did you miss one or more required fields?');
-    }
   }
   
   rejectLicense() {
     //this.shareProvider.presentMessageOnlyAlert(this.data.licensepic);
     //this.shareProvider.presentMessageOnlyAlert(this.garageForm.controls['licenseexpdt'].value);
-    if(this.garageForm.valid) {
+    if(true) {
       this.loading = this.loadingCtrl.create({
         content: '',
       });
@@ -876,8 +873,349 @@ export class ManagegaragePage {
       );
       //------------------------------------------------------------------
     }
-    else {
-      this.shareProvider.presentMessageOnlyAlert('Did you miss one or more required fields?');
+  }
+
+  approveUserMiles(num) {
+    if(true) {
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+
+      var body = new FormData();
+      var json_encoded_response = "";
+      var decoded_response = "";
+      body.append('sessionid', this.shareProvider.sessionid);
+      //body.append('lama_members_id', this.data.lama_members_id);
+      body.append('lama_motorcycles_id', this.memberMotorcycleInfo[num]['lama_motorcycles_id']);
+      //------------------------------------------------------------------
+      this.http.post(this.shareProvider.server + "garage/approveusermiles.php", body).subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          //console.log(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.shareProvider.presentMessageOnlyAlert("You've successfully approved miles information for this motorcycle.");
+            this.loading.dismissAll();
+            this.loadProfileInfo();
+            this.loadGarageInfo();
+          }
+          else {
+            //this.data.error = "Unknown problem occured.  Please contact administrator.";
+            this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-018");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: garage-018");
+            this.loading.dismissAll();
+          }
+        },
+        error => {
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //console.log("Oooops!");
+          this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-019");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: garage-019");
+          this.loading.dismissAll();
+        }
+      );
+      //------------------------------------------------------------------
+    }
+  }
+
+  rejectUserMiles(num) {
+    if(true) {
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+
+      var body = new FormData();
+      var json_encoded_response = "";
+      var decoded_response = "";
+      body.append('sessionid', this.shareProvider.sessionid);
+      //body.append('lama_members_id', this.data.lama_members_id);
+      body.append('lama_motorcycles_id', this.memberMotorcycleInfo[num]['lama_motorcycles_id']);
+      //------------------------------------------------------------------
+      this.http.post(this.shareProvider.server + "garage/rejectusermiles.php", body).subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          //console.log(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.shareProvider.presentMessageOnlyAlert("You've successfully rejected miles information for this motorcycle.");
+            this.loading.dismissAll();
+            this.loadProfileInfo();
+            this.loadGarageInfo();
+          }
+          else {
+            //this.data.error = "Unknown problem occured.  Please contact administrator.";
+            this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-018");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: garage-018");
+            this.loading.dismissAll();
+          }
+        },
+        error => {
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //console.log("Oooops!");
+          this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-019");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: garage-019");
+          this.loading.dismissAll();
+        }
+      );
+      //------------------------------------------------------------------
+    }
+  }
+
+  approveUserRegistration(num) {
+    if(true) {
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+
+      var body = new FormData();
+      var json_encoded_response = "";
+      var decoded_response = "";
+      body.append('sessionid', this.shareProvider.sessionid);
+      //body.append('lama_members_id', this.data.lama_members_id);
+      body.append('lama_motorcycles_id', this.memberMotorcycleInfo[num]['lama_motorcycles_id']);
+      //------------------------------------------------------------------
+      this.http.post(this.shareProvider.server + "garage/approveuserregistration.php", body).subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          //console.log(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.shareProvider.presentMessageOnlyAlert("You've successfully approved registration information for this motorcycle.");
+            this.loading.dismissAll();
+            this.loadProfileInfo();
+            this.loadGarageInfo();
+          }
+          else {
+            //this.data.error = "Unknown problem occured.  Please contact administrator.";
+            this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-018");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: garage-018");
+            this.loading.dismissAll();
+          }
+        },
+        error => {
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //console.log("Oooops!");
+          this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-019");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: garage-019");
+          this.loading.dismissAll();
+        }
+      );
+      //------------------------------------------------------------------
+    }
+  }
+
+  rejectUserRegistration(num) {
+    if(true) {
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+
+      var body = new FormData();
+      var json_encoded_response = "";
+      var decoded_response = "";
+      body.append('sessionid', this.shareProvider.sessionid);
+      //body.append('lama_members_id', this.data.lama_members_id);
+      body.append('lama_motorcycles_id', this.memberMotorcycleInfo[num]['lama_motorcycles_id']);
+      //------------------------------------------------------------------
+      this.http.post(this.shareProvider.server + "garage/rejectuserregistration.php", body).subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          //console.log(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.shareProvider.presentMessageOnlyAlert("You've successfully rejected registration information for this motorcycle.");
+            this.loading.dismissAll();
+            this.loadProfileInfo();
+            this.loadGarageInfo();
+          }
+          else {
+            //this.data.error = "Unknown problem occured.  Please contact administrator.";
+            this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-018");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: garage-018");
+            this.loading.dismissAll();
+          }
+        },
+        error => {
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //console.log("Oooops!");
+          this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-019");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: garage-019");
+          this.loading.dismissAll();
+        }
+      );
+      //------------------------------------------------------------------
+    }
+  }
+
+  approveUserInsurance(num) {
+    if(true) {
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+
+      var body = new FormData();
+      var json_encoded_response = "";
+      var decoded_response = "";
+      body.append('sessionid', this.shareProvider.sessionid);
+      //body.append('lama_members_id', this.data.lama_members_id);
+      body.append('lama_motorcycles_id', this.memberMotorcycleInfo[num]['lama_motorcycles_id']);
+      //------------------------------------------------------------------
+      this.http.post(this.shareProvider.server + "garage/approveuserinsurance.php", body).subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          //console.log(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.shareProvider.presentMessageOnlyAlert("You've successfully approved insurance information for this motorcycle.");
+            this.loading.dismissAll();
+            this.loadProfileInfo();
+            this.loadGarageInfo();
+          }
+          else {
+            //this.data.error = "Unknown problem occured.  Please contact administrator.";
+            this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-018");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: garage-018");
+            this.loading.dismissAll();
+          }
+        },
+        error => {
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //console.log("Oooops!");
+          this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-019");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: garage-019");
+          this.loading.dismissAll();
+        }
+      );
+      //------------------------------------------------------------------
+    }
+  }
+
+  rejectUserInsurance(num) {
+    if(true) {
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+
+      var body = new FormData();
+      var json_encoded_response = "";
+      var decoded_response = "";
+      body.append('sessionid', this.shareProvider.sessionid);
+      //body.append('lama_members_id', this.data.lama_members_id);
+      body.append('lama_motorcycles_id', this.memberMotorcycleInfo[num]['lama_motorcycles_id']);
+      //------------------------------------------------------------------
+      this.http.post(this.shareProvider.server + "garage/rejectuserinsurance.php", body).subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          //console.log(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.shareProvider.presentMessageOnlyAlert("You've successfully rejected insurance information for this motorcycle.");
+            this.loading.dismissAll();
+            this.loadProfileInfo();
+            this.loadGarageInfo();
+          }
+          else {
+            //this.data.error = "Unknown problem occured.  Please contact administrator.";
+            this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-018");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: garage-018");
+            this.loading.dismissAll();
+          }
+        },
+        error => {
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //console.log("Oooops!");
+          this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-019");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: garage-019");
+          this.loading.dismissAll();
+        }
+      );
+      //------------------------------------------------------------------
+    }
+  }
+
+  approveUserMotorcycle(num) {
+    if(true) {
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+
+      var body = new FormData();
+      var json_encoded_response = "";
+      var decoded_response = "";
+      body.append('sessionid', this.shareProvider.sessionid);
+      //body.append('lama_members_id', this.data.lama_members_id);
+      body.append('lama_motorcycles_id', this.memberMotorcycleInfo[num]['lama_motorcycles_id']);
+      //------------------------------------------------------------------
+      this.http.post(this.shareProvider.server + "garage/approveusermotorcycle.php", body).subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          //console.log(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.shareProvider.presentMessageOnlyAlert("You've successfully approved this motorcycle.");
+            this.loading.dismissAll();
+            this.loadProfileInfo();
+            this.loadGarageInfo();
+          }
+          else {
+            //this.data.error = "Unknown problem occured.  Please contact administrator.";
+            this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-018");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: garage-018");
+            this.loading.dismissAll();
+          }
+        },
+        error => {
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //console.log("Oooops!");
+          this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-019");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: garage-019");
+          this.loading.dismissAll();
+        }
+      );
+      //------------------------------------------------------------------
+    }
+  }
+
+  rejectUserMotorcycle(num) {
+    if(true) {
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+
+      var body = new FormData();
+      var json_encoded_response = "";
+      var decoded_response = "";
+      body.append('sessionid', this.shareProvider.sessionid);
+      //body.append('lama_members_id', this.data.lama_members_id);
+      body.append('lama_motorcycles_id', this.memberMotorcycleInfo[num]['lama_motorcycles_id']);
+      //------------------------------------------------------------------
+      this.http.post(this.shareProvider.server + "garage/rejectusermotorcycle.php", body).subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          //console.log(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.shareProvider.presentMessageOnlyAlert("You've successfully rejected this motorcycle.");
+            this.loading.dismissAll();
+            this.loadProfileInfo();
+            this.loadGarageInfo();
+          }
+          else {
+            //this.data.error = "Unknown problem occured.  Please contact administrator.";
+            this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-018");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: garage-018");
+            this.loading.dismissAll();
+          }
+        },
+        error => {
+          //this.data.error = "Unknown problem occured.  Please contact administrator.";
+          //console.log("Oooops!");
+          this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.  Code: garage-019");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: garage-019");
+          this.loading.dismissAll();
+        }
+      );
+      //------------------------------------------------------------------
     }
   }
 

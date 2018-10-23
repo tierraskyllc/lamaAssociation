@@ -26,7 +26,7 @@
                     <ion-col>
                       <ion-item no-padding color="accent">
                         <ion-label floating>License Expiration Date</ion-label>
-                        <ion-datetime formControlName="licenseexpdt" max="{{ data.maxyear }}" custom-datetime [disabled]="data.licenseexpdt !== null && data.licenseexpdt !== '' && (data.license_exp_alert_msg == '' || data.license_exp_alert_msg == 'In Review')"></ion-datetime>
+                        <ion-datetime formControlName="licenseexpdt" max="{{ data.maxyear }}" custom-datetime [disabled]="data.license_exp_alert_msg == 'In Review'"></ion-datetime>
                       </ion-item>
                       <ng-container *ngFor="let validation of validation_messages.licenseexpdt">
                           <div class="error-message" *ngIf="garageForm.get('licenseexpdt').hasError(validation.type)">
@@ -36,7 +36,7 @@
                     </ion-col>
                   </ion-row>
                   <ion-row>
-                      <ion-col width="80%" align="center"  *ngIf="data.licenseexpdt == '' || data.licenseexpdt == null || (data.license_exp_alert_msg !== '' && data.license_exp_alert_msg !== 'In Review')">
+                      <ion-col width="80%" align="center"  *ngIf="data.license_exp_alert_msg !== 'In Review'">
                         <button ion-button small round (click)="uploadLicense()">Capture License Picture</button>
                         <ng-container>
                             <div class="error-message" *ngIf="(data.licensepic == null || data.licensepic == '')">
@@ -52,7 +52,7 @@
                         <ion-buttons end><button style="background: transparent;" (click)="displayLicensePic()"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
                       </ion-col>
                   </ion-row>
-                  <ion-row *ngIf="data.licenseexpdt == '' || data.licenseexpdt == null || (data.license_exp_alert_msg !== '' && data.license_exp_alert_msg !== 'In Review')">
+                  <ion-row *ngIf="data.license_exp_alert_msg !== 'In Review'">
                     <ion-col col-12 style="text-align: center;">
                       <button ion-button default-button (click)="submitLicense()">Submit License Details</button>
                     </ion-col>
@@ -108,8 +108,8 @@
                           </ng-container>
                       </ion-col>
                     </ion-row>
-                    <ion-row *ngIf="motorcycleInfo['miles_alert_msg'] !== 'In Review'">
-                      <ion-col width="80%" align="center">
+                    <ion-row>
+                      <ion-col width="80%" align="center" *ngIf="motorcycleInfo['miles_alert_msg'] !== 'In Review'">
                           <button ion-button small round (click)="uploadOdometerPic(i)">Capture Odometer Picture</button>
                           <ng-container>
                               <div class="error-message" *ngIf="(memberMotorcycleInfo[i]['odometerpic'] == null || memberMotorcycleInfo[i]['odometerpic'] == '')">
@@ -117,6 +117,10 @@
                               </div>
                           </ng-container>
                       </ion-col>
+                      <ion-col width="80%" align="center" *ngIf="motorcycleInfo['miles_alert_msg'] == 'In Review' && motorcycleInfo['motorcycle_alert_msg'] !== 'In Review'">
+                          <button ion-button small round (click)="approveUserMiles(i)">Approve</button>
+                          <button ion-button small round (click)="rejectUserMiles(i)">Reject</button>
+                        </ion-col>
                       <ion-col width="20%" align="center">
                           <ion-buttons end><button style="background: transparent;" (click)="displayOdometerPic(i)"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
                       </ion-col>
@@ -141,7 +145,7 @@
                             <ion-col>
                               <ion-item no-padding color="accent">
                                 <ion-label floating>Registration Expiration Date</ion-label>
-                                <ion-datetime formControlName="registrationexpdt" max="{{ data.maxyear }}" custom-datetime [disabled]="motorcycleInfo['registration_exp_alert_msg'] == '' || motorcycleInfo['registration_exp_alert_msg'] == 'In Review'"></ion-datetime>
+                                <ion-datetime formControlName="registrationexpdt" max="{{ data.maxyear }}" custom-datetime [disabled]="motorcycleInfo['registration_exp_alert_msg'] == 'In Review'"></ion-datetime>
                               </ion-item>
                               <ng-container>
                                   <div class="error-message" *ngIf="data.motorcycleformgroups[i].get('registrationexpdt').hasError('required')">
@@ -150,8 +154,8 @@
                               </ng-container>
                             </ion-col>
                           </ion-row>
-                          <ion-row *ngIf="motorcycleInfo['registration_exp_alert_msg'] !== '' && motorcycleInfo['registration_exp_alert_msg'] !== 'In Review'">
-                              <ion-col width="80%" align="center">
+                          <ion-row>
+                              <ion-col width="80%" align="center" *ngIf="motorcycleInfo['registration_exp_alert_msg'] !== 'In Review'">
                                 <button ion-button small round (click)="uploadRegistrationPic(i)">Capture Registration Picture</button>
                                 <ng-container>
                                     <div class="error-message" *ngIf="(memberMotorcycleInfo[i]['registrationpic'] == null || memberMotorcycleInfo[i]['registrationpic'] == '')">
@@ -159,11 +163,15 @@
                                     </div>
                                 </ng-container>
                               </ion-col>
+                              <ion-col width="80%" align="center" *ngIf="motorcycleInfo['registration_exp_alert_msg'] == 'In Review' && motorcycleInfo['motorcycle_alert_msg'] !== 'In Review'">
+                                  <button ion-button small round (click)="approveUserRegistration(i)">Approve</button>
+                                  <button ion-button small round (click)="rejectUserRegistration(i)">Reject</button>
+                                </ion-col>
                               <ion-col width="20%" align="center">
                                 <ion-buttons end><button style="background: transparent;" (click)="displayRegistrationPic(i)"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
                               </ion-col>
                           </ion-row>
-                          <ion-row *ngIf="motorcycleInfo['registration_exp_alert_msg'] !== '' && motorcycleInfo['registration_exp_alert_msg'] !== 'In Review'">
+                          <ion-row *ngIf="motorcycleInfo['registration_exp_alert_msg'] !== 'In Review'">
                             <ion-col col-12 style="text-align: center;">
                               <button ion-button default-button (click)="submitRegistrationChanges(i)">Submit</button>
                             </ion-col>
@@ -183,7 +191,7 @@
                               <ion-col>
                                 <ion-item no-padding color="accent">
                                   <ion-label floating>Insurance Expiration Date</ion-label>
-                                  <ion-datetime formControlName="insuranceexpdt" max="{{ data.maxyear }}" custom-datetime [disabled]="motorcycleInfo['insurance_exp_alert_msg'] == '' || motorcycleInfo['insurance_exp_alert_msg'] == 'In Review'"></ion-datetime>
+                                  <ion-datetime formControlName="insuranceexpdt" max="{{ data.maxyear }}" custom-datetime [disabled]="motorcycleInfo['insurance_exp_alert_msg'] == 'In Review'"></ion-datetime>
                                 </ion-item>
                                 <ng-container>
                                     <div class="error-message" *ngIf="data.motorcycleformgroups[i].get('insuranceexpdt').hasError('required')">
@@ -192,8 +200,8 @@
                                 </ng-container>
                               </ion-col>
                             </ion-row>
-                            <ion-row *ngIf="motorcycleInfo['insurance_exp_alert_msg'] !== '' && motorcycleInfo['insurance_exp_alert_msg'] !== 'In Review'">
-                                <ion-col width="80%" align="center">
+                            <ion-row>
+                                <ion-col width="80%" align="center" *ngIf="motorcycleInfo['insurance_exp_alert_msg'] !== 'In Review'">
                                   <button ion-button small round (click)="uploadInsurancePic(i)">Capture Insurance Picture</button>
                                   <ng-container>
                                       <div class="error-message" *ngIf="(memberMotorcycleInfo[i]['insurancepic'] == null || memberMotorcycleInfo[i]['insurancepic'] == '')">
@@ -201,17 +209,29 @@
                                       </div>
                                   </ng-container>
                                 </ion-col>
+                                <ion-col width="80%" align="center" *ngIf="motorcycleInfo['insurance_exp_alert_msg'] == 'In Review' && motorcycleInfo['motorcycle_alert_msg'] !== 'In Review'">
+                                    <button ion-button small round (click)="approveUserInsurance(i)">Approve</button>
+                                    <button ion-button small round (click)="rejectUserInsurance(i)">Reject</button>
+                                  </ion-col>
                                 <ion-col width="20%" align="center">
                                   <ion-buttons end><button style="background: transparent;" (click)="displayInsurancePic(i)"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
                                 </ion-col>
                             </ion-row>
-                            <ion-row *ngIf="motorcycleInfo['insurance_exp_alert_msg'] !== '' && motorcycleInfo['insurance_exp_alert_msg'] !== 'In Review'">
+                            <ion-row *ngIf="motorcycleInfo['insurance_exp_alert_msg'] !== 'In Review'">
                               <ion-col col-12 style="text-align: center;">
                                 <button ion-button default-button (click)="submitInsuranceChanges(i)">Submit</button>
                               </ion-col>
                             </ion-row>
                           </ion-grid>
                   </div>
+              </ion-col>
+            </ion-row>
+            <ion-row *ngIf="motorcycleInfo['motorcycle_alert_msg'] == 'In Review'">
+              <ion-col width="50%" style="text-align: center;">
+                  <button ion-button default-button (click)="approveUserMotorcycle(i)">Approve Motorcycle</button>
+              </ion-col>
+              <ion-col width="50%" style="text-align: center;">
+                  <button ion-button default-button (click)="rejectUserMotorcycle(i)">Reject Motorcycle</button>
               </ion-col>
             </ion-row>
         </ion-grid>
