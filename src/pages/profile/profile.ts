@@ -43,6 +43,23 @@ export class ProfilePage {
     }
   ];
 
+  // Variables for calendar
+  date: any;
+  daysInThisMonth: any;
+  daysInLastMonth: any;
+  daysInNextMonth: any;
+  //monthNames: string[];
+  monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  currentMonth: any;
+  currentYear: any;
+  currentDate: any;
+  mymonth = new Date().getMonth();
+  myyear = new Date().getFullYear();
+  event = { title: "", location: "", message: "", startDate: "", endDate: "" };
+  eventList: any;
+  selectedEvent: any;
+  isSelected: any;
+
   constructor(
     private http: Http,
     private shareProvider: ShareProvider,
@@ -51,7 +68,13 @@ export class ProfilePage {
     public modalCtrl: ModalController,
     public actionSheetCtrl: ActionSheetController,
     public loadingCtrl: LoadingController
-  ) {}
+  ) {
+    // Calendar //
+    this.date = new Date();
+    this.getDaysOfMonth();
+    this.eventList = [];
+    this.eventList.push({ title: "First Test Event", location: "Location for First Test Event", message: "This is just a test event.", startDate: new Date('2018-11-17 15:20:00'), endDate: new Date('2018-11-18 22:00:00') })
+  }
 
   eventsPage() {
     this.navCtrl.push("EventsPage");
@@ -219,4 +242,94 @@ export class ProfilePage {
       );
     //-----
   }
+
+  // Functions for calendar
+  getDaysOfMonth() {
+    this.daysInThisMonth = new Array();
+    this.daysInLastMonth = new Array();
+    this.daysInNextMonth = new Array();
+    this.currentMonth = this.monthNames[this.date.getMonth()];
+    //console.log(this.currentMonth);
+    this.currentYear = this.date.getFullYear();
+    //console.log(this.currentYear);
+    if(this.date.getMonth() === new Date().getMonth()) {
+      this.currentDate = new Date().getDate();
+      //console.log(this.currentDate);
+    } else {
+      this.currentDate = 999;
+    }
+  
+    var firstDayThisMonth = new Date(this.date.getFullYear(), this.date.getMonth(), 1).getDay();
+    var prevNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth(), 0).getDate();
+    for(var i = prevNumOfDays-(firstDayThisMonth-1); i <= prevNumOfDays; i++) {
+      this.daysInLastMonth.push(i);
+    }
+  
+    var thisNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth()+1, 0).getDate();
+    for (var i = 0; i < thisNumOfDays; i++) {
+      this.daysInThisMonth.push(i+1);
+    }
+  
+    var lastDayThisMonth = new Date(this.date.getFullYear(), this.date.getMonth()+1, 0).getDay();
+    var nextNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth()+2, 0).getDate();
+    for (var i = 0; i < (6-lastDayThisMonth); i++) {
+      this.daysInNextMonth.push(i+1);
+    }
+    var totalDays = this.daysInLastMonth.length+this.daysInThisMonth.length+this.daysInNextMonth.length;
+    if(totalDays<36) {
+      for(var i = (7-lastDayThisMonth); i < ((7-lastDayThisMonth)+7); i++) {
+        this.daysInNextMonth.push(i);
+      }
+    }
+  }
+
+  goToLastMonth() {
+    this.date = new Date(this.date.getFullYear(), this.date.getMonth(), 0);
+    this.getDaysOfMonth();
+  }
+
+  goToNextMonth() {
+    this.date = new Date(this.date.getFullYear(), this.date.getMonth()+2, 0);
+    this.getDaysOfMonth();
+  }
+
+  checkEvent(day) {
+    //console.log(day);
+    var hasEvent = false;
+    var thisDate1 = new Date(this.date.getFullYear()+"-"+(this.date.getMonth()+1)+"-"+day+" 00:00:00");
+    var thisDate2 = new Date(this.date.getFullYear()+"-"+(this.date.getMonth()+1)+"-"+day+" 23:59:59");
+    this.eventList.forEach(event => {
+      //var eventStartDate = new Date(event.startDate);
+      //var eventEndDate = new Date(event.endDate);
+      //console.log(event.startDate);
+      //console.log(event.endDate);
+      //console.log(thisDate1);
+      //console.log(thisDate2);
+      //if((event.startDate >= thisDate1) && (event.endDate >= thisDate1) && (event.endDate >= thisDate2)) {
+      if(((event.startDate >= thisDate1) && (event.endDate <= thisDate2)) || ((thisDate2 >= event.startDate) && (thisDate2 <= event.endDate)) || ((thisDate1 >= event.startDate) && (thisDate1 <= event.endDate))) {
+        hasEvent = true;
+      }
+      //console.log(hasEvent);
+    });
+    return hasEvent;
+  }
+
+  selectDate(day) {
+    this.isSelected = false;
+    this.selectedEvent = new Array();
+    var thisDate1 = new Date(this.date.getFullYear()+"-"+(this.date.getMonth()+1)+"-"+day+" 00:00:00");
+    var thisDate2 = new Date(this.date.getFullYear()+"-"+(this.date.getMonth()+1)+"-"+day+" 23:59:59");
+    //console.log('checkpoint-1');
+    this.eventList.forEach(event => {
+      //console.log('checkpoint-2');
+      //if(((event.startDate >= thisDate1) && (event.startDate <= thisDate2)) || ((event.endDate >= thisDate1) && (event.endDate <= thisDate2))) {
+      if(((event.startDate >= thisDate1) && (event.endDate <= thisDate2)) || ((thisDate2 >= event.startDate) && (thisDate2 <= event.endDate)) || ((thisDate1 >= event.startDate) && (thisDate1 <= event.endDate))) {
+        this.isSelected = true;
+        this.selectedEvent.push(event);
+        //console.log('checkpoint-3');
+      }
+      //console.log('checkpoint-4');
+    });
+  }
+
 }
