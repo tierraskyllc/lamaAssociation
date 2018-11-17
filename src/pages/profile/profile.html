@@ -82,9 +82,9 @@
           <span class="currentDate" *ngIf="currentDate === day && currentYear === myyear && currentMonth === this.monthNames[mymonth]; else otherDt">{{day}}</span>
           <ng-template #otherDt>
             <span class="otherDate">{{day}}</span>
-            <br>
-            <div class="event-bullet" *ngIf="checkEvent(day)"></div>
           </ng-template>
+          <br>
+          <div class="event-bullet" *ngIf="checkEvent(day)"></div>
         </ion-col>
         <ion-col col-1 *ngFor="let nextDay of daysInNextMonth" class="next-month"(click)="goToNextMonth()">{{nextDay}}</ion-col>
       </ion-row>
