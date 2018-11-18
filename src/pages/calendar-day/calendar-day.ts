@@ -26,8 +26,13 @@ export class CalendarDayPage {
     console.log('ionViewDidLoad CalendarDayPage');
   }
 
-  openEvent(id) {
-    this.navCtrl.push("CalendarEventPage", { lama_events_id: id });
+  openEvent(type, id) {
+    if(type === 'event') {
+      this.navCtrl.push("CalendarEventPage", { lama_events_id: id });
+    }
+    if(type === 'meeting') {
+      this.navCtrl.push("CalendarMeetingPage", { lama_meetings_id: id });
+    }
   }
 
 }

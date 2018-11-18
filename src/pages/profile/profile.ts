@@ -71,10 +71,10 @@ export class ProfilePage {
     public loadingCtrl: LoadingController
   ) {
     // Calendar //
-    this.eventList = [];
-    this.date = new Date();
-    this.getCalendarMonth(this.date.getFullYear(), this.date.getMonth()+1);
-    this.getDaysOfMonth();
+    //this.eventList = [];
+    //this.date = new Date();
+    //this.getCalendarMonth(this.date.getFullYear(), this.date.getMonth()+1);
+    //this.getDaysOfMonth();
     //this.getCalendarMonth(this.date.getFullYear(), this.date.getMonth());
     //this.eventList.push({ title: "First Test Event", location: "Location for First Test Event", message: "This is just a test event.", start_dttm: new Date('2018-11-17 15:20:00'), end_dttm: new Date('2018-11-18 22:00:00') })
   }
@@ -110,6 +110,13 @@ export class ProfilePage {
         { cssClass: "inset-modal" }
       )
       .present();
+  }
+
+  ionViewWillEnter() {
+    this.eventList = [];
+    this.date = new Date();
+    this.getCalendarMonth(this.date.getFullYear(), this.date.getMonth()+1);
+    this.getDaysOfMonth();
   }
 
   ionViewDidLoad() {
@@ -288,12 +295,16 @@ export class ProfilePage {
   }
 
   goToLastMonth() {
+    this.eventList = [];
     this.date = new Date(this.date.getFullYear(), this.date.getMonth(), 0);
+    this.getCalendarMonth(this.date.getFullYear(), this.date.getMonth()+1);
     this.getDaysOfMonth();
   }
 
   goToNextMonth() {
+    this.eventList = [];
     this.date = new Date(this.date.getFullYear(), this.date.getMonth()+2, 0);
+    this.getCalendarMonth(this.date.getFullYear(), this.date.getMonth()+1);
     this.getDaysOfMonth();
   }
 
@@ -338,12 +349,14 @@ export class ProfilePage {
       this.selectedEvent[i]['start_dttm'] = this.selectedEvent[i]['start_dttm'].toDateString() + ' ' + this.formatAMPM(this.selectedEvent[i]['start_dttm']);
       this.selectedEvent[i]['end_dttm'] = this.selectedEvent[i]['end_dttm'].toDateString() + ' ' + this.formatAMPM(this.selectedEvent[i]['end_dttm']);
     }
-    this.navCtrl.push("CalendarDayPage", { selecteddate: (this.date.getMonth()+1) + '-' + day + '-' + this.date.getFullYear(), items: this.selectedEvent });
+    if(this.selectedEvent.length > 0) {
+      this.navCtrl.push("CalendarDayPage", { selecteddate: (this.date.getMonth()+1) + '-' + day + '-' + this.date.getFullYear(), items: this.selectedEvent });
+    }
   }
 
   getCalendarMonth(year, month) {
-    console.log(year);
-    console.log(month);
+    //console.log(year);
+    //console.log(month);
     this.loading = this.loadingCtrl.create({
       content: ""
     });

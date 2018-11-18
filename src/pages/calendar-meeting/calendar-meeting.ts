@@ -5,7 +5,7 @@ import { ShareProvider } from "../../services/share";
 import { LoadingController, Loading } from 'ionic-angular';
 
 /**
- * Generated class for the CalendarEventPage page.
+ * Generated class for the CalendarMeetingPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -13,10 +13,10 @@ import { LoadingController, Loading } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-calendar-event',
-  templateUrl: 'calendar-event.html',
+  selector: 'page-calendar-meeting',
+  templateUrl: 'calendar-meeting.html',
 })
-export class CalendarEventPage {
+export class CalendarMeetingPage {
 
   data: any = {};
   loading: Loading;
@@ -28,18 +28,18 @@ export class CalendarEventPage {
     public loadingCtrl: LoadingController,
     private http: Http
   ) {
-    this.data.lama_events_id = navParams.get('lama_events_id');
+    this.data.lama_meetings_id = navParams.get('lama_meetings_id');
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CalendarEventPage');
+    console.log('ionViewDidLoad CalendarMeetingPage');
   }
 
   public ionViewWillEnter() {
-    this.getEvent();
+    this.getMeeting();
   }
 
-  getEvent() {
+  getMeeting() {
     this.loading = this.loadingCtrl.create({
       content: '',
     });
@@ -48,9 +48,9 @@ export class CalendarEventPage {
     var decoded_response = "";
     var body = new FormData();
     body.append('sessionid', this.shareProvider.sessionid);
-    body.append('lama_events_id', this.data.lama_events_id);
+    body.append('lama_meetings_id', this.data.lama_meetings_id);
     this.http
-      .post(this.shareProvider.server + "events/geteventforcalendar.php", body)
+      .post(this.shareProvider.server + "meetings/getmeetingforcalendar.php", body)
       .subscribe(
         data => {
           //console.log(data["_body"]);
@@ -78,7 +78,7 @@ export class CalendarEventPage {
             this.data.officer_approved_first_name = decoded_response[2]["officer_approved_first_name"];
             this.data.officer_approved_last_name = decoded_response[2]["officer_approved_last_name"];
             this.data.dttmaccepted = decoded_response[2]["dttmaccepted"];
-            this.data.canIUpdatetThisEvent = decoded_response[2]["canIUpdatetThisEvent"];
+            this.data.canIUpdatetThisMeeting = decoded_response[2]["canIUpdatetThisMeeting"];
             this.loading.dismissAll();
 
             var d = new Date(decoded_response[2]["start_dttm"]);
@@ -110,7 +110,7 @@ export class CalendarEventPage {
             else {
               this.data.error = "Unknown problem occured.  Please contact administrator.";
               this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
-              console.log("Unknown problem occured.  Please contact administrator.  Code: CalendarEvent-001");
+              console.log("Unknown problem occured.  Please contact administrator.  Code: CalendarMeeting-001");
               this.loading.dismissAll();
             }
           }
@@ -118,10 +118,10 @@ export class CalendarEventPage {
         error => {
           this.data.error = "Unknown problem occured.  Please contact administrator.";
           this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
-          console.log("Unknown problem occured.  Please contact administrator.  Code: CalendarEvent-002");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: CalendarMeeting-002");
           this.loading.dismissAll();
         }
       );
-  }  
+  }
 
 }
