@@ -334,6 +334,11 @@ export class ProfilePage {
       }
       //console.log('checkpoint-4');
     });
+    for(var i=0; i<this.selectedEvent.length; i++) {
+      this.selectedEvent[i]['start_dttm'] = this.selectedEvent[i]['start_dttm'].toDateString() + ' ' + this.formatAMPM(this.selectedEvent[i]['start_dttm']);
+      this.selectedEvent[i]['end_dttm'] = this.selectedEvent[i]['end_dttm'].toDateString() + ' ' + this.formatAMPM(this.selectedEvent[i]['end_dttm']);
+    }
+    this.navCtrl.push("CalendarDayPage", { selecteddate: (this.date.getMonth()+1) + '-' + day + '-' + this.date.getFullYear(), items: this.selectedEvent });
   }
 
   getCalendarMonth(year, month) {
@@ -395,4 +400,14 @@ export class ProfilePage {
     //-----
   }
 
+  formatAMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
 }

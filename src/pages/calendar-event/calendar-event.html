@@ -1,0 +1,153 @@
+<!--
+  Generated template for the ViewupdateeventPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar>
+      <ion-title>Event</ion-title>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content padding>
+      <ion-grid>
+          <div class="form">
+
+              <ion-row><ion-col style="color: #FCD736; font-weight: bold; text-align: center; vertical-align: middle;" col-12>EVENT INFORMATION</ion-col></ion-row>
+                <ion-row>
+                  <ion-col style="color: #FCD736; font-weight: bold;" col-4>
+                        Region
+                  </ion-col>
+                  <ion-col style="color: #FCD736;" col-8>
+                      {{data.region}}
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col style="color: #FCD736; font-weight: bold;" col-4>
+                        Chapter
+                  </ion-col>
+                  <ion-col style="color: #FCD736;" col-8>
+                      {{data.chapter_name}}
+                </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col style="color: #FCD736; font-weight: bold;" col-4>
+                        Event Name
+                    </ion-col>
+                    <ion-col style="color: #FCD736;" col-8>
+                        {{data.title}}
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                      <ion-col style="color: #FCD736; font-weight: bold;" col-4>
+                          Description
+                      </ion-col>
+                      <ion-col style="color: #FCD736;" col-8>
+                          {{data.description}}
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col style="color: #FCD736; font-weight: bold;" col-4>
+                          Start Date & Time
+                      </ion-col>
+                      <ion-col style="color: #FCD736;" col-8>
+                          {{data.start_dttm}}
+                      </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col style="color: #FCD736; font-weight: bold;" col-4>
+                            End Date & Time
+                        </ion-col>
+                        <ion-col style="color: #FCD736;" col-8>
+                            {{data.end_dttm}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col style="color: #FCD736; font-weight: bold;" col-4>
+                            Country
+                        </ion-col>
+                        <ion-col style="color: #FCD736;" col-8>
+                            {{data.venue_country}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col style="color: #FCD736; font-weight: bold;" col-4>
+                            State
+                        </ion-col>
+                        <ion-col style="color: #FCD736;" col-8>
+                            {{data.venue_state}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col style="color: #FCD736; font-weight: bold;" col-4>
+                              City
+                        </ion-col>
+                        <ion-col style="color: #FCD736;" col-8>
+                            {{data.venue_city}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col style="color: #FCD736; font-weight: bold;" col-4>
+                            Address
+                        </ion-col>
+                        <ion-col style="color: #FCD736;" col-8>
+                            {{data.venue_address}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col style="color: #FCD736; font-weight: bold;" col-4>
+                          Zipcode
+                        </ion-col>
+                        <ion-col style="color: #FCD736;" col-8>
+                            {{data.venue_zipcode}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row><ion-col></ion-col></ion-row>
+                      <ion-row><ion-col style="color: #FCD736; font-weight: bold; text-align: center; vertical-align: middle;" col-12>CONTACT INFORMATION</ion-col></ion-row>
+                    <ion-row>
+                        <ion-col style="color: #FCD736; font-weight: bold;" col-4>
+                              Name of Officer
+                        </ion-col>
+                        <ion-col style="color: #FCD736;" col-8>
+                            {{data.first_name_of_officer}}&nbsp;&nbsp;{{data.last_name_of_officer}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col style="color: #FCD736; font-weight: bold;" col-4>
+                              Title
+                        </ion-col>
+                        <ion-col style="color: #FCD736;" col-8>
+                            {{data.title_of_officer}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col style="color: #FCD736; font-weight: bold;" col-4>
+                              Telephone Number
+                        </ion-col>
+                        <ion-col style="color: #FCD736;" col-8>
+                            {{data.telephonenumber_of_officer}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col style="color: #FCD736; font-weight: bold;" col-4>
+                              E-Mail Address
+                        </ion-col>
+                        <ion-col style="color: #FCD736;" col-8>
+                            {{data.emailaddress_of_officer}}
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                      <ion-col style="color: #FCD736; font-weight: bold;" col-4>
+                          Additional Info
+                      </ion-col>
+                      <ion-col style="color: #FCD736;" col-8>
+                          {{data.additional_info}}
+                      </ion-col>
+                    </ion-row>
+          </div>
+      </ion-grid>
+  </ion-content>
