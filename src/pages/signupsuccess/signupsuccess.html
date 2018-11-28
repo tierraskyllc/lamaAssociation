@@ -5,28 +5,12 @@
 </ion-header>
 
 <ion-content padding class="transparent-header">
-  <ion-header>
-    <ion-navbar>
-    </ion-navbar>
-  </ion-header>
-
-  <!--div id="profile-bg" [ngStyle]="{'background-image': 'url(' + member.coverImage +')'}"></div-->
   <div id="content">
-    <!--div id="profile-info" padding>
-      <div>
-        <img id="profile-image" [src]="member.profileImage">
-      </div>
-      <h3 id="profile-name">{{member.name}}</h3>
-      <p>{{member.chapter}} Chapter &bull; {{member.status}}</p>
-      <p class="profile-description">{{member.title}}</p>
-    </div-->
-
     <ion-grid no-padding>
         <ion-row>
-          <ion-col col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4>
+          <ion-col>
             <ion-card text-center>
               <div card-image>
-                <!-- <img images-filter src="{{member.profileImage}}" /> -->
                 <hr><h2 card-title>{{member.titleHeader}}</h2>
               </div>
               <ion-card-content>
@@ -37,13 +21,9 @@
                 <button ion-button default-button medium (click)="loginPage()">CLICK HERE</button>
                 <p card-body-text>{{member.signUpMessageB}}</p>
               </ion-card-content>
-
             </ion-card>
           </ion-col>
         </ion-row>
       </ion-grid>
-
   </div>
-
-
 </ion-content>
