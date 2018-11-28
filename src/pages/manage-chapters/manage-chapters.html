@@ -51,7 +51,7 @@
                             {{ item['name'] }},&nbsp;{{ item['country'] }}
                         </ion-col>
                         <ion-col align="center" col-2 style="color: #FCD736;">
-                            <ion-buttons end><button style="background: transparent;" (click)="openChapter(item['lama_chapters_id'])"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+                            <ion-buttons end><button style="background: transparent;" (click)="openChapter(item['lama_chapters_id'], item['chapter_type'])"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
                         </ion-col>
                     </ion-row>
                     <ion-row>
@@ -89,7 +89,7 @@
                             {{ item['name'] }},&nbsp;{{ item['country'] }}
                         </ion-col>
                         <ion-col align="center" col-2>
-                            <ion-buttons end><button style="background: transparent;" (click)="openChapter(item['lama_chapters_id'])"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+                            <ion-buttons end><button style="background: transparent;" (click)="openChapter(item['lama_chapters_id'], item['chapter_type'])"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
                         </ion-col>
                     </ion-row>
                     <ion-row>

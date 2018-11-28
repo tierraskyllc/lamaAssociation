@@ -260,6 +260,12 @@ export class ManageChapterPage {
     var decoded_response = "";
       var body = new FormData();
       body.append('sessionid', this.shareProvider.sessionid);
+      if(this.isNational) {
+        body.append('chapter_type', 'national');
+      }
+      else if(this.isInternational) {
+        body.append('chapter_type', 'international');
+      }
       body.append('lama_chapters_id', this.data.lama_chapters_id);
       body.append("name", this.chapterForm.controls.name.value);
       body.append("description", this.chapterForm.controls.description.value);
@@ -279,7 +285,7 @@ export class ManageChapterPage {
             decoded_response = JSON.parse(data["_body"]);
             if(decoded_response[0] == "true") {
               this.navCtrl.pop();
-              this.shareProvider.presentMessageOnlyAlert("You have successfully added a new chapter.");
+              this.shareProvider.presentMessageOnlyAlert("You have successfully updated chapter.");
             }
             else {
               if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {

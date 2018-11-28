@@ -150,8 +150,8 @@ export class ManageChaptersPage {
     this.navCtrl.push("AddChapterPage", { addtype: this.data.addtype });
   }
 
-  openChapter(lama_chapters_id) {
-    this.navCtrl.push("ManageChapterPage", { addtype: this.data.addtype, lama_chapters_id: lama_chapters_id });
+  openChapter(lama_chapters_id, chapter_type) {
+    this.navCtrl.push("ManageChapterPage", { addtype: chapter_type, lama_chapters_id: lama_chapters_id });
   }
 
 }
