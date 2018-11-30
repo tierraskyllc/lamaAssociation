@@ -252,6 +252,12 @@ export class AddChapterPage {
       body.append('sessionid', this.shareProvider.sessionid);
       body.append("name", this.chapterForm.controls.name.value);
       body.append("description", this.chapterForm.controls.description.value);
+      if(this.isNational) {
+        body.append('chapter_type', 'national');
+      }
+      else if(this.isInternational) {
+        body.append('chapter_type', 'international');
+      }
       body.append("lama_usa_regions_id", this.chapterForm.controls.region.value);
       body.append("lama_usa_states_id", this.chapterForm.controls.state.value);
       body.append("lama_usa_cities_id", this.data.selectedusacityid);
@@ -280,6 +286,48 @@ export class AddChapterPage {
             this.shareProvider.presentMessageOnlyAlert("Problem adding chapter.  Please contact administrator.");
           }
         );
+  }
+
+  selectInternational() {
+    this.chapterForm.controls.country.setValue('');
+      this.chapterForm.controls.country.setValidators([Validators.required]);
+      this.chapterForm.controls.intlregion.setValue('');
+      this.chapterForm.controls.intlregion.setValidators([Validators.maxLength(100)]);
+      this.chapterForm.controls.intlstate.setValue('');
+      this.chapterForm.controls.intlstate.setValidators([Validators.maxLength(100)]);
+      this.chapterForm.controls.intlcity.setValue('');
+      this.chapterForm.controls.intlcity.setValidators([Validators.required, Validators.maxLength(100)]);
+      this.chapterForm.controls.intlzipcode.setValue('');
+      this.chapterForm.controls.intlzipcode.setValidators([Validators.maxLength(20)]);
+
+      this.chapterForm.controls.region.setValue('');
+      this.chapterForm.controls.region.setValidators([]);
+      this.chapterForm.controls.state.setValue('');
+      this.chapterForm.controls.state.setValidators([]);
+      this.chapterForm.controls.city.setValue('');
+      this.chapterForm.controls.city.setValidators([]);
+  }
+
+  selectNational() {
+    this.chapterForm.controls.country.setValue('');
+      this.chapterForm.controls.country.setValidators([]);
+      this.chapterForm.controls.intlregion.setValue('');
+      this.chapterForm.controls.intlregion.setValidators([]);
+      this.chapterForm.controls.intlstate.setValue('');
+      this.chapterForm.controls.intlstate.setValidators([]);
+      this.chapterForm.controls.intlcity.setValue('');
+      this.chapterForm.controls.intlcity.setValidators([]);
+      this.chapterForm.controls.intlzipcode.setValue('');
+      this.chapterForm.controls.intlzipcode.setValidators([]);
+
+      this.chapterForm.controls.region.setValue('');
+      this.chapterForm.controls.region.setValidators([Validators.required]);
+      this.chapterForm.controls.state.setValue('');
+      this.chapterForm.controls.state.setValidators([Validators.required]);
+      this.chapterForm.controls.city.setValue('');
+      this.chapterForm.controls.city.setValidators([Validators.required]);
+
+      this.populateUSARegions();
   }
 
 }

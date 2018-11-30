@@ -42,6 +42,30 @@
                   </ng-container>
               </ion-col>
           </ion-row>
+
+          <ion-list *ngIf="isInternational" radio-group padding-top no-lines>
+
+            <ion-row nowrap justify-content: center>
+              <ion-col>
+                <ion-item>
+                  <ion-label>International</ion-label>
+                  <ion-radio value="international" (click)="isNational=false; isInternational=true; selectInternational()" [checked]=isInternational></ion-radio>
+                </ion-item>
+              </ion-col>
+
+              <ion-col width="100%" align="center">
+                <ion-label>OR</ion-label>
+              </ion-col>
+
+              <ion-col>
+                <ion-item>
+                  <ion-label>USA</ion-label>
+                  <ion-radio float-right value="national" (click)="isNational=true; isInternational=false; selectNational()" [checked]=isNational></ion-radio>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-list>
+
           <div *ngIf="isNational">
               <ion-row>
                 <ion-col>
