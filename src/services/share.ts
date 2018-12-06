@@ -57,6 +57,7 @@ export class ShareProvider {
     body.append('sessionid', this.sessionid);
     this.http.post(this.server + "menu/menu.php", body).subscribe(
       data => {
+        //console.log(data['_body']);
         decoded_response = JSON.parse(data["_body"]);
         if (decoded_response[0] == "true") {
           tmparr = decoded_response[2];
@@ -67,6 +68,7 @@ export class ShareProvider {
           for(var i=0; i<tmparr.length; i++) {
             if(tmparr[i] == 'Edit Profile') {
               tmphandler = () => {
+                myNavCtrl.push("EditProfilePage");
                 console.log('Edit Profile' + ' clicked');
               }
             }

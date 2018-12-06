@@ -7,78 +7,79 @@
 
 <ion-content #content padding class="transparent-header">
 
-    <ion-row>
-        <ion-col width="100%" align="center">
-            <ion-buttons end><button style="background: transparent;" (click)="addMotorcycle()"><ion-icon color="secondary" name="add-circle" style="zoom:2;"></ion-icon></button></ion-buttons>
-        </ion-col>
-      </ion-row>
+  <ion-row>
+    <ion-col width="100%" align="center">
+      <ion-buttons end><button style="background: transparent;" (click)="addMotorcycle()">
+          <ion-icon color="secondary" name="add-circle" style="zoom:2;"></ion-icon>
+        </button></ion-buttons>
+    </ion-col>
+  </ion-row>
   <div id="posts">
     <ion-grid>
-        <ion-row>
-          <ion-col>
-            <div style="border-style: dotted; border-color: #FCD736; border-radius: 15px; border-width: 1px;" class="form">
-              <form [formGroup]="garageForm">
-                <ion-grid>
-                  <ion-row *ngIf="data.license_exp_alert_msg !== ''">
-                    <ion-col style="color: red;">{{ data.license_exp_alert_msg }}</ion-col>
-                  </ion-row>
-                  <ion-row>
-                    <ion-col>
-                      <ion-item no-padding color="accent">
-                        <ion-label floating>License Expiration Date</ion-label>
-                        <ion-datetime formControlName="licenseexpdt" max="{{ data.maxyear }}" custom-datetime [disabled]="data.licenseexpdt !== null && data.licenseexpdt !== '' && (data.license_exp_alert_msg == '' || data.license_exp_alert_msg == 'In Review')"></ion-datetime>
-                      </ion-item>
-                      <ng-container *ngFor="let validation of validation_messages.licenseexpdt">
-                          <div class="error-message" *ngIf="garageForm.get('licenseexpdt').hasError(validation.type)">
-                            {{ validation.message }}
-                          </div>
-                      </ng-container>
-                    </ion-col>
-                  </ion-row>
-                  <ion-row *ngIf="data.licenseexpdt == '' || data.licenseexpdt == null || (data.license_exp_alert_msg !== '' && data.license_exp_alert_msg !== 'In Review')">
-                      <ion-col width="80%" align="center">
-                        <button ion-button small round (click)="uploadLicense()">Capture License Picture</button>
-                        <ng-container>
-                            <div class="error-message" *ngIf="(data.licensepic == null || data.licensepic == '')">
-                              You must capture license picture.
-                            </div>
-                        </ng-container>
-                      </ion-col>
-                      <ion-col width="20%" align="center">
-                        <ion-buttons end><button style="background: transparent;" (click)="displayLicensePic()"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
-                      </ion-col>
-                  </ion-row>
-                  <ion-row *ngIf="data.licenseexpdt == '' || data.licenseexpdt == null || (data.license_exp_alert_msg !== '' && data.license_exp_alert_msg !== 'In Review')">
-                    <ion-col col-12 style="text-align: center;">
-                      <button ion-button default-button (click)="submitLicense()">Submit License Details</button>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </form>
-            </div>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col *ngIf="memberMotorcycleInfo.length==0" width="100%" align="center">
-                <h3>Your garage is empty.</h3>
-            </ion-col>
-        </ion-row>
+      <ion-row>
+        <ion-col>
+          <div style="border-style: dotted; border-color: #FCD736; border-radius: 15px; border-width: 1px;" class="form">
+            <form [formGroup]="garageForm">
+              <ion-grid>
+                <ion-row *ngIf="data.license_exp_alert_msg !== ''">
+                  <ion-col style="color: red;">{{ data.license_exp_alert_msg }}</ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <ion-item no-padding color="accent">
+                      <ion-label floating>License Expiration Date</ion-label>
+                      <ion-datetime formControlName="licenseexpdt" max="{{ data.maxyear }}" custom-datetime [disabled]="data.licenseexpdt !== null && data.licenseexpdt !== '' && (data.license_exp_alert_msg == '' || data.license_exp_alert_msg == 'In Review')"></ion-datetime>
+                    </ion-item>
+                    <ng-container *ngFor="let validation of validation_messages.licenseexpdt">
+                      <div class="error-message" *ngIf="garageForm.get('licenseexpdt').hasError(validation.type)">
+                        {{ validation.message }}
+                      </div>
+                    </ng-container>
+                  </ion-col>
+                </ion-row>
+                <ion-row *ngIf="data.licenseexpdt == '' || data.licenseexpdt == null || (data.license_exp_alert_msg !== '' && data.license_exp_alert_msg !== 'In Review')">
+                  <ion-col width="80%" align="center">
+                    <button ion-button small round (click)="uploadLicense()">Capture License Picture</button>
+                    <ng-container>
+                      <div class="error-message" *ngIf="(data.licensepic == null || data.licensepic == '')">
+                        You must capture license picture.
+                      </div>
+                    </ng-container>
+                  </ion-col>
+                  <ion-col width="20%" align="center">
+                    <ion-buttons end><button style="background: transparent;" (click)="displayLicensePic()">
+                        <ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon>
+                      </button></ion-buttons>
+                  </ion-col>
+                </ion-row>
+                <ion-row *ngIf="data.licenseexpdt == '' || data.licenseexpdt == null || (data.license_exp_alert_msg !== '' && data.license_exp_alert_msg !== 'In Review')">
+                  <ion-col col-12 style="text-align: center;">
+                    <button ion-button default-button (click)="submitLicense()">Submit License Details</button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </form>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col *ngIf="memberMotorcycleInfo.length==0" width="100%" align="center">
+          <h3>Your garage is empty.</h3>
+        </ion-col>
+      </ion-row>
     </ion-grid>
-    <ion-card *ngFor="let motorcycleInfo of memberMotorcycleInfo; let i=index" style="border-style: solid; border-width: thick; border-color: #FCD736; border-radius: 15px; border-width: 3px; background: transparent;">    
+    <ion-card *ngFor="let motorcycleInfo of memberMotorcycleInfo; let i=index" style="border-style: solid; border-width: thick; border-color: #FCD736; border-radius: 15px; border-width: 3px; background: transparent;">
       <ion-item style="background: whitesmoke">
-          <h2 *ngIf="motorcycleInfo['motorcycle_alert_msg'] == 'In Review'" style="color: red;">{{ motorcycleInfo['motorcycle_alert_msg'] }}</h2>
-          <h2 style="font-weight: bold">Motorcycle # {{ i+1 }}</h2>
-        <!--ion-avatar item-start>
-          <img [src]="member.profileImage">
-        </ion-avatar-->
+        <h2 *ngIf="motorcycleInfo['motorcycle_alert_msg'] == 'In Review'" style="color: red;">{{
+          motorcycleInfo['motorcycle_alert_msg'] }}</h2>
+        <h2 style="font-weight: bold">Motorcycle # {{ i+1 }}</h2>
+
         <h2 class="sticky">{{motorcycleInfo.make}}&nbsp;&nbsp;{{motorcycleInfo.model}}</h2>
         <p>Year: {{motorcycleInfo.year}}</p>
       </ion-item>
-      <!--img [src]="motorcycleInfo.postImageUrl" (click)="imageTapped(motorcycleInfo)"-->
+
       <ion-card-content style="background: whitesmoke">
-        <!--h2>Year: {{motorcycleInfo.year}}</h2-->
-        <!--h2>Make: {{motorcycleInfo.make}}</h2-->
-        <!--h2>Model: {{motorcycleInfo.model}}</h2-->
+
         <h2>Color: {{motorcycleInfo.color}}</h2>
         <h2>Miles: {{motorcycleInfo.total_miles}}</h2>
       </ion-card-content>
@@ -86,302 +87,319 @@
         <ion-grid>
           <ion-row>
             <ion-col>
-                <div style="border-style: dotted; border-color: #FCD736; border-radius: 15px; border-width: 1px;" class="form">
-                  <ion-grid>
-                    <ion-row *ngIf="motorcycleInfo['miles_alert_msg'] !== ''">
-                        <ion-col style="color: red;">{{ motorcycleInfo['miles_alert_msg'] }}</ion-col>
-                    </ion-row>
-                    <ion-row>
-                      <ion-col>
-                          <ion-item no-padding color="accent">
-                            <ion-label floating>Odometer Reading: </ion-label>
-                            <ion-input type="number" formControlName="miles" [disabled]="motorcycleInfo['miles_alert_msg'] == 'In Review'"></ion-input>
-                          </ion-item>
-                          <ng-container>
-                              <div class="error-message" *ngIf="data.motorcycleformgroups[i].get('miles').hasError('required')">
-                                Odometer reading is required.
-                              </div>
-                          </ng-container>
-                      </ion-col>
-                    </ion-row>
-                    <ion-row *ngIf="motorcycleInfo['miles_alert_msg'] !== 'In Review'">
-                      <ion-col width="80%" align="center">
-                          <button ion-button small round (click)="uploadOdometerPic(i)">Capture Odometer Picture</button>
-                          <ng-container>
-                              <div class="error-message" *ngIf="(memberMotorcycleInfo[i]['odometerpic'] == null || memberMotorcycleInfo[i]['odometerpic'] == '')">
-                                You must capture odometer picture.
-                              </div>
-                          </ng-container>
-                      </ion-col>
-                      <ion-col width="20%" align="center">
-                          <ion-buttons end><button style="background: transparent;" (click)="displayOdometerPic(i)"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
-                      </ion-col>
-                    </ion-row>
-                    <ion-row *ngIf="motorcycleInfo['miles_alert_msg'] !== 'In Review'">
-                      <ion-col col-12 style="text-align: center;">
-                        <button ion-button default-button (click)="submitOdometerChanges(i)">Submit</button>
-                      </ion-col>
-                    </ion-row>
-                  </ion-grid>
-                </div>
+              <div style="border-style: dotted; border-color: #FCD736; border-radius: 15px; border-width: 1px;" class="form">
+                <ion-grid>
+                  <ion-row *ngIf="motorcycleInfo['miles_alert_msg'] !== ''">
+                    <ion-col style="color: red;">{{ motorcycleInfo['miles_alert_msg'] }}</ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <ion-item no-padding color="accent">
+                        <ion-label floating>Odometer Reading: </ion-label>
+                        <ion-input type="number" formControlName="miles" [disabled]="motorcycleInfo['miles_alert_msg'] == 'In Review'"></ion-input>
+                      </ion-item>
+                      <ng-container>
+                        <div class="error-message" *ngIf="data.motorcycleformgroups[i].get('miles').hasError('required')">
+                          Odometer reading is required.
+                        </div>
+                      </ng-container>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row *ngIf="motorcycleInfo['miles_alert_msg'] !== 'In Review'">
+                    <ion-col width="100%" align="center">
+                      <button ion-button small round (click)="uploadOdometerPic(i)">Capture Odometer Picture</button>
+                      <ng-container>
+                        <div class="error-message" *ngIf="(memberMotorcycleInfo[i]['odometerpic'] == null || memberMotorcycleInfo[i]['odometerpic'] == '')">
+                          You must capture odometer picture.
+                        </div>
+                      </ng-container>
+                    </ion-col>
+
+
+                  </ion-row>
+                  <ion-row style="color: #FCD736;" justify-content-center>
+                    Current Imgae on File:
+                    <ion-buttons><button style="background: transparent;" (click)="displayOdometerPic(i)">
+                        <ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon>
+                      </button></ion-buttons>
+                  </ion-row>
+
+                  <ion-row *ngIf="motorcycleInfo['miles_alert_msg'] !== 'In Review'">
+                    <ion-col col-12 style="text-align: center;">
+                      <button ion-button default-button (click)="submitOdometerChanges(i)">Submit</button>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </div>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>
-                <div style="border-style: dotted; border-color: #FCD736; border-radius: 15px; border-width: 1px;" class="form">
-                      <ion-grid>
-                          <ion-row *ngIf="motorcycleInfo['registration_exp_alert_msg'] !== ''">
-                              <ion-col style="color: red;">{{ motorcycleInfo['registration_exp_alert_msg'] }}</ion-col>
-                          </ion-row>
-                          <ion-row>
-                            <ion-col>
-                              <ion-item no-padding color="accent">
-                                <ion-label floating>Registration Expiration Date</ion-label>
-                                <ion-datetime formControlName="registrationexpdt" max="{{ data.maxyear }}" custom-datetime [disabled]="motorcycleInfo['registration_exp_alert_msg'] == '' || motorcycleInfo['registration_exp_alert_msg'] == 'In Review'"></ion-datetime>
-                              </ion-item>
-                              <ng-container>
-                                  <div class="error-message" *ngIf="data.motorcycleformgroups[i].get('registrationexpdt').hasError('required')">
-                                    Registration expiration date is required.
-                                  </div>
-                              </ng-container>
-                            </ion-col>
-                          </ion-row>
-                          <ion-row *ngIf="motorcycleInfo['registration_exp_alert_msg'] !== '' && motorcycleInfo['registration_exp_alert_msg'] !== 'In Review'">
-                              <ion-col width="80%" align="center">
-                                <button ion-button small round (click)="uploadRegistrationPic(i)">Capture Registration Picture</button>
-                                <ng-container>
-                                    <div class="error-message" *ngIf="(memberMotorcycleInfo[i]['registrationpic'] == null || memberMotorcycleInfo[i]['registrationpic'] == '')">
-                                      You must capture registration picture.
-                                    </div>
-                                </ng-container>
-                              </ion-col>
-                              <ion-col width="20%" align="center">
-                                <ion-buttons end><button style="background: transparent;" (click)="displayRegistrationPic(i)"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
-                              </ion-col>
-                          </ion-row>
-                          <ion-row *ngIf="motorcycleInfo['registration_exp_alert_msg'] !== '' && motorcycleInfo['registration_exp_alert_msg'] !== 'In Review'">
-                            <ion-col col-12 style="text-align: center;">
-                              <button ion-button default-button (click)="submitRegistrationChanges(i)">Submit</button>
-                            </ion-col>
-                          </ion-row>
-                        </ion-grid>
-                </div>
+              <div style="border-style: dotted; border-color: #FCD736; border-radius: 15px; border-width: 1px;" class="form">
+                <ion-grid>
+                  <ion-row *ngIf="motorcycleInfo['registration_exp_alert_msg'] !== ''">
+                    <ion-col style="color: red;">{{ motorcycleInfo['registration_exp_alert_msg'] }}</ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <ion-item no-padding color="accent">
+                        <ion-label floating>Registration Expiration Date</ion-label>
+                        <ion-datetime formControlName="registrationexpdt" max="{{ data.maxyear }}" custom-datetime
+                          [disabled]="motorcycleInfo['registration_exp_alert_msg'] == '' || motorcycleInfo['registration_exp_alert_msg'] == 'In Review'"></ion-datetime>
+                      </ion-item>
+                      <ng-container>
+                        <div class="error-message" *ngIf="data.motorcycleformgroups[i].get('registrationexpdt').hasError('required')">
+                          Registration expiration date is required.
+                        </div>
+                      </ng-container>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row *ngIf="motorcycleInfo['registration_exp_alert_msg'] !== '' && motorcycleInfo['registration_exp_alert_msg'] !== 'In Review'">
+                    <ion-col width="100%" align="center">
+                      <button ion-button small round (click)="uploadRegistrationPic(i)">Capture Registration Picture</button>
+                      <ng-container>
+                        <div class="error-message" *ngIf="(memberMotorcycleInfo[i]['registrationpic'] == null || memberMotorcycleInfo[i]['registrationpic'] == '')">
+                          You must capture registration picture.
+                        </div>
+                      </ng-container>
+                    </ion-col>
+                  </ion-row>
+
+                  <ion-row style="color: #FCD736;" justify-content-center>
+                    Current Image on File:
+                    <ion-buttons end><button style="background: transparent;" (click)="displayRegistrationPic(i)">
+                        <ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon>
+                      </button></ion-buttons>
+                  </ion-row>
+                  <ion-row *ngIf="motorcycleInfo['registration_exp_alert_msg'] !== '' && motorcycleInfo['registration_exp_alert_msg'] !== 'In Review'">
+                    <ion-col col-12 style="text-align: center;">
+                      <button ion-button default-button (click)="submitRegistrationChanges(i)">Submit</button>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </div>
             </ion-col>
           </ion-row>
           <ion-row>
-              <ion-col>
-                  <div style="border-style: dotted; border-color: #FCD736; border-radius: 15px; border-width: 1px;" class="form">
-                        <ion-grid>
-                            <ion-row *ngIf="motorcycleInfo['insurance_exp_alert_msg'] !== ''">
-                                <ion-col style="color: red;">{{ motorcycleInfo['insurance_exp_alert_msg'] }}</ion-col>
-                            </ion-row>
-                            <ion-row>
-                              <ion-col>
-                                <ion-item no-padding color="accent">
-                                  <ion-label floating>Insurance Expiration Date</ion-label>
-                                  <ion-datetime formControlName="insuranceexpdt" max="{{ data.maxyear }}" custom-datetime [disabled]="motorcycleInfo['insurance_exp_alert_msg'] == '' || motorcycleInfo['insurance_exp_alert_msg'] == 'In Review'"></ion-datetime>
-                                </ion-item>
-                                <ng-container>
-                                    <div class="error-message" *ngIf="data.motorcycleformgroups[i].get('insuranceexpdt').hasError('required')">
-                                      Insurance expiration date is required.
-                                    </div>
-                                </ng-container>
-                              </ion-col>
-                            </ion-row>
-                            <ion-row *ngIf="motorcycleInfo['insurance_exp_alert_msg'] !== '' && motorcycleInfo['insurance_exp_alert_msg'] !== 'In Review'">
-                                <ion-col width="80%" align="center">
-                                  <button ion-button small round (click)="uploadInsurancePic(i)">Capture Insurance Picture</button>
-                                  <ng-container>
-                                      <div class="error-message" *ngIf="(memberMotorcycleInfo[i]['insurancepic'] == null || memberMotorcycleInfo[i]['insurancepic'] == '')">
-                                        You must capture insurance picture.
-                                      </div>
-                                  </ng-container>
-                                </ion-col>
-                                <ion-col width="20%" align="center">
-                                  <ion-buttons end><button style="background: transparent;" (click)="displayInsurancePic(i)"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
-                                </ion-col>
-                            </ion-row>
-                            <ion-row *ngIf="motorcycleInfo['insurance_exp_alert_msg'] !== '' && motorcycleInfo['insurance_exp_alert_msg'] !== 'In Review'">
-                              <ion-col col-12 style="text-align: center;">
-                                <button ion-button default-button (click)="submitInsuranceChanges(i)">Submit</button>
-                              </ion-col>
-                            </ion-row>
-                          </ion-grid>
-                  </div>
-              </ion-col>
-            </ion-row>
+            <ion-col>
+              <div style="border-style: dotted; border-color: #FCD736; border-radius: 15px; border-width: 1px;" class="form">
+                <ion-grid>
+                  <ion-row *ngIf="motorcycleInfo['insurance_exp_alert_msg'] !== ''">
+                    <ion-col style="color: red;">{{ motorcycleInfo['insurance_exp_alert_msg'] }}</ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <ion-item no-padding color="accent">
+                        <ion-label floating>Insurance Expiration Date</ion-label>
+                        <ion-datetime formControlName="insuranceexpdt" max="{{ data.maxyear }}" custom-datetime
+                          [disabled]="motorcycleInfo['insurance_exp_alert_msg'] == '' || motorcycleInfo['insurance_exp_alert_msg'] == 'In Review'"></ion-datetime>
+                      </ion-item>
+                      <ng-container>
+                        <div class="error-message" *ngIf="data.motorcycleformgroups[i].get('insuranceexpdt').hasError('required')">
+                          Insurance expiration date is required.
+                        </div>
+                      </ng-container>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row *ngIf="motorcycleInfo['insurance_exp_alert_msg'] !== '' && motorcycleInfo['insurance_exp_alert_msg'] !== 'In Review'">
+                    <ion-col width="100%" align="center">
+                      <button ion-button small round (click)="uploadInsurancePic(i)">Capture Insurance Picture</button>
+                      <ng-container>
+                        <div class="error-message" *ngIf="(memberMotorcycleInfo[i]['insurancepic'] == null || memberMotorcycleInfo[i]['insurancepic'] == '')">
+                          You must capture insurance picture.
+                        </div>
+                      </ng-container>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row style="color: #FCD736;" justify-content-center>
+                    Current Image on File:
+                    <ion-buttons end><button style="background: transparent;" (click)="displayInsurancePic(i)">
+                        <ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon>
+                      </button></ion-buttons>
+                  </ion-row>
+                  <ion-row *ngIf="motorcycleInfo['insurance_exp_alert_msg'] !== '' && motorcycleInfo['insurance_exp_alert_msg'] !== 'In Review'">
+                    <ion-col col-12 style="text-align: center;">
+                      <button ion-button default-button (click)="submitInsuranceChanges(i)">Submit</button>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </div>
+            </ion-col>
+          </ion-row>
         </ion-grid>
       </form>
     </ion-card>
-<!--==============================================================================================-->
-<div *ngIf="!data.isNewMotorcycleHidden" [formGroup]="newMotorcycleForm" class="form" style="border-style: dotted; border-color: #FCD736; border-radius: 15px; border-width: 3px;">
-  <ion-row>
-    <ion-col col-12>
-      <ion-card-header no-padding card-header>Add New Motorcycle Below:</ion-card-header>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col>
-      <div>
-        <ion-item no-padding color="accent">
-          <ion-label>Year: </ion-label>
-          <ion-input type="number" formControlName="year" required placeholder="-enter-"></ion-input>
-        </ion-item>
-        <div class="validation-errors" *ngIf="newMotorcycleForm.get('year').value=='' && (newMotorcycleForm.get('year').dirty || newMotorcycleForm.get('year').touched || submitAttempt)">
-            <ng-container>
+    <!--==============================================================================================-->
+    <div *ngIf="!data.isNewMotorcycleHidden" [formGroup]="newMotorcycleForm" class="form" style="border-style: dotted; border-color: #FCD736; border-radius: 15px; border-width: 3px;">
+      <ion-row>
+        <ion-col col-12>
+          <ion-card-header no-padding card-header>Add New Motorcycle Below:</ion-card-header>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div>
+            <ion-item no-padding color="accent">
+              <ion-label>Year: </ion-label>
+              <ion-input type="number" formControlName="year" required placeholder="-enter-"></ion-input>
+            </ion-item>
+            <div class="validation-errors" *ngIf="newMotorcycleForm.get('year').value=='' && (newMotorcycleForm.get('year').dirty || newMotorcycleForm.get('year').touched || submitAttempt)">
+              <ng-container>
                 <div class="error-message" *ngIf="newMotorcycleForm.get('year').value=='' && (newMotorcycleForm.get('year').dirty || newMotorcycleForm.get('year').touched || submitAttempt)">
                   Required.
                 </div>
-            </ng-container>
+              </ng-container>
+            </div>
           </div>
-      </div>
-    </ion-col>
-    <ion-col>
-      <div>
-        <ion-item no-padding color="accent">
-          <ion-label>Color: </ion-label>
-          <ion-input type="text" formControlName="color" required placeholder="-enter-"></ion-input>
-        </ion-item>
-        <div class="validation-errors" *ngIf="newMotorcycleForm.get('color').value=='' && (newMotorcycleForm.get('color').dirty || newMotorcycleForm.get('color').touched || submitAttempt)">
-            <ng-container>
+        </ion-col>
+        <ion-col>
+          <div>
+            <ion-item no-padding color="accent">
+              <ion-label>Color: </ion-label>
+              <ion-input type="text" formControlName="color" required placeholder="-enter-"></ion-input>
+            </ion-item>
+            <div class="validation-errors" *ngIf="newMotorcycleForm.get('color').value=='' && (newMotorcycleForm.get('color').dirty || newMotorcycleForm.get('color').touched || submitAttempt)">
+              <ng-container>
                 <div class="error-message" *ngIf="newMotorcycleForm.get('color').value=='' && (newMotorcycleForm.get('color').dirty || newMotorcycleForm.get('color').touched || submitAttempt)">
                   Required.
                 </div>
-            </ng-container>
+              </ng-container>
+            </div>
           </div>
-      </div>
-    </ion-col>
-  </ion-row>
-  <ion-item no-padding color="accent">
-      <ion-label>Make: </ion-label>
-    <ion-input type="text" formControlName="make" required placeholder="-enter-"></ion-input>
-  </ion-item>
-  <div class="validation-errors" *ngIf="newMotorcycleForm.get('make').value=='' && (newMotorcycleForm.get('make').dirty || newMotorcycleForm.get('make').touched || submitAttempt)">
-      <ng-container>
+        </ion-col>
+      </ion-row>
+      <ion-item no-padding color="accent">
+        <ion-label>Make: </ion-label>
+        <ion-input type="text" formControlName="make" required placeholder="-enter-"></ion-input>
+      </ion-item>
+      <div class="validation-errors" *ngIf="newMotorcycleForm.get('make').value=='' && (newMotorcycleForm.get('make').dirty || newMotorcycleForm.get('make').touched || submitAttempt)">
+        <ng-container>
           <div class="error-message" *ngIf="newMotorcycleForm.get('make').value=='' && (newMotorcycleForm.get('make').dirty || newMotorcycleForm.get('make').touched || submitAttempt)">
             Make is required.
           </div>
-      </ng-container>
-    </div>
-  <ion-item no-padding color="accent">
-      <ion-label>Model: </ion-label>
-    <ion-input type="text" formControlName="model" required placeholder="-enter-"></ion-input>
-  </ion-item>
-  <div class="validation-errors" *ngIf="newMotorcycleForm.get('model').value=='' && (newMotorcycleForm.get('model').dirty || newMotorcycleForm.get('model').touched || submitAttempt)">
-      <ng-container>
+        </ng-container>
+      </div>
+      <ion-item no-padding color="accent">
+        <ion-label>Model: </ion-label>
+        <ion-input type="text" formControlName="model" required placeholder="-enter-"></ion-input>
+      </ion-item>
+      <div class="validation-errors" *ngIf="newMotorcycleForm.get('model').value=='' && (newMotorcycleForm.get('model').dirty || newMotorcycleForm.get('model').touched || submitAttempt)">
+        <ng-container>
           <div class="error-message" *ngIf="newMotorcycleForm.get('model').value=='' && (newMotorcycleForm.get('model').dirty || newMotorcycleForm.get('model').touched || submitAttempt)">
             Model is required.
           </div>
-      </ng-container>
-    </div>
-  <ion-item no-padding color="accent">
-      <ion-label>License Plate#: </ion-label>
-    <ion-input type="text" formControlName="licensePlate" required placeholder="-enter-"></ion-input>
-  </ion-item>
-  <div class="validation-errors" *ngIf="newMotorcycleForm.get('licensePlate').value=='' && (newMotorcycleForm.get('licensePlate').dirty || newMotorcycleForm.get('licensePlate').touched || submitAttempt)">
-      <ng-container>
+        </ng-container>
+      </div>
+      <ion-item no-padding color="accent">
+        <ion-label>License Plate#: </ion-label>
+        <ion-input type="text" formControlName="licensePlate" required placeholder="-enter-"></ion-input>
+      </ion-item>
+      <div class="validation-errors" *ngIf="newMotorcycleForm.get('licensePlate').value=='' && (newMotorcycleForm.get('licensePlate').dirty || newMotorcycleForm.get('licensePlate').touched || submitAttempt)">
+        <ng-container>
           <div class="error-message" *ngIf="newMotorcycleForm.get('licensePlate').value=='' && (newMotorcycleForm.get('licensePlate').dirty || newMotorcycleForm.get('licensePlate').touched || submitAttempt)">
             License Plate is required.
           </div>
-      </ng-container>
-    </div>
-  <ion-item no-padding color="accent">
-      <ion-label>Current Mileage: </ion-label>
-    <ion-input type="number" formControlName="currentMileage" placeholder="000000"></ion-input>
-  </ion-item>
-  <div class="validation-errors" *ngIf="newMotorcycleForm.get('currentMileage').value=='' && (newMotorcycleForm.get('currentMileage').dirty || newMotorcycleForm.get('currentMileage').touched || submitAttempt)">
-      <ng-container>
+        </ng-container>
+      </div>
+      <ion-item no-padding color="accent">
+        <ion-label>Current Mileage: </ion-label>
+        <ion-input type="number" formControlName="currentMileage" placeholder="000000"></ion-input>
+      </ion-item>
+      <div class="validation-errors" *ngIf="newMotorcycleForm.get('currentMileage').value=='' && (newMotorcycleForm.get('currentMileage').dirty || newMotorcycleForm.get('currentMileage').touched || submitAttempt)">
+        <ng-container>
           <div class="error-message" *ngIf="newMotorcycleForm.get('currentMileage').value=='' && (newMotorcycleForm.get('currentMileage').dirty || newMotorcycleForm.get('currentMileage').touched || submitAttempt)">
             Current Mileage is required.
           </div>
-      </ng-container>
-    </div>
-  <ion-row>
-    <ion-col>
-        <button ion-button small round (click)="uploadOdometerPicForNewMotorcycle()">Capture Odometer Picture</button>
-        <ng-container>
+        </ng-container>
+      </div>
+      <ion-row>
+        <ion-col>
+          <button ion-button small round (click)="uploadOdometerPicForNewMotorcycle()">Capture Odometer Picture</button>
+          <ng-container>
             <div class="error-message" *ngIf="(data.odometerpic == null || data.odometerpic == '')">
               You must capture odometer picture.
             </div>
-        </ng-container>
-    </ion-col>
-    <ion-col>
-      <ion-buttons end><button style="background: transparent;" (click)="displayOdometerPicForNewMotorcycle()"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
-    </ion-col>
-  </ion-row>
-  <!--1:&nbsp;{{this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']}}-->
-  <!--ion-row *ngIf="this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']">
-      <ion-col width="100%" align="center">
-        <img [src]="this.applicationForm.controls['motorcycles'].value[i]['odometerPicURL']" style="max-width: 100%; height: auto;">
-      </ion-col>
-  </ion-row-->
-  <ion-row>
-    <ion-col>
-      <div>
-        <ion-item no-padding color="accent">
-          <ion-label floating>Registration Expiration Date</ion-label>
-          <ion-datetime formControlName="registrationexpdt" max="{{ data.maxyear }}" custom-datetime></ion-datetime>
-        </ion-item>
-        <div class="validation-errors" *ngIf="newMotorcycleForm.get('registrationexpdt').value=='' && (newMotorcycleForm.get('registrationexpdt').dirty || newMotorcycleForm.get('registrationexpdt').touched || submitAttempt)">
-          <ng-container>
-              <div class="error-message" *ngIf="newMotorcycleForm.get('registrationexpdt').value=='' && (newMotorcycleForm.get('registrationexpdt').dirty || newMotorcycleForm.get('registrationexpdt').touched || submitAttempt)">
-                Registration Expiration Date is required.
-              </div>
           </ng-container>
-        </div>
-      </div>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col>
-        <button ion-button small round (click)="uploadRegistrationPicForNewMotorcycle()">Capture Registration Picture</button>
-        <ng-container>
+        </ion-col>
+      </ion-row>
+      <ion-row style="color: #FCD736;" justify-content-center>
+        Current Image on File:<ion-buttons end><button style="background: transparent;" (click)="displayOdometerPicForNewMotorcycle()">
+            <ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon>
+          </button></ion-buttons>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div>
+            <ion-item no-padding color="accent">
+              <ion-label floating>Registration Expiration Date</ion-label>
+              <ion-datetime formControlName="registrationexpdt" max="{{ data.maxyear }}" custom-datetime></ion-datetime>
+            </ion-item>
+            <div class="validation-errors" *ngIf="newMotorcycleForm.get('registrationexpdt').value=='' && (newMotorcycleForm.get('registrationexpdt').dirty || newMotorcycleForm.get('registrationexpdt').touched || submitAttempt)">
+              <ng-container>
+                <div class="error-message" *ngIf="newMotorcycleForm.get('registrationexpdt').value=='' && (newMotorcycleForm.get('registrationexpdt').dirty || newMotorcycleForm.get('registrationexpdt').touched || submitAttempt)">
+                  Registration Expiration Date is required.
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button ion-button small round (click)="uploadRegistrationPicForNewMotorcycle()">Capture Registration Picture</button>
+          <ng-container>
             <div class="error-message" *ngIf="(data.registrationpic == null || data.registrationpic == '')">
               You must capture registration picture.
             </div>
-        </ng-container>
-    </ion-col>
-    <ion-col>
-      <ion-buttons end><button style="background: transparent;" (click)="displayRegistrationPicForNewMotorcycle()"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
-    </ion-col>
-  </ion-row>
-  
-  <ion-row>
-    <ion-col>
-      <div>
-        <ion-item no-padding color="accent">
-          <ion-label floating>Insurance Expiration Date</ion-label>
-          <ion-datetime formControlName="insuranceexpdt" max="{{ data.maxyear }}" custom-datetime></ion-datetime>
-        </ion-item>
-        <div class="validation-errors" *ngIf="newMotorcycleForm.get('insuranceexpdt').value=='' && (newMotorcycleForm.get('insuranceexpdt').dirty || newMotorcycleForm.get('insuranceexpdt').touched || submitAttempt)">
-            <ng-container>
+          </ng-container>
+        </ion-col>
+      </ion-row>
+      <ion-row style="color: #FCD736;" justify-content-center>
+        Current Image on File:<ion-buttons end><button style="background: transparent;" (click)="displayRegistrationPicForNewMotorcycle()">
+            <ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon>
+          </button></ion-buttons>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <div>
+            <ion-item no-padding color="accent">
+              <ion-label floating>Insurance Expiration Date</ion-label>
+              <ion-datetime formControlName="insuranceexpdt" max="{{ data.maxyear }}" custom-datetime></ion-datetime>
+            </ion-item>
+            <div class="validation-errors" *ngIf="newMotorcycleForm.get('insuranceexpdt').value=='' && (newMotorcycleForm.get('insuranceexpdt').dirty || newMotorcycleForm.get('insuranceexpdt').touched || submitAttempt)">
+              <ng-container>
                 <div class="error-message" *ngIf="newMotorcycleForm.get('insuranceexpdt').value=='' && (newMotorcycleForm.get('insuranceexpdt').dirty || newMotorcycleForm.get('insuranceexpdt').touched || submitAttempt)">
                   Insurance Expiration Date is required.
                 </div>
-            </ng-container>
+              </ng-container>
+            </div>
           </div>
-      </div>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col>
-        <button ion-button small round (click)="uploadInsurancePicForNewMotorcycle()">Capture Insurance Picture</button>
-        <ng-container>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button ion-button small round (click)="uploadInsurancePicForNewMotorcycle()">Capture Insurance Picture</button>
+          <ng-container>
             <div class="error-message" *ngIf="(data.insurancepic == null || data.insurancepic == '')">
               You must capture insurance picture.
             </div>
-        </ng-container>
-    </ion-col>
-    <ion-col>
-      <ion-buttons end><button style="background: transparent;" (click)="displayInsurancePicForNewMotorcycle()"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col col-12 style="text-align: center;">
-      <button ion-button default-button (click)="submitNewMotorcycle()">Add</button>
-    </ion-col>
-  </ion-row>
-</div>
-<!--==============================================================================================-->
+          </ng-container>
+        </ion-col>
+      </ion-row>
+
+      <ion-row style="color: #FCD736;" justify-content-center>
+        Current Image on File:<ion-buttons end><button style="background: transparent;" (click)="displayInsurancePicForNewMotorcycle()">
+            <ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon>
+          </button></ion-buttons>
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-12 style="text-align: center;">
+          <button ion-button default-button (click)="submitNewMotorcycle()">Add</button>
+        </ion-col>
+      </ion-row>
+    </div>
+    <!--==============================================================================================-->
   </div>
 </ion-content>
