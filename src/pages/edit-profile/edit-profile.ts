@@ -4,7 +4,7 @@ import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms"
 import { PasswordValidator } from './../../validators/password.validator';
 import { ShareProvider } from "../../services/share";
 import { Http } from "@angular/http";
-
+import { AlertController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -13,10 +13,17 @@ import { Http } from "@angular/http";
 })
 export class EditProfilePage {
 
+  data: any = {};
+  submitAttempt: boolean = false;
   editProfileForm: FormGroup;
   matching_passwords_group: FormGroup;
 
-  constructor(public formBuilder: FormBuilder, private http: Http, private shareProvider: ShareProvider, public navCtrl: NavController) {
+  constructor(public formBuilder: FormBuilder, 
+              private http: Http, 
+              private shareProvider: ShareProvider, 
+              public navCtrl: NavController, 
+              private alertCtrl: AlertController) 
+  {
   }
 
   ionViewDidLoad() {
@@ -55,9 +62,53 @@ export class EditProfilePage {
     ],
   };
 
+  submit() {
+    this.submitAttempt = true;
+    if (this.editProfileForm.valid) {
+      var body = new FormData();
+      var json_encoded_response = "";
+      var decoded_response = "";
+      body.append('sessionid', this.shareProvider.sessionid);
+      body.append("password", this.matching_passwords_group.controls.password.value);
+      this.http
+        .post(this.shareProvider.server + "profile/changepasswd.php", body)
+        .subscribe(
+          data => {
+            json_encoded_response = data["_body"];
+            //console.log(json_encoded_response);
+            decoded_response = JSON.parse(json_encoded_response);
+            //console.log(decoded_response);
+            if (decoded_response[0] === "error") {
+              this.data.error = decoded_response[1];
+              this.presentMessageOnlyAlert(decoded_response[1]);
+            } else {
+              if (decoded_response[0]) {
+                this.presentMessageOnlyAlert(decoded_response[2]);
+                this.navCtrl.pop();
+              } 
+              else if (!decoded_response[0]) {
+                this.data.error = decoded_response[2];
+                this.presentMessageOnlyAlert(decoded_response[2]);
+              } else {
+                this.data.error = "Problem changing password.  Please check your internet connection.  Contact administrator if problem persists.";
+                this.presentMessageOnlyAlert("Problem changing password.  Please check your internet connection.  Contact administrator if problem persists.");
+              }
+            }
+          },
+          error => {
+            this.data.error =
+              "Problem signing up for LAMA.  Please check your internet connection.  Contact administrator if problem persists.";
+          }
+        );
+    }
+  }
 
-  changePassword() {
-    
+  presentMessageOnlyAlert(alertmsg: string) {
+    let alert = this.alertCtrl.create({
+      message: alertmsg,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
 }

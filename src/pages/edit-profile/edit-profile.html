@@ -21,7 +21,7 @@
           </ion-item>
           <div class="validation-errors">
             <ng-container *ngFor="let validation of validation_messages.password">
-              <div class="error-message" *ngIf="editProfileForm.get('matching_passwords').get('password').hasError(validation.type) && (editProfileForm.get('matching_passwords').get('password').dirty || editProfileForm.get('matching_passwords').get('password').touched)">
+              <div class="error-message" *ngIf="editProfileForm.get('matching_passwords').get('password').hasError(validation.type) && ((editProfileForm.get('matching_passwords').get('password').dirty || submitAttempt == true) || editProfileForm.get('matching_passwords').get('password').touched)">
                 {{ validation.message }}
               </div>
             </ng-container>
@@ -41,12 +41,19 @@
               </div>
             </ng-container>
           </div>
+          <div class="validation-errors">
+            <ng-container>
+              <div class="error-message" *ngIf="!(editProfileForm.get('matching_passwords').get('confirm_password').value === editProfileForm.get('matching_passwords').get('password').value)">
+                Please enter same password to confirm.
+              </div>
+            </ng-container>
+          </div>
         </div>
       </ion-row>
 
       <ion-row>
           <ion-col width="100%" align="center">
-            <button ion-button small round (click)="changePassword()">Change Password</button>
+            <button ion-button small round (click)="submit()">Change Password</button>
           </ion-col>
         </ion-row>
 
