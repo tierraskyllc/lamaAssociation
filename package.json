@@ -90,7 +90,7 @@
       "com-sarriaroman-photoviewer": {},
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-qrscanner": {},
-      "cordova-android-play-services-gradle-release": "^2.0.0",
+      "cordova-android-play-services-gradle-release": {}
     },
     "platforms": [
       "ios",
