@@ -70,13 +70,6 @@ export class ProfilePage {
     public actionSheetCtrl: ActionSheetController,
     public loadingCtrl: LoadingController
   ) {
-    // Calendar //
-    //this.eventList = [];
-    //this.date = new Date();
-    //this.getCalendarMonth(this.date.getFullYear(), this.date.getMonth()+1);
-    //this.getDaysOfMonth();
-    //this.getCalendarMonth(this.date.getFullYear(), this.date.getMonth());
-    //this.eventList.push({ title: "First Test Event", location: "Location for First Test Event", message: "This is just a test event.", start_dttm: new Date('2018-11-17 15:20:00'), end_dttm: new Date('2018-11-18 22:00:00') })
   }
 
   eventsPage() {
