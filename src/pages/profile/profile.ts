@@ -221,7 +221,7 @@ export class ProfilePage {
             this.member.status = decoded_response[2]["type_of_membership"];
             this.member.title = decoded_response[2]["member_title"];
             this.member.memberSince = new Date(
-              decoded_response[2]["dttmcreated"]
+              decoded_response[2]["dttmcreated"].replace(/-/g,'/')
             ).getFullYear();
             this.member.following = decoded_response[2]["total_miles"];
             this.loading.dismissAll();
@@ -311,8 +311,8 @@ export class ProfilePage {
   checkEvent(day) {
     //console.log(day);
     var hasEvent = false;
-    var thisDate1 = new Date(this.date.getFullYear()+"-"+(this.date.getMonth()+1)+"-"+day+" 00:00:00");
-    var thisDate2 = new Date(this.date.getFullYear()+"-"+(this.date.getMonth()+1)+"-"+day+" 23:59:59");
+    var thisDate1 = new Date(this.date.getFullYear()+"/"+(this.date.getMonth()+1)+"/"+day+" 00:00:00");
+    var thisDate2 = new Date(this.date.getFullYear()+"/"+(this.date.getMonth()+1)+"/"+day+" 23:59:59");
     this.eventList.forEach(event => {
       //var eventStartDate = new Date(event.start_dttm);
       //var eventEndDate = new Date(event.end_dttm);
@@ -332,8 +332,8 @@ export class ProfilePage {
   selectDate(day) {
     this.isSelected = false;
     this.selectedEvent = new Array();
-    var thisDate1 = new Date(this.date.getFullYear()+"-"+(this.date.getMonth()+1)+"-"+day+" 00:00:00");
-    var thisDate2 = new Date(this.date.getFullYear()+"-"+(this.date.getMonth()+1)+"-"+day+" 23:59:59");
+    var thisDate1 = new Date(this.date.getFullYear()+"/"+(this.date.getMonth()+1)+"/"+day+" 00:00:00");
+    var thisDate2 = new Date(this.date.getFullYear()+"/"+(this.date.getMonth()+1)+"/"+day+" 23:59:59");
     //console.log('checkpoint-1');
     this.eventList.forEach(event => {
       //console.log('checkpoint-2');
@@ -350,7 +350,7 @@ export class ProfilePage {
       this.selectedEvent[i]['end_dttm'] = this.selectedEvent[i]['end_dttm'].toDateString() + ' ' + this.formatAMPM(this.selectedEvent[i]['end_dttm']);
     }
     if(this.selectedEvent.length > 0) {
-      this.navCtrl.push("CalendarDayPage", { selecteddate: (this.date.getMonth()+1) + '-' + day + '-' + this.date.getFullYear(), items: this.selectedEvent });
+      this.navCtrl.push("CalendarDayPage", { selecteddate: (this.date.getMonth()+1) + '/' + day + '/' + this.date.getFullYear(), items: this.selectedEvent });
     }
   }
 
@@ -376,8 +376,8 @@ export class ProfilePage {
           if (decoded_response[0] == "true") {
             //console.log(decoded_response[2]);
             for(var i=0; i<decoded_response[2].length; i++) {
-              decoded_response[2][i]['start_dttm'] = new Date(decoded_response[2][i]['start_dttm']);
-              decoded_response[2][i]['end_dttm'] = new Date(decoded_response[2][i]['end_dttm']);
+              decoded_response[2][i]['start_dttm'] = new Date(decoded_response[2][i]['start_dttm'].replace(/-/g,'/'));
+              decoded_response[2][i]['end_dttm'] = new Date(decoded_response[2][i]['end_dttm'].replace(/-/g,'/'));
               this.eventList.push(decoded_response[2][i]);
               //this.eventList.push({ title: "First Test Event", location: "Location for First Test Event", message: "This is just a test event.", start_dttm: new Date('2018-11-17 15:20:00'), end_dttm: new Date('2018-11-18 22:00:00') });
               //console.log(decoded_response[2][i]["id"]);
