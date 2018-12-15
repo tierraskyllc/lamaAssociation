@@ -81,7 +81,7 @@ export class CalendarMeetingPage {
             this.data.canIUpdatetThisMeeting = decoded_response[2]["canIUpdatetThisMeeting"];
             this.loading.dismissAll();
 
-            var d = new Date(decoded_response[2]["start_dttm"]);
+            var d = new Date(decoded_response[2]["start_dttm"].replace(/-/g, '/'));
             var hours = d.getHours();
             var minutes = d.getMinutes();
             var ampm = hours >= 12 ? 'pm' : 'am';
@@ -91,7 +91,7 @@ export class CalendarMeetingPage {
             var strTime = hours + ':' + minutes1 + ' ' + ampm;
             this.data.start_dttm = d.getMonth()+1 + '-' + d.getDate() + '-' + d.getFullYear() + ' ' + strTime;
 
-            var d = new Date(decoded_response[2]["end_dttm"]);
+            var d = new Date(decoded_response[2]["end_dttm"].replace(/-/g, '/'));
             var hours = d.getHours();
             var minutes = d.getMinutes();
             var ampm = hours >= 12 ? 'pm' : 'am';
