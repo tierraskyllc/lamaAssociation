@@ -9,54 +9,56 @@
   <ion-grid>
     <div class="form">
       <form [formGroup]="editProfileForm">
-
-      <ion-row>
-        <div formGroupName="matching_passwords">
-          <!---Input field Password-->
-          <ion-item no-padding color="accent">
-            <ion-label floating>
-              <ion-icon name="key"></ion-icon>Password
-            </ion-label>
-            <ion-input type="password" formControlName="password"></ion-input>
-          </ion-item>
-          <div class="validation-errors">
-            <ng-container *ngFor="let validation of validation_messages.password">
-              <div class="error-message" *ngIf="editProfileForm.get('matching_passwords').get('password').hasError(validation.type) && ((editProfileForm.get('matching_passwords').get('password').dirty || submitAttempt == true) || editProfileForm.get('matching_passwords').get('password').touched)">
-                {{ validation.message }}
+        <ion-grid  style="border-style: solid; border-color: #FCD736; border-radius: 15px; border-width: 1px;">
+          <ion-row>
+            <ion-col width="100%" align="center">
+              <div formGroupName="matching_passwords">
+                <!---Input field Password-->
+                <ion-item no-padding color="accent">
+                  <ion-label floating>
+                    <ion-icon name="key"></ion-icon>Password
+                  </ion-label>
+                  <ion-input type="password" formControlName="password"></ion-input>
+                </ion-item>
+                <div class="validation-errors">
+                  <ng-container *ngFor="let validation of validation_messages.password">
+                    <div class="error-message" *ngIf="editProfileForm.get('matching_passwords').get('password').hasError(validation.type) && ((editProfileForm.get('matching_passwords').get('password').dirty || submitAttempt == true) || editProfileForm.get('matching_passwords').get('password').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
               </div>
-            </ng-container>
-          </div>
 
-          <!---Input field Confirm Password-->
-          <ion-item no-padding color="accent">
-            <ion-label floating>
-              <ion-icon name="checkmark"></ion-icon>Confirm Password
-            </ion-label>
-            <ion-input type="password" formControlName="confirm_password"></ion-input>
-          </ion-item>
-          <div class="validation-errors">
-            <ng-container *ngFor="let validation of validation_messages.confirm_password">
-              <div class="error-message" *ngIf="editProfileForm.get('matching_passwords').get('confirm_password').hasError(validation.type) && (editProfileForm.get('matching_passwords').get('confirm_password').dirty || editProfileForm.get('matching_passwords').get('confirm_password').touched)">
-                {{ validation.message }}
+                <!---Input field Confirm Password-->
+                <ion-item no-padding color="accent">
+                  <ion-label floating>
+                    <ion-icon name="checkmark"></ion-icon>Confirm Password
+                  </ion-label>
+                  <ion-input type="password" formControlName="confirm_password"></ion-input>
+                </ion-item>
+                <div class="validation-errors">
+                  <ng-container *ngFor="let validation of validation_messages.confirm_password">
+                    <div class="error-message" *ngIf="editProfileForm.get('matching_passwords').get('confirm_password').hasError(validation.type) && (editProfileForm.get('matching_passwords').get('confirm_password').dirty || editProfileForm.get('matching_passwords').get('confirm_password').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+                <div class="validation-errors">
+                  <ng-container>
+                    <div class="error-message" *ngIf="!(editProfileForm.get('matching_passwords').get('confirm_password').value === editProfileForm.get('matching_passwords').get('password').value)">
+                      Please enter same password to confirm.
+                    </div>
+                  </ng-container>
+                </div>
               </div>
-            </ng-container>
-          </div>
-          <div class="validation-errors">
-            <ng-container>
-              <div class="error-message" *ngIf="!(editProfileForm.get('matching_passwords').get('confirm_password').value === editProfileForm.get('matching_passwords').get('password').value)">
-                Please enter same password to confirm.
-              </div>
-            </ng-container>
-          </div>
-        </div>
-      </ion-row>
+            </ion-col>
+          </ion-row>
 
-      <ion-row>
-          <ion-col width="100%" align="center">
-            <button ion-button small round (click)="submit()">Change Password</button>
-          </ion-col>
-        </ion-row>
-
+          <ion-row>
+              <ion-col width="100%" align="center">
+                <button ion-button small round (click)="submit()">Change Password</button>
+              </ion-col>
+            </ion-row>
+        </ion-grid>
       </form>  
     </div>
   </ion-grid>
