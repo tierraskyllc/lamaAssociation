@@ -38,7 +38,7 @@
                   </ion-col>
                 </ion-row>
                 <ion-row *ngIf="data.licenseexpdt == '' || data.licenseexpdt == null || (data.license_exp_alert_msg !== '' && data.license_exp_alert_msg !== 'In Review')">
-                  <ion-col width="80%" align="center">
+                  <ion-col width="100%" align="center">
                     <button ion-button small round (click)="uploadLicense()">Capture License Picture</button>
                     <ng-container>
                       <div class="error-message" *ngIf="(data.licensepic == null || data.licensepic == '')">
@@ -46,11 +46,12 @@
                       </div>
                     </ng-container>
                   </ion-col>
-                  <ion-col width="20%" align="center">
-                    <ion-buttons end><button style="background: transparent;" (click)="displayLicensePic()">
+                </ion-row>
+                <ion-row style="color: #FCD736;" justify-content-center>
+                  Current Imgae on File:
+                    <ion-buttons><button style="background: transparent;" (click)="displayLicensePic()">
                         <ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon>
                       </button></ion-buttons>
-                  </ion-col>
                 </ion-row>
                 <ion-row *ngIf="data.licenseexpdt == '' || data.licenseexpdt == null || (data.license_exp_alert_msg !== '' && data.license_exp_alert_msg !== 'In Review')">
                   <ion-col col-12 style="text-align: center;">
