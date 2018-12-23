@@ -55,7 +55,7 @@
                 </ion-row>
                 <ion-row *ngIf="data.licenseexpdt == '' || data.licenseexpdt == null || (data.license_exp_alert_msg !== '' && data.license_exp_alert_msg !== 'In Review')">
                   <ion-col col-12 style="text-align: center;">
-                    <button ion-button default-button (click)="submitLicense()">Submit License Details</button>
+                    <button ion-button default-button (click)="submitLicense()">Update License Details</button>
                   </ion-col>
                 </ion-row>
               </ion-grid>
@@ -127,7 +127,7 @@
 
                   <ion-row *ngIf="motorcycleInfo['miles_alert_msg'] !== 'In Review'">
                     <ion-col col-12 style="text-align: center;">
-                      <button ion-button default-button (click)="submitOdometerChanges(i)">Submit</button>
+                      <button ion-button default-button (click)="submitOdometerChanges(i)">Update</button>
                     </ion-col>
                   </ion-row>
                 </ion-grid>
@@ -174,7 +174,7 @@
                   </ion-row>
                   <ion-row *ngIf="motorcycleInfo['registration_exp_alert_msg'] !== '' && motorcycleInfo['registration_exp_alert_msg'] !== 'In Review'">
                     <ion-col col-12 style="text-align: center;">
-                      <button ion-button default-button (click)="submitRegistrationChanges(i)">Submit</button>
+                      <button ion-button default-button (click)="submitRegistrationChanges(i)">Update</button>
                     </ion-col>
                   </ion-row>
                 </ion-grid>
@@ -220,7 +220,7 @@
                   </ion-row>
                   <ion-row *ngIf="motorcycleInfo['insurance_exp_alert_msg'] !== '' && motorcycleInfo['insurance_exp_alert_msg'] !== 'In Review'">
                     <ion-col col-12 style="text-align: center;">
-                      <button ion-button default-button (click)="submitInsuranceChanges(i)">Submit</button>
+                      <button ion-button default-button (click)="submitInsuranceChanges(i)">Update</button>
                     </ion-col>
                   </ion-row>
                 </ion-grid>
