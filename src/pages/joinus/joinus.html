@@ -155,7 +155,7 @@
             <ion-item [class.invalid]="!joinUsForm.controls.chapter.valid && (joinUsForm.get('chapter').dirty || submitAttempt)">
               <ion-label>Chapter</ion-label>
               <ion-select formControlName="chapter" interface=popover>
-                <ion-option *ngFor="let curchap of data.usachapters" [value]="curchap.id">{{curchap.name}}</ion-option>
+                <ion-option (ionSelect)="checkChapterCategory(curchap.name, curchap.chapter_category)" *ngFor="let curchap of data.usachapters" [value]="curchap.id">{{curchap.name}}</ion-option>
               </ion-select>
             </ion-item>
           </ion-list>
@@ -173,12 +173,16 @@
             <ion-item [class.invalid]="!joinUsForm.controls.intlchapter.valid && (joinUsForm.get('intlchapter').dirty || submitAttempt)">
               <ion-label>Chapter</ion-label>
               <ion-select formControlName="intlchapter" interface=popover>
-                <ion-option *ngFor="let curintlchap of data.intlchapters" [value]="curintlchap.id">{{curintlchap.name}}</ion-option>
+                <ion-option (ionSelect)="checkChapterCategory(curintlchap.name, curintlchap.chapter_category)" *ngFor="let curintlchap of data.intlchapters" [value]="curintlchap.id">{{curintlchap.name}}</ion-option>
               </ion-select>
             </ion-item>
           </ion-list>
         </div>
-
+        <ion-row *ngIf="data.chapter_related_message_flag" style="border-style: solid; border-color: #FCD736; border-radius: 7px; border-width: 1px;">
+          <ion-col width="100%" style="color: #FCD736;">
+            {{ data.chapter_related_message }}
+          </ion-col>
+        </ion-row>
         <ion-row>
           <ion-col width="100%" align="center">
             <button ion-button small round (click)="submit()">Sign UP</button>

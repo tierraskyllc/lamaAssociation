@@ -24,6 +24,7 @@ export class AddChapterPage {
   @ViewChild('cityComponent') cityComponent: IonicSelectableComponent;
 
   data: any = {};
+  chapter_categories: Array<string>;
   submitAttempt: boolean = false;
   isNational: boolean = false;
   isInternational: boolean = false;
@@ -58,6 +59,7 @@ export class AddChapterPage {
   validation_messages = {
     'name': [{ type: 'required', message: 'Chapter Name is required.' }, { type: 'maxlength', message: 'Chapter Name can not be longer than 100 letters.' }],
     'description': [{ type: 'maxlength', message: 'Description can not be longer than 200 letters.' }],
+    'chapter_category': [{ type: 'required', message: 'Chapter Category is required.' }],
     'region': [{ type: 'required', message: 'Region is required.' }],
     'state': [{ type: 'required', message: 'State is required.' }],
     'city': [{ type: 'required', message: 'City is required.' }],
@@ -69,9 +71,11 @@ export class AddChapterPage {
   }
 
   ionViewWillLoad() {
+    this.chapter_categories = ["Organized Chapter", "Establishing Chapter", "Brother Chapter"];
     this.chapterForm = this.formBuilder.group({
       name: ["", Validators.compose([Validators.required, Validators.maxLength(100)])],
       description: ["", Validators.compose([Validators.maxLength(200)])],
+      chapter_category: ["", Validators.compose([Validators.required])],
       region: [""],
       state: [""],
       city: [""],
@@ -252,6 +256,7 @@ export class AddChapterPage {
       body.append('sessionid', this.shareProvider.sessionid);
       body.append("name", this.chapterForm.controls.name.value);
       body.append("description", this.chapterForm.controls.description.value);
+      body.append("chapter_category", this.chapterForm.controls.chapter_category.value);
       if(this.isNational) {
         body.append('chapter_type', 'national');
       }

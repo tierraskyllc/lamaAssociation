@@ -169,7 +169,7 @@ export class ResubmitApplicationPage {
     this.highestEducation = ["Self Taught", "Home Schooled", "High School", "Vocational School", "College"];
     this.bloodTypes = ["O+", "A+", "B+", "AB+", "O-", "A-", "B-", "AB-"];
     this.memberTitles = ["No Title", "President", "Vice President", "Treasurer", "Secretary", "Business Manager", "Motor Touring Officer", "Sgt of Arms", "Road Captain", "Retired"];
-    this.typeOfMemberships = ["Full Color Member", "DAMA", "Spousal/Pareja", "Prospect", "Probate", "Associate/Asociado"];
+    this.typeOfMemberships = ["Riding Member", "DAMA", "Spousal/Pareja", "Prospect", "Probate", "Associate/Asociado"];
     this.typeOfChapters = ["Organized Chapter/Capitulo", "Establishing Chapter/Capitulo Estableciendo", "Brother Chapter/Capítulo hermano"];
     this.appStatus = ['Review', 'Rejected', 'Approved'];
 
@@ -224,7 +224,7 @@ export class ResubmitApplicationPage {
       organDonar: ["", Validators.compose([Validators.required])],
       memberTitle: ["", Validators.compose([Validators.required])],
       typeOfMembership: ["", Validators.compose([Validators.required])],
-      typeOfChapter: ["", Validators.compose([Validators.required])],
+      //typeOfChapter: ["", Validators.compose([Validators.required])],
       applicationStatus: ["", Validators.compose([Validators.required])],
       note: [''],
       motorcycles: this.formBuilder.array([])
@@ -309,7 +309,7 @@ export class ResubmitApplicationPage {
     'organDonar': [{ type: 'required', message: 'Please select Yes or No.' }],
     'memberTitle': [{type: 'required', message: 'Member Title is required.'}],
     'typeOfMembership': [{type: 'required', message: 'Type of Membership is required.'}],
-    'typeOfChapter': [{type: 'required', message: 'Type of Chapter is required.'}],
+    //'typeOfChapter': [{type: 'required', message: 'Type of Chapter is required.'}],
     'applicationStatus': [{ type: 'required', message: 'Application Status is required.' }],
     'note': [{ type: 'required', message: 'Note is required.' }],
     'year': [{type: 'required', message: 'Required.'}],
@@ -546,7 +546,8 @@ export class ResubmitApplicationPage {
       body.append('organDonar', this.applicationForm.controls['organDonar'].value);
       body.append('memberTitle', this.applicationForm.controls['memberTitle'].value);
       body.append('typeOfMembership', this.applicationForm.controls['typeOfMembership'].value);
-      body.append('typeOfChapter', this.applicationForm.controls['typeOfChapter'].value);
+      //body.append('typeOfChapter', this.applicationForm.controls['typeOfChapter'].value);
+      body.append('typeOfChapter', 'Not Needed');
       body.append('licenseexpdt', this.applicationForm.controls['licenseexpdt'].value);
       body.append('licensepic', this.data.licensepic);
       body.append('insurancepic', this.data.insurancepic);
@@ -1144,7 +1145,7 @@ export class ResubmitApplicationPage {
             this.formdata.type_of_membership = decoded_response[2]["type_of_membership"];
             this.applicationForm.controls['typeOfMembership'].setValue(decoded_response[2]["type_of_membership"]);
             this.formdata.type_of_chapter = decoded_response[2]["type_of_chapter"];
-            this.applicationForm.controls['typeOfChapter'].setValue(decoded_response[2]["type_of_chapter"]);
+            //this.applicationForm.controls['typeOfChapter'].setValue(decoded_response[2]["type_of_chapter"]);
             this.formdata.licensepic = decoded_response[2]["licensepic"];
             this.data.licensepic = decoded_response[2]["licensepic"];
             this.formdata.insurancepic = decoded_response[2]["insurancepic"];

@@ -163,7 +163,7 @@ export class ApplicationPage {
     this.highestEducation = ["Self Taught", "Home Schooled", "High School", "Vocational School", "College"];
     this.bloodTypes = ["O+", "A+", "B+", "AB+", "O-", "A-", "B-", "AB-"];
     this.memberTitles = ["No Title", "President", "Vice President", "Treasurer", "Secretary", "Business Manager", "Motor Touring Officer", "Sgt of Arms", "Road Captain", "Retired"];
-    this.typeOfMemberships = ["Full Color Member", "DAMA", "Spousal/Pareja", "Prospect", "Probate", "Associate/Asociado"];
+    this.typeOfMemberships = ["Riding Member", "DAMA", "Spousal/Pareja", "Prospect", "Probate", "Associate/Asociado"];
     this.typeOfChapters = ["Organized Chapter/Capitulo", "Establishing Chapter/Capitulo Estableciendo", "Brother Chapter/Capítulo hermano"];
 
     let country = new FormControl(this.countries[0], Validators.required);
@@ -217,7 +217,7 @@ export class ApplicationPage {
       organDonar: ["", Validators.compose([Validators.required])],
       memberTitle: ["", Validators.compose([Validators.required])],
       typeOfMembership: ["", Validators.compose([Validators.required])],
-      typeOfChapter: ["", Validators.compose([Validators.required])],
+      //typeOfChapter: ["", Validators.compose([Validators.required])],
       motorcycles: this.formBuilder.array([])
     });
 
@@ -296,7 +296,7 @@ export class ApplicationPage {
     'organDonar': [{ type: 'required', message: 'Please select Yes or No.' }],
     'memberTitle': [{type: 'required', message: 'Member Title is required.'}],
     'typeOfMembership': [{type: 'required', message: 'Type of Membership is required.'}],
-    'typeOfChapter': [{type: 'required', message: 'Type of Chapter is required.'}],
+    //'typeOfChapter': [{type: 'required', message: 'Type of Chapter is required.'}],
     'year': [{type: 'required', message: 'Required.'}],
     'make': [{type: 'required', message: 'Required.'}],
     'model': [{type: 'required', message: 'Required.'}],
@@ -509,7 +509,8 @@ export class ApplicationPage {
       body.append('organDonar', this.applicationForm.controls['organDonar'].value);
       body.append('memberTitle', this.applicationForm.controls['memberTitle'].value);
       body.append('typeOfMembership', this.applicationForm.controls['typeOfMembership'].value);
-      body.append('typeOfChapter', this.applicationForm.controls['typeOfChapter'].value);
+      //body.append('typeOfChapter', this.applicationForm.controls['typeOfChapter'].value);
+      body.append('typeOfChapter', 'Not Needed');
       body.append('licenseexpdt', this.applicationForm.controls['licenseexpdt'].value);
       body.append('licensepic', this.data.licensepic);
       body.append('insurancepic', this.data.insurancepic);

@@ -32,7 +32,7 @@
           <ion-row>
               <ion-col>
                   <ion-item no-padding color="accent">
-                      <ion-label floating>Description</ion-label>
+                      <ion-label floating>Notes</ion-label>
                       <ion-textarea formControlName="description"></ion-textarea>
                   </ion-item>
                   <ng-container *ngFor="let validation of validation_messages.description">
@@ -41,6 +41,21 @@
                       </div>
                   </ng-container>
               </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item no-padding color="accent">
+                <ion-label floating>Chapter Category</ion-label>
+                <ion-select formControlName="chapter_category" interface="popover" cancelText="Cancel" okText="OK">
+                  <ion-option *ngFor="let category of chapter_categories" [value]="category">{{ category }}</ion-option>
+                </ion-select>
+            </ion-item>
+            <ng-container *ngFor="let validation of validation_messages.chapter_category">
+                <div class="error-message" *ngIf="chapterForm.get('chapter_category').hasError(validation.type) && (chapterForm.get('chapter_category').dirty || chapterForm.get('chapter_category').touched || submitAttempt)">
+                  {{ validation.message }}
+                </div>
+            </ng-container>
+            </ion-col>
           </ion-row>
           <div *ngIf="isNational">
               <ion-row>
@@ -92,7 +107,7 @@
                         </ionic-selectable>
                     </ion-item>
                     <ng-container *ngFor="let validation of validation_messages.city">
-                        <div class="error-message" *ngIf="chapterForm.get('city').hasError(validation.type) && (chapterForm.get('city').dirty || chapterForm.get('city').touched || submitAttempt)">
+                        <div class="error-message" *ngIf="(chapterForm.get('city').hasError(validation.type) && (chapterForm.get('city').dirty || chapterForm.get('city').touched || submitAttempt)) || data.selectedusacityid == null">
                           {{ validation.message }}
                         </div>
                     </ng-container>

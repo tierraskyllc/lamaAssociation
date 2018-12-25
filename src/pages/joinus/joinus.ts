@@ -24,7 +24,8 @@ export class JoinUsPage {
   constructor(public formBuilder: FormBuilder, private http: Http, private shareProvider: ShareProvider, public navCtrl: NavController) {
     this.data.response = "";
     this.data.error = "";
-
+    this.data.chapter_related_message_flag = false;
+    this.data.chapter_related_message = '';
     this.data.nationalSelected = false;
     this.data.intlSelected = false;
     this.data.usaregions = [];
@@ -361,5 +362,17 @@ export class JoinUsPage {
     this.populateUSARegions();
     this.populateCountries();
     console.log("ionViewDidLoad JoinUsPage");
+  }
+
+  checkChapterCategory(chapter_name, chapter_category) {
+    if(chapter_category === 'Establishing Chapter') {
+      //console.log('Selected Establishing Chapter');
+      this.data.chapter_related_message_flag = true;
+      this.data.chapter_related_message = chapter_name + ' is an ' + chapter_category + ' which means it is in probation period.  Please contact us at support@tierrasky.com for additional informaton.';
+    }
+    else {
+      this.data.chapter_related_message_flag = false;
+      this.data.chapter_related_message = '';
+    }
   }
 }

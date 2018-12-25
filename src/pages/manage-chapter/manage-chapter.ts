@@ -24,6 +24,7 @@ export class ManageChapterPage {
   @ViewChild('cityComponent') cityComponent: IonicSelectableComponent;
 
   data: any = {};
+  chapter_categories: Array<string>;
   submitAttempt: boolean = false;
   isNational: boolean = false;
   isInternational: boolean = false;
@@ -59,9 +60,10 @@ export class ManageChapterPage {
   validation_messages = {
     'name': [{ type: 'required', message: 'Chapter Name is required.' }, { type: 'maxlength', message: 'Chapter Name can not be longer than 100 letters.' }],
     'description': [{ type: 'maxlength', message: 'Description can not be longer than 200 letters.' }],
+    'chapter_category': [{ type: 'required', message: 'Chapter Category is required.' }],
     'region': [{ type: 'required', message: 'Region is required.' }],
     'state': [{ type: 'required', message: 'State is required.' }],
-    'city': [{ type: 'required', message: 'City is required.' }],
+    'city': [{ type: 'required', message: 'You must select City & Zipcode again before clicking UPDATE.' }],
     'country': [{ type: 'required', message: 'Country is required.' }],
     'intlregion': [{ type: 'required', message: 'Region is required.' }, { type: 'maxlength', message: 'Region can not be longer than 100 letters.' }],
     'intlstate': [{ type: 'required', message: 'State is required.' }, { type: 'maxlength', message: 'State can not be longer than 100 letters.' }],
@@ -70,9 +72,11 @@ export class ManageChapterPage {
   }
 
   ionViewWillLoad() {
+    this.chapter_categories = ["Organized Chapter", "Establishing Chapter", "Brother Chapter"];
     this.chapterForm = this.formBuilder.group({
       name: ["", Validators.compose([Validators.required, Validators.maxLength(100)])],
       description: ["", Validators.compose([Validators.maxLength(200)])],
+      chapter_category: ["", Validators.compose([Validators.required])],
       region: [""],
       state: [""],
       city: [""],
@@ -256,53 +260,59 @@ export class ManageChapterPage {
   }
 
   update() {
-    //console.log('city: ' + this.data.selectedusacityid);
-    var decoded_response = "";
-      var body = new FormData();
-      body.append('sessionid', this.shareProvider.sessionid);
-      if(this.isNational) {
-        body.append('chapter_type', 'national');
-      }
-      else if(this.isInternational) {
-        body.append('chapter_type', 'international');
-      }
-      body.append('lama_chapters_id', this.data.lama_chapters_id);
-      body.append("name", this.chapterForm.controls.name.value);
-      body.append("description", this.chapterForm.controls.description.value);
-      body.append("lama_usa_regions_id", this.chapterForm.controls.region.value);
-      body.append("lama_usa_states_id", this.chapterForm.controls.state.value);
-      body.append("lama_usa_cities_id", this.data.selectedusacityid);
-      body.append("lama_international_regions_id", this.chapterForm.controls.country.value);
-      body.append("intl_region", this.chapterForm.controls.intlregion.value);
-      body.append("intl_state", this.chapterForm.controls.intlstate.value);
-      body.append("intl_city", this.chapterForm.controls.intlcity.value);
-      body.append("intl_zipcode", this.chapterForm.controls.intlzipcode.value);
-      this.http
-        .post(this.shareProvider.server + "chapters/updatechapter.php", body)
-        .subscribe(
-          data => {
-            //console.log(data["_body"]);
-            decoded_response = JSON.parse(data["_body"]);
-            if(decoded_response[0] == "true") {
-              this.navCtrl.pop();
-              this.shareProvider.presentMessageOnlyAlert("You have successfully updated chapter.");
-            }
-            else {
-              if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
-                this.navCtrl.push("LoginPage", { data: 'Please login again.' });
-                //this.loading.dismissAll();
+    this.submitAttempt = true;
+    if(this.chapterForm.valid && this.data.selectedusacityid != null) {
+      var decoded_response = "";
+        var body = new FormData();
+        body.append('sessionid', this.shareProvider.sessionid);
+        if(this.isNational) {
+          body.append('chapter_type', 'national');
+        }
+        else if(this.isInternational) {
+          body.append('chapter_type', 'international');
+        }
+        body.append('lama_chapters_id', this.data.lama_chapters_id);
+        body.append("name", this.chapterForm.controls.name.value);
+        body.append("description", this.chapterForm.controls.description.value);
+        body.append("chapter_category", this.chapterForm.controls.chapter_category.value);
+        body.append("lama_usa_regions_id", this.chapterForm.controls.region.value);
+        body.append("lama_usa_states_id", this.chapterForm.controls.state.value);
+        body.append("lama_usa_cities_id", this.data.selectedusacityid);
+        body.append("lama_international_regions_id", this.chapterForm.controls.country.value);
+        body.append("intl_region", this.chapterForm.controls.intlregion.value);
+        body.append("intl_state", this.chapterForm.controls.intlstate.value);
+        body.append("intl_city", this.chapterForm.controls.intlcity.value);
+        body.append("intl_zipcode", this.chapterForm.controls.intlzipcode.value);
+        this.http
+          .post(this.shareProvider.server + "chapters/updatechapter.php", body)
+          .subscribe(
+            data => {
+              console.log(data["_body"]);
+              decoded_response = JSON.parse(data["_body"]);
+              if(decoded_response[0] == "true") {
+                this.navCtrl.pop();
+                this.shareProvider.presentMessageOnlyAlert("You have successfully updated chapter.");
               }
               else {
-                console.log("Problem updating chapter.  Please contact administrator.");
-                this.shareProvider.presentMessageOnlyAlert("Problem updating chapter.  Please contact administrator.");
+                if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
+                  this.navCtrl.push("LoginPage", { data: 'Please login again.' });
+                  //this.loading.dismissAll();
+                }
+                else {
+                  console.log("Problem updating chapter.  Please contact administrator.");
+                  this.shareProvider.presentMessageOnlyAlert("Problem updating chapter.  Please contact administrator.");
+                }
               }
+            },
+            error => {
+              console.log("Problem updating chapter.  Please contact administrator.");
+              this.shareProvider.presentMessageOnlyAlert("Problem updating chapter.  Please contact administrator.");
             }
-          },
-          error => {
-            console.log("Problem updating chapter.  Please contact administrator.");
-            this.shareProvider.presentMessageOnlyAlert("Problem updating chapter.  Please contact administrator.");
-          }
-        );
+          );
+      }
+      else {
+        this.presentMessageOnlyAlert('Did you miss one or more required fields?');
+      }
   }
 
   getChapter() {
@@ -320,7 +330,11 @@ export class ManageChapterPage {
             decoded_response = JSON.parse(data["_body"]);
             if(decoded_response[0] == "true") {
               this.chapterForm.controls.name.setValue(decoded_response[2]['name']);
+              if(decoded_response[2]['description'] === 'null') {
+                decoded_response[2]['description'] = '';
+              }
               this.chapterForm.controls.description.setValue(decoded_response[2]['description']);
+              this.chapterForm.controls.chapter_category.setValue(decoded_response[2]['chapter_category']);
               this.chapterForm.controls.region.setValue(decoded_response[2]['lama_usa_regions_id']);
               this.populateUSAStatesByRegion();
               this.chapterForm.controls.state.setValue(decoded_response[2]['lama_usa_states_id']);
@@ -329,6 +343,8 @@ export class ManageChapterPage {
                 this.cityComponent.items = [decoded_response[2]['lama_usa_city_details']];
               }
               this.chapterForm.controls.city.setValue({"id":decoded_response[2]['lama_usa_city_details']["id"],"namepluszipcode":decoded_response[2]['lama_usa_city_details']["namepluszipcode"]});
+              //this.searchCityByZipcode(decoded_response[2]['lama_usa_city_details']["namepluszipcode"].split(" ")[0]);
+              this.data.selectedusacityid = decoded_response[2]['lama_usa_city_details']["id"];
               this.chapterForm.controls.country.setValue(decoded_response[2]['lama_international_regions_id']);
               this.chapterForm.controls.intlregion.setValue(decoded_response[2]['intl_region']);
               this.chapterForm.controls.intlstate.setValue(decoded_response[2]['intl_state']);
@@ -353,4 +369,38 @@ export class ManageChapterPage {
         );
   }
 
+  presentMessageOnlyAlert(alertmsg: string) {
+    let alert = this.alertCtrl.create({
+      message: alertmsg,
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  searchCityByZipcode(text) {
+    text = text.replace(/^(0+)/g, '');
+      var decoded_response = "";
+      var body = new FormData();
+      var usastate = this.chapterForm.controls.state.value;
+      body.append('sessionid', this.shareProvider.sessionid);
+      body.append("usastate", usastate);
+      body.append("searchtext", text);
+      this.http
+        .post(this.shareProvider.server + "chapters/usacitiesbystate.php", body)
+        .subscribe(
+          data => {
+            //console.log(data["_body"]);
+            decoded_response = JSON.parse(data["_body"]);
+            if(decoded_response[0] == "true") {
+              this.data.selectedusacityid = decoded_response[2][0]['id'];
+            }
+            if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
+              this.navCtrl.push("LoginPage", { data: 'Please login again.' });
+            }
+          },
+          error => {
+            console.log("Oooops!");
+          }
+        );
+  }
 }
