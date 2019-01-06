@@ -750,6 +750,29 @@
                 </div>
               </ng-container>
             </div-->
+
+            <div>
+              <ion-item no-padding color="accent">
+              <!--ion-label>Signature:</ion-label-->
+              <ion-grid>
+                <ion-row>
+                  <ion-col>
+                    <signature-pad id="signatureCanvas" [options]="signaturePadOptions"></signature-pad>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col width="100%" align="right">
+                    <button ion-button small round (click)="clearSignature()" style="color: red;">Clear Signature</button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+              <ng-container *ngIf="submitAttempt && signaturePad.isEmpty()">
+                  <div class="error-message">
+                    You must sign the application above.
+                  </div>
+                </ng-container>
+            </div>
           </ion-col>
         </ion-row>
 

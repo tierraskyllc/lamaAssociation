@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { AgeValidator } from  '../../validators/age';
@@ -8,7 +8,6 @@ import emailMask from 'text-mask-addons/dist/emailMask';
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
 import { AlertController } from 'ionic-angular';
-
 import { ActionSheetController, ToastController, Platform, LoadingController, Loading } from 'ionic-angular';
 import { File } from '@ionic-native/file';
 //import { Transfer, TransferObject } from '@ionic-native/transfer';
@@ -16,6 +15,7 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
+import { SignaturePad } from 'angular2-signaturepad/signature-pad';
 
 @IonicPage()
 @Component({
@@ -23,6 +23,19 @@ import { PhotoViewer } from '@ionic-native/photo-viewer';
   templateUrl: 'application.html'
 })
 export class ApplicationPage {
+
+  @ViewChild(SignaturePad) public signaturePad: SignaturePad;
+
+  private signaturePadOptions: Object = {
+    'minWidth': 1,
+    'maxWidth': 3,
+    'canvasWidth': 340,
+    'canvasHeight': 180,
+    'backgroundColor': "rgb(255,255,255)",
+    'penColor': 'blue',
+    'throttle': 0,
+    'minDistance': 1
+  };
 
   events: any;
   data: any = {};
@@ -138,6 +151,7 @@ export class ApplicationPage {
 
   ionViewDidLoad() {
     //this.populateCountries();
+    this.data.blankSignature = this.signaturePad.toDataURL();
     console.log('ionViewDidLoad ApplicationPage');
     //this.photoViewer.show('http://images5.fanpop.com/image/photos/28700000/Random-wallpapers-random-28702284-500-313.jpg', 'My image title', {share: false});
   }
@@ -468,7 +482,7 @@ export class ApplicationPage {
     this.loading.present();*/
 
     this.submitAttempt = true;
-    if(this.applicationForm.valid) {
+    if((this.applicationForm.valid) && (!this.signaturePad.isEmpty())) {
       this.loading = this.loadingCtrl.create({
         content: '',
       });
@@ -531,6 +545,12 @@ export class ApplicationPage {
           body.append('insurancePic'+i, this.data.motorcyclesobjects[i]['insurancePic']);
           body.append('insuranceexpdt'+i, motorcyclesobjects[i]['insuranceexpdt']);
         }
+      }
+      if(this.signaturePad.toDataURL() === this.data.blankSignature) {
+        body.append('signaturepic', '');
+      }
+      else {
+        body.append('signaturepic', this.signaturePad.toDataURL());
       }
       //-----
       this.http.post(this.shareProvider.server + "application/review.php", body).subscribe(
@@ -1163,6 +1183,13 @@ export class ApplicationPage {
       });
       cityModal.present();
     })
+  }
+
+  clearSignature() {
+    //console.log(this.signaturePad.toDataURL());
+    this.signaturePad.clear();
+    //console.log('After Clearing Signature Image');
+    //console.log(this.signaturePad.toDataURL());
   }
 
 }

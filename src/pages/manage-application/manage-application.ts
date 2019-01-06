@@ -139,7 +139,7 @@ export class ManageApplicationPage {
           console.log("Unknown problem occured.  Please contact administrator.  Code: APP-002");
         }
       );
-      this.getApplicationDetails();
+      //this.getApplicationDetails();
     }
 
   ionViewDidLoad() {
@@ -149,6 +149,7 @@ export class ManageApplicationPage {
   }
 
   ionViewWillLoad() {
+    this.getApplicationDetails();
     //this.getApplicationStatus();
 
     this.countries = [
@@ -1150,6 +1151,8 @@ export class ManageApplicationPage {
             this.data.licensepic = decoded_response[2]["licensepic"];
             this.formdata.insurancepic = decoded_response[2]["insurancepic"];
             this.data.insurancepic = decoded_response[2]["insurancepic"];
+            this.formdata.signaturePic = "data:image/png;base64," + decoded_response[2]["signaturepic"];
+            //console.log(this.formdata.signaturePic);
             this.formdata.application_status = decoded_response[2]["application_status"];
             this.applicationForm.controls['applicationStatus'].setValue(decoded_response[2]["application_status"]);
             if((decoded_response[2]["note"] == null) || (decoded_response[2]["note"] == 'null')) {

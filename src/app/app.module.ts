@@ -14,6 +14,7 @@ import { Camera } from '@ionic-native/camera';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { IonicSelectableModule } from 'ionic-selectable';
+import { SignaturePadModule } from 'angular2-signaturepad';
 //import { Transfer } from '@ionic-native/transfer';
 
 @NgModule({
@@ -24,6 +25,7 @@ import { IonicSelectableModule } from 'ionic-selectable';
     BrowserModule,
     HttpModule,
     IonicSelectableModule,
+    SignaturePadModule,
     IonicModule.forRoot(MyApp)
 
   ],
@@ -44,6 +46,7 @@ import { IonicSelectableModule } from 'ionic-selectable';
     FileTransferObject,
     QRScanner,
     PhotoViewer,
+    SignaturePadModule,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
