@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { AgeValidator } from  '../../validators/age';
@@ -14,6 +14,7 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
+import { SignaturePad } from 'angular2-signaturepad/signature-pad';
 
 /**
  * Generated class for the ManageApplicationPage page.
@@ -28,6 +29,19 @@ import { PhotoViewer } from '@ionic-native/photo-viewer';
   templateUrl: 'manage-application.html',
 })
 export class ManageApplicationPage {
+
+  @ViewChild(SignaturePad) public signaturePad: SignaturePad;
+
+  private signaturePadOptions: Object = {
+    'minWidth': 1,
+    'maxWidth': 3,
+    'canvasWidth': 340,
+    'canvasHeight': 180,
+    'backgroundColor': "rgb(255,255,255)",
+    'penColor': 'blue',
+    'throttle': 0,
+    'minDistance': 1
+  };
 
   events: any;
   data: any = {};
@@ -504,7 +518,8 @@ export class ManageApplicationPage {
   update() {
     this.changeValidationForAnyOtherClub();
     this.submitAttempt = true;
-    if(this.applicationForm.valid) {
+    if(this.applicationForm.valid && (((this.applicationForm.controls['applicationStatus'].value == 'Approved') && (!this.signaturePad.isEmpty())) || (this.applicationForm.controls['applicationStatus'].value != 'Approved'))) {
+    //if(this.applicationForm.valid) {
       this.loading = this.loadingCtrl.create({
         content: '',
       });
@@ -570,6 +585,17 @@ export class ManageApplicationPage {
           body.append('registrationexpdt'+i, motorcyclesobjects[i]['registrationexpdt']);
           body.append('insurancePic'+i, this.data.motorcyclesobjects[i]['insurancePic']);
           body.append('insuranceexpdt'+i, motorcyclesobjects[i]['insuranceexpdt']);
+          if(this.applicationForm.controls['applicationStatus'].value == 'Approved') {
+            if(this.signaturePad.isEmpty()) {
+              body.append('signaturepic', '');
+            }
+            else {
+              body.append('signaturepic', this.signaturePad.toDataURL());
+            }
+          }
+          else {
+            body.append('signaturepic', '');
+          }
         }
       }
       //-----
@@ -1162,6 +1188,7 @@ export class ManageApplicationPage {
               this.formdata.note = decoded_response[2]["note"];
             }
             this.applicationForm.controls['note'].setValue(decoded_response[2]["note"]);
+            this.formdata.approversignaturePic = "data:image/png;base64," + decoded_response[2]["approversignaturepic"];
             this.formdata.dttmaccepted = decoded_response[2]["dttmaccepted"];
             this.formdata.dttmcreated = decoded_response[2]["dttmcreated"];
 
@@ -1283,5 +1310,12 @@ export class ManageApplicationPage {
       this.displayOdometerPic(i);
       this.displayRegistrationPic(i);
     }
+  }
+
+  clearSignature() {
+    //console.log(this.signaturePad.toDataURL());
+    this.signaturePad.clear();
+    //console.log('After Clearing Signature Image');
+    //console.log(this.signaturePad.toDataURL());
   }
 }
