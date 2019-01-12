@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { ResubmitApplicationPage } from './resubmit-application';
 import { TextMaskModule } from 'angular2-text-mask';
+import { SignaturePadModule } from 'angular2-signaturepad';
 
 @NgModule({
   declarations: [
@@ -9,7 +10,8 @@ import { TextMaskModule } from 'angular2-text-mask';
   ],
   imports: [
     IonicPageModule.forChild(ResubmitApplicationPage),
-    TextMaskModule
+    TextMaskModule,
+    SignaturePadModule
   ],
 })
 export class ResubmitApplicationPageModule {}

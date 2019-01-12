@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { AgeValidator } from  '../../validators/age';
@@ -14,6 +14,7 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
+import { SignaturePad } from 'angular2-signaturepad/signature-pad';
 
 /**
  * Generated class for the ResubmitApplicationPage page.
@@ -28,6 +29,19 @@ import { PhotoViewer } from '@ionic-native/photo-viewer';
   templateUrl: 'resubmit-application.html',
 })
 export class ResubmitApplicationPage {
+
+  @ViewChild(SignaturePad) public signaturePad: SignaturePad;
+
+  private signaturePadOptions: Object = {
+    'minWidth': 1,
+    'maxWidth': 3,
+    'canvasWidth': 340,
+    'canvasHeight': 180,
+    'backgroundColor': "rgb(255,255,255)",
+    'penColor': 'blue',
+    'throttle': 0,
+    'minDistance': 1
+  };
 
   events: any;
   data: any = {};
@@ -144,6 +158,7 @@ export class ResubmitApplicationPage {
 
   ionViewDidLoad() {
     this.setValidationForMotorcycleInfo();
+    this.data.blankSignature = this.signaturePad.toDataURL();
     console.log('ionViewDidLoad ResubmitApplicationPage');
     //this.getApplicationDetails();
   }
@@ -503,7 +518,7 @@ export class ResubmitApplicationPage {
   update() {
     this.changeValidationForAnyOtherClub();
     this.submitAttempt = true;
-    if(this.applicationForm.valid) {
+    if((this.applicationForm.valid) && (!this.signaturePad.isEmpty())) {
       this.loading = this.loadingCtrl.create({
         content: '',
       });
@@ -570,6 +585,12 @@ export class ResubmitApplicationPage {
           body.append('insurancePic'+i, this.data.motorcyclesobjects[i]['insurancePic']);
           body.append('insuranceexpdt'+i, motorcyclesobjects[i]['insuranceexpdt']);
         }
+      }
+      if(this.signaturePad.toDataURL() === this.data.blankSignature) {
+        body.append('signaturepic', '');
+      }
+      else {
+        body.append('signaturepic', this.signaturePad.toDataURL());
       }
       //-----
       this.http.post(this.shareProvider.server + "application/resubmit.php", body).subscribe(
@@ -1150,6 +1171,7 @@ export class ResubmitApplicationPage {
             this.data.licensepic = decoded_response[2]["licensepic"];
             this.formdata.insurancepic = decoded_response[2]["insurancepic"];
             this.data.insurancepic = decoded_response[2]["insurancepic"];
+            //this.signaturePad.fromDataURL("data:image/png;base64," + decoded_response[2]["signaturepic"]);
             this.formdata.application_status = decoded_response[2]["application_status"];
             this.applicationForm.controls['applicationStatus'].setValue(decoded_response[2]["application_status"]);
             if((decoded_response[2]["note"] == null) || (decoded_response[2]["note"] == 'null')) {
@@ -1280,5 +1302,12 @@ export class ResubmitApplicationPage {
       this.displayOdometerPic(i);
       this.displayRegistrationPic(i);
     }
+  }
+
+  clearSignature() {
+    //console.log(this.signaturePad.toDataURL());
+    this.signaturePad.clear();
+    //console.log('After Clearing Signature Image');
+    //console.log(this.signaturePad.toDataURL());
   }
 }
