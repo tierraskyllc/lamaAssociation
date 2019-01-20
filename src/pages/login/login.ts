@@ -201,6 +201,7 @@ export class LoginPage {
     this.shareProvider.username = "";
     this.shareProvider.firstname = "";
     this.shareProvider.lastname = "";*/
+    this.loginForm.controls["password"].setValue('');
   }
 }
 
