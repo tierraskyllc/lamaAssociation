@@ -241,6 +241,8 @@ export class ManageApplicationPage {
       typeOfMembership: ["", Validators.compose([Validators.required])],
       //typeOfChapter: ["", Validators.compose([Validators.required])],
       applicationStatus: ["", Validators.compose([Validators.required])],
+      approved_by: [''],
+      approval_date_time: [''],
       note: [''],
       motorcycles: this.formBuilder.array([])
     });
@@ -1189,7 +1191,19 @@ export class ManageApplicationPage {
             }
             this.applicationForm.controls['note'].setValue(decoded_response[2]["note"]);
             this.formdata.approversignaturePic = "data:image/png;base64," + decoded_response[2]["approversignaturepic"];
+            this.formdata.approved_by = decoded_response[2]["approved_by"];
             this.formdata.dttmaccepted = decoded_response[2]["dttmaccepted"];
+
+            var d = new Date(this.formdata.dttmaccepted);
+            var hours = d.getHours();
+            var minutes = d.getMinutes();
+            var ampm = hours >= 12 ? 'pm' : 'am';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            var minutes1 = minutes < 10 ? '0' + minutes.toString() : minutes.toString();
+            var strTime = hours + ':' + minutes1 + ' ' + ampm;
+            this.formdata.approval_date_time = d.getMonth()+1 + '-' + d.getDate() + '-' + d.getFullYear() + ' ' + strTime;
+
             this.formdata.dttmcreated = decoded_response[2]["dttmcreated"];
 
             for (var i = 0; i < decoded_response[2]["motorcycles"].length; i++) {

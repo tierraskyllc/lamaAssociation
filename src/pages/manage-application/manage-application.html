@@ -859,7 +859,29 @@
               </div>
             </ion-col>
           </ion-row>
-          
+
+          <ion-row *ngIf="formdata.application_status == 'Approved'">
+            <ion-col>
+              <div>
+                <ion-item no-padding color="accent">
+                  <ion-label floating>Approved By</ion-label>
+                  <ion-input type="text" formControlName="approved_by" value="{{formdata.approved_by}}"></ion-input>
+                </ion-item>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="formdata.application_status == 'Approved'">
+            <ion-col>
+              <div>
+                <ion-item no-padding color="accent">
+                  <ion-label floating>Approval Date and Time</ion-label>
+                  <ion-input type="text" formControlName="approval_date_time" value="{{formdata.approval_date_time}}"></ion-input>
+                </ion-item>
+              </div>
+            </ion-col>
+          </ion-row>
+
           <ion-row *ngIf="formdata.application_status != 'Approved'">
             <ion-col width="100%" align="center">
               <button ion-button small round (click)="update()">REVIEW AND UPDATE</button>
