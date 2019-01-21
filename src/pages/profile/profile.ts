@@ -133,9 +133,13 @@ export class ProfilePage {
   }
 
   ionViewDidLoad() {
-    this.loadProfileInfo();
+    //this.loadProfileInfo();
     //this.getCalendarMonth(this.date.getFullYear(), this.date.getMonth()+1);
     //console.log("Hello ProfileFour Page");
+  }
+
+  ionViewDidEnter() {
+    this.loadProfileInfo();
   }
 
   signIn() {

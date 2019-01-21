@@ -13,15 +13,29 @@
   <div id="profile-bg" [ngStyle]="{'background-image': 'url(' + member.coverImage +')'}"></div>
   <div id="content">
     <div id="profile-info" padding>
-      <!-- <img id="profile-image" *ngIf="!signingIn"[src]="member.profileImage"> -->
+      <ion-grid>
+        <ion-row>
+          <ion-col width="25%">
+              <p style="color: #444; font-weight: bold;">Member Since</p>
+              <span style="color:blueviolet; font-weight: bold;">{{member.memberSince}}</span>
+          </ion-col>
+          <ion-col width="50%">
+             <!-- <img id="profile-image" *ngIf="!signingIn"[src]="member.profileImage"> -->
       <div *ngIf="signingIn == false">
-        <ion-buttons id="profile-pic-icon" end><button style="background: transparent;" (click)="changeProfilePic()"><ion-icon color="secondary" name="create" style="zoom:1.3;"></ion-icon></button></ion-buttons>
-        <img id="profile-image" [src]="member.profileImage">
-      </div>
-      <div *ngIf="signingIn == true">
-        <img id="profile-image" [src]="member.profileQrImage">
-      </div>
-      <!-- <img id="profile-image" [src]="member.profileImage"> -->
+          <ion-buttons id="profile-pic-icon" end><button style="background: transparent;" (click)="changeProfilePic()"><ion-icon color="secondary" name="create" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+          <img id="profile-image" [src]="member.profileImage">
+        </div>
+        <div *ngIf="signingIn == true">
+          <img id="profile-image" [src]="member.profileQrImage">
+        </div>
+        <!-- <img id="profile-image" [src]="member.profileImage"> -->
+          </ion-col>
+          <ion-col width="25%">
+              <p style="color: #444; font-weight: bold;">Current Miles (Year to Date)</p>
+              <span style="color:blueviolet; font-weight: bold;">{{member.following}}</span>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
 
       <h3 id="profile-name" style="color: #FCD736;">{{member.name}}</h3>
       <p style="color: #FCD736;">{{member.chapter}} Chapter &bull; {{member.status}}</p>
