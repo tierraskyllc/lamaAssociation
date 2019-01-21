@@ -79,7 +79,7 @@ export class EventattendeesPage {
           decoded_response = JSON.parse(data["_body"]);
           if (decoded_response[0] == "true") {
             for(var i=0; i<decoded_response[2].length; i++) {
-              var d = new Date(decoded_response[2][i]["dttm_signedin"]);
+              var d = new Date(decoded_response[2][i]["dttm_signedin"].replace(/-/g,'/'));
               var hours = d.getHours();
               var minutes = d.getMinutes();
               var ampm = hours >= 12 ? 'pm' : 'am';
@@ -142,7 +142,7 @@ export class EventattendeesPage {
           decoded_response = JSON.parse(data["_body"]);
           if (decoded_response[0] == "true") {
             for(var i=0; i<decoded_response[2].length; i++) {
-              var d = new Date(decoded_response[2][i]["dttm_signedin"]);
+              var d = new Date(decoded_response[2][i]["dttm_signedin"].replace(/-/g,'/'));
               var hours = d.getHours();
               var minutes = d.getMinutes();
               var ampm = hours >= 12 ? 'pm' : 'am';

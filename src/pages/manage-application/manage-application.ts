@@ -1194,7 +1194,7 @@ export class ManageApplicationPage {
             this.formdata.approved_by = decoded_response[2]["approved_by"];
             this.formdata.dttmaccepted = decoded_response[2]["dttmaccepted"];
 
-            var d = new Date(this.formdata.dttmaccepted);
+            var d = new Date(this.formdata.dttmaccepted.replace(/-/g,'/'));
             var hours = d.getHours();
             var minutes = d.getMinutes();
             var ampm = hours >= 12 ? 'pm' : 'am';
