@@ -39,7 +39,7 @@ export class LoginPage {
 
   ionViewWillLoad() {
     this.loginForm = this.formBuilder.group({
-      email: new FormControl("", Validators.compose([Validators.required, Validators.pattern("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$")])),
+      email: new FormControl("", Validators.compose([Validators.required, Validators.pattern("^[ ]*[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+[ ]*$")])),
       password: new FormControl('', Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(16)]))
     });
   }
@@ -75,7 +75,7 @@ export class LoginPage {
       //var decoded_response = JSON.parse(
       //  '{"sessionid":"", "username":"", "firstname":"" , "lastname":""}'
       //);
-      body.append("username", this.loginForm.controls.email.value);
+      body.append("username", this.loginForm.controls.email.value.trim());
       body.append("password", this.loginForm.controls.password.value);
       this.http
         .post(this.shareProvider.server + "signin/signin.php", body)
@@ -202,6 +202,10 @@ export class LoginPage {
     this.shareProvider.firstname = "";
     this.shareProvider.lastname = "";*/
     this.loginForm.controls["password"].setValue('');
+  }
+
+  trimEmail() {
+    this.loginForm.controls['email'].setValue(this.loginForm.controls.email.value.trim());
   }
 }
 

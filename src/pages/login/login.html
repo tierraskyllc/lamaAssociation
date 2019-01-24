@@ -27,7 +27,7 @@
               <ion-item no-padding color="accent">
                 <ion-label floating>
                   <ion-icon name="mail"></ion-icon>Email</ion-label>
-                <ion-input formControlName="email" type="text"></ion-input>
+                <ion-input formControlName="email" type="text" (change)=trimEmail()></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.email">
                 <div class="error-message" *ngIf="loginForm.get('email').hasError(validation.type) && (loginForm.get('email').dirty || loginForm.get('email').touched)">

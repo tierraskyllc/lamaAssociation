@@ -100,6 +100,10 @@ export class ProfilePage {
     this.navCtrl.push("ChaptersPage");
   }
 
+  membersPage() {
+    this.navCtrl.push("ChapterMembersPage");
+  }
+
   openQrCodeModal() {
     this.openModal("QrCodeModalPage");
   }
