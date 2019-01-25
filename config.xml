@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="LatinAmericaMotorcycleAssociation" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>LAMA</name>
     <description>Latin America Motorcycle Association</description>
-    <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
+    <author email="support@tierrasky.com" href="http://tierrasky.com/">TIERRA SKY</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
