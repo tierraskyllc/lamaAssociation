@@ -1,9 +1,11 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { IonicPage, NavController } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
 import { PasswordValidator } from './../../validators/password.validator';
+import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings, RecaptchaComponent } from 'ng-recaptcha';
+import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 
 @IonicPage()
 @Component({
@@ -11,11 +13,12 @@ import { PasswordValidator } from './../../validators/password.validator';
   templateUrl: "joinus.html"
 })
 export class JoinUsPage {
+  @ViewChild(RecaptchaComponent) captcha: RecaptchaComponent;
 
   joinUsForm: FormGroup;
   matching_passwords_group: FormGroup;
   data: any = {};
-
+  response: null;
   submitAttempt: boolean = false;
 
   params: any = {};
@@ -23,7 +26,7 @@ export class JoinUsPage {
 
   constructor(public formBuilder: FormBuilder, private http: Http, private shareProvider: ShareProvider, public navCtrl: NavController) {
     this.data.response = "";
-    this.data.error = "";
+    //this.data.error = "";
     this.data.chapter_related_message_flag = false;
     this.data.chapter_related_message = '';
     this.data.nationalSelected = false;
@@ -114,7 +117,15 @@ export class JoinUsPage {
     this.joinUsForm.get("chapter").updateValueAndValidity();
   }
 
-  submit() {
+  presubmit(invisible) {
+    this.submitAttempt = true;
+    if(this.joinUsForm.valid) {
+      invisible.execute();
+    }
+  }
+
+  submit(captchaResponse: string) {
+    //console.log('captchaResponse: ' + captchaResponse);
     this.submitAttempt = true;
     //console.log(this.joinUsForm.valid);
     //console.log('firstname: ' + this.joinUsForm.controls.firstname.valid);
@@ -131,6 +142,7 @@ export class JoinUsPage {
       var body = new FormData();
       var json_encoded_response = "";
       var decoded_response = "";
+      body.append("captchaResponse", captchaResponse);
       body.append("email", this.joinUsForm.controls.email.value);
       body.append("firstname", this.joinUsForm.controls.firstname.value);
       body.append("lastname", this.joinUsForm.controls.lastname.value);

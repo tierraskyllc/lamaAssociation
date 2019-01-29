@@ -19,7 +19,12 @@
     <div class="form">
       <!--Form-->
       <form [formGroup]="joinUsForm">
-        <ion-label class="invalidmsg">{{data.error}}</ion-label>
+        <ion-row *ngIf="data.error">
+          <ion-col style="color: red;">
+              {{data.error}}
+          </ion-col>
+        </ion-row>
+        <!--ion-label class="invalidmsg">{{data.error}}</ion-label-->
         <ion-row>
           <ion-col>
             <div>
@@ -185,14 +190,22 @@
         </ion-row>
         <ion-row>
           <ion-col width="100%" align="center">
-            <button ion-button small round (click)="submit()">Sign UP</button>
+            <button ion-button small round (click)="presubmit(invisible);">Sign UP</button>
           </ion-col>
         </ion-row>
       </form>
     </div>
     <!---Register button-->
     <!-- <button ion-button float-right clear button-clear (click)="onEvent('onRegister')">{{data.submit}}</button> -->
-
+    <ion-row>
+      <ion-col>
+        <!--h3>Invisible CAPTCHA</h3-->
+        <re-captcha size="invisible" #invisible (resolved)="$event && submit($event)"></re-captcha>
+        <!--button (click)="invisible.execute()">Execute</button>
+        <button (click)="invisible.reset()">Reset</button>
+        <h4>Invisible captcha response</h4>
+        <pre>{{ response || '[empty]' }}</pre-->
+      </ion-col>
+    </ion-row>
   </ion-grid>
-
 </ion-content>

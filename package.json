@@ -56,6 +56,7 @@
     "ionic-native": "^2.9.0",
     "ionic-selectable": "^3.2.0",
     "ionicons": "3.0.0",
+    "ng-recaptcha": "^4.2.1",
     "ngx-qrcode2": "0.0.9",
     "ngx-qrcode3": "^0.3.0",
     "rxjs": "^5.5.12",
@@ -65,7 +66,7 @@
   },
   "devDependencies": {
     "@agm/core": "^1.0.0-beta.5",
-    "@ionic/app-scripts": "^3.2.1",
+    "@ionic/app-scripts": "3.2.2",
     "@ionic/lab": "1.0.18",
     "typescript": "~2.6.2"
   },
