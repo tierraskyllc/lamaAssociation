@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content #content>
   <ion-grid>
     <ion-row padding>
       <ion-col col-12 col-sm-12 col-md-12 offset-lg-3 col-lg-6 offset-xl-3 col-xl-6>
@@ -34,7 +34,7 @@
                 <ion-input formControlName="firstname" type="text"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.firstname">
-                <div class="error-message" *ngIf="joinUsForm.get('firstname').hasError(validation.type) && (joinUsForm.get('firstname').dirty || joinUsForm.get('firstname').touched)">
+                <div class="error-message" *ngIf="joinUsForm.get('firstname').hasError(validation.type) && (joinUsForm.get('firstname').dirty || joinUsForm.get('firstname').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -47,7 +47,7 @@
                 <ion-input formControlName="lastname" type="text"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.lastname">
-                <div class="error-message" *ngIf="joinUsForm.get('lastname').hasError(validation.type) && (joinUsForm.get('lastname').dirty || joinUsForm.get('lastname').touched)">
+                <div class="error-message" *ngIf="joinUsForm.get('lastname').hasError(validation.type) && (joinUsForm.get('lastname').dirty || joinUsForm.get('lastname').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -60,7 +60,7 @@
                 <ion-input formControlName="email" type="text"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.email">
-                <div class="error-message" *ngIf="joinUsForm.get('email').hasError(validation.type) && (joinUsForm.get('email').dirty || joinUsForm.get('email').touched)">
+                <div class="error-message" *ngIf="joinUsForm.get('email').hasError(validation.type) && (joinUsForm.get('email').dirty || joinUsForm.get('email').touched || submitAttempt)">
                   {{ validation.message }}
                 </div>
               </ng-container>
@@ -74,7 +74,7 @@
               </ion-item>
               <div class="validation-errors">
                 <ng-container *ngFor="let validation of validation_messages.password">
-                  <div class="error-message" *ngIf="joinUsForm.get('matching_passwords').get('password').hasError(validation.type) && (joinUsForm.get('matching_passwords').get('password').dirty || joinUsForm.get('matching_passwords').get('password').touched)">
+                  <div class="error-message" *ngIf="joinUsForm.get('matching_passwords').get('password').hasError(validation.type) && (joinUsForm.get('matching_passwords').get('password').dirty || joinUsForm.get('matching_passwords').get('password').touched || submitAttempt)">
                     {{ validation.message }}
                   </div>
                 </ng-container>
@@ -87,7 +87,7 @@
               </ion-item>
               <div class="validation-errors">
                 <ng-container *ngFor="let validation of validation_messages.confirm_password">
-                  <div class="error-message" *ngIf="joinUsForm.get('matching_passwords').get('confirm_password').hasError(validation.type) && (joinUsForm.get('matching_passwords').get('confirm_password').dirty || joinUsForm.get('matching_passwords').get('confirm_password').touched)">
+                  <div class="error-message" *ngIf="joinUsForm.get('matching_passwords').get('confirm_password').hasError(validation.type) && (joinUsForm.get('matching_passwords').get('confirm_password').dirty || joinUsForm.get('matching_passwords').get('confirm_password').touched || submitAttempt)">
                     {{ validation.message }}
                   </div>
                 </ng-container>

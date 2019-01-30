@@ -1,5 +1,5 @@
 import { Component, ViewChild } from "@angular/core";
-import { IonicPage, NavController } from "ionic-angular";
+import { IonicPage, NavController, LoadingController, Loading } from "ionic-angular";
 import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
@@ -13,18 +13,19 @@ import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
   templateUrl: "joinus.html"
 })
 export class JoinUsPage {
-  @ViewChild(RecaptchaComponent) captcha: RecaptchaComponent;
+
+  @ViewChild('content') content:any;
 
   joinUsForm: FormGroup;
   matching_passwords_group: FormGroup;
   data: any = {};
   response: null;
   submitAttempt: boolean = false;
-
   params: any = {};
   email: string;
+  loading: Loading;
 
-  constructor(public formBuilder: FormBuilder, private http: Http, private shareProvider: ShareProvider, public navCtrl: NavController) {
+  constructor(public formBuilder: FormBuilder, private http: Http, private shareProvider: ShareProvider, public navCtrl: NavController, public loadingCtrl: LoadingController) {
     this.data.response = "";
     //this.data.error = "";
     this.data.chapter_related_message_flag = false;
@@ -120,6 +121,7 @@ export class JoinUsPage {
   presubmit(invisible) {
     this.submitAttempt = true;
     if(this.joinUsForm.valid) {
+      invisible.reset();
       invisible.execute();
     }
   }
@@ -139,6 +141,12 @@ export class JoinUsPage {
     //console.log('country: ' + this.joinUsForm.controls.country.valid);
     //console.log('intlchapter: ' + this.joinUsForm.controls.intlchapter.valid);
     if (this.joinUsForm.valid) {
+
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+
       var body = new FormData();
       var json_encoded_response = "";
       var decoded_response = "";
@@ -158,15 +166,22 @@ export class JoinUsPage {
             decoded_response = JSON.parse(json_encoded_response);
             if (decoded_response[0] === "error") {
               this.data.error = decoded_response[1];
+              this.content.scrollToTop();
+              this.loading.dismissAll();
             } else {
               if (decoded_response[0]) {
                 this.shareProvider.curentpage = "SignUpSuccessPage";
+                this.loading.dismissAll();
                 this.navCtrl.push("SignUpSuccessPage");
+                //this.loading.dismissAll();
               } else if (!decoded_response[0]) {
                 this.data.error = decoded_response[2];
+                this.content.scrollToTop();
+                this.loading.dismissAll();
               } else {
-                this.data.error =
-                  "Problem signing up for LAMA.  Please check your internet connection.  Contact administrator if problem persists.";
+                this.data.error = "Problem signing up for LAMA.  Please check your internet connection.  Contact administrator if problem persists.";
+                this.content.scrollToTop();
+                this.loading.dismissAll();
               }
             }
             /*=====
@@ -186,8 +201,9 @@ export class JoinUsPage {
           =====*/
           },
           error => {
-            this.data.error =
-              "Problem signing up for LAMA.  Please check your internet connection.  Contact administrator if problem persists.";
+            this.data.error = "Problem signing up for LAMA.  Please check your internet connection.  Contact administrator if problem persists.";
+            this.content.scrollToTop();
+            this.loading.dismissAll();
             //console.log("Oooops!");
           }
         );
