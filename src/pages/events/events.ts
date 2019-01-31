@@ -11,11 +11,11 @@ export class EventsPage {
   params: any = {};
 
   mockMeetingsAndEvents= {
-    title:"Monthly Meetings",
+    title:"L.A.M.A. Events List",
     headerImage:"assets/images/background-small/7.jpg",
     "items":[
       {
-         "title":"Monthly Meetings",
+         "title":"Local Events",
          "icon":"icon-map-marker-radius",
          "items":[
             "Monuments",
@@ -25,45 +25,109 @@ export class EventsPage {
          ]
       },
       {
-         "title":"Regional Events",
+         "title":"Mid West Events",
          "icon":"icon-silverware-variant",
          "items":[
-            "Fast Food",
-            "Restorants",
-            "Pubs",
-            "Hotels"
-         ]
+          "L.A.M.A. Illinois",
+          "L.A.M.A. Indiana",
+          "L.A.M.A. Missouri",
+          "L.A.M.A. Wisconsin",
+          "L.A.M.A. Will County",
+          "L.A.M.A. Elgin",
+          "L.A.M.A. Chicago HQ",
+          "L.A.M.A. Ciero",
+          "L.A.M.A. Chicago South",
+          "L.A.M.A. Chicago West",
+          "L.A.M.A. St Louis",
+          "L.A.M.A. Crown Point",
+          "L.A.M.A. Indianapolis",
+          "L.A.M.A. Midway",
+          "L.A.M.A. Northwest",
+          "L.A.M.A. Milwaukee",
+        ]
       },
       {
-         "title":"National Events",
+         "title":"North East Events",
          "icon":"icon-martini",
          "items":[
-            "Caffes",
-            "Bars",
-            "Pubs",
-            "Clubs"
+            "L.A.M.A. Keansburg",
+            "L.A.M.A. Newark",
+            "L.A.M.A. Pennsauken",
+            "L.A.M.A. Perth Amboy",
+            "L.A.M.A. Vineland"
          ]
-      },
-      {
-       "title":"International Events",
-       "icon":"icon-martini",
-       "items":[
-          "Caffes",
-          "Bars",
-          "Pubs",
-          "Clubs"
-       ]
-    },
-    {
-       "title":"All Events",
-       "icon":"icon-map-marker-radius",
-       "items":[
-          "Monuments",
-          "Sightseeing",
-          "Historical",
-          "Sport"
-       ]
-    }
+        },
+        {
+           "title":"South East Events",
+           "icon":"icon-martini",
+           "items":[
+            "L.A.M.A. Ft Worth",
+            "L.A.M.A. New Mexico",
+            "L.A.M.A. Dallas",
+            "L.A.M.A. San Antonio",
+            "L.A.M.A. McAllen"
+           ]
+          },
+          {
+             "title":"South West Events",
+             "icon":"icon-martini",
+             "items":[
+              "L.A.M.A. Florida",
+              "L.A.M.A. Georgia",
+              "L.A.M.A. North Carolina",
+              "L.A.M.A. Tampa",
+              "L.A.M.A. Boca Raton",
+              "L.A.M.A. Brandon",
+              "L.A.M.A. Clermont",
+              "L.A.M.A. Deltona",
+              "L.A.M.A. Ft Myers",
+              "L.A.M.A. Jacksonville",
+              "L.A.M.A. Jax Beach",
+              "L.A.M.A. Kissimmee",
+              "L.A.M.A. Miami",
+              "L.A.M.A. Naples",
+              "L.A.M.A. Orlando",
+              "L.A.M.A. Palm Beach County",
+              "L.A.M.A. Poinciana",
+              "L.A.M.A. Port St. Lucie",
+              "L.A.M.A. Sarasota",
+              "L.A.M.A. Sebring",
+              "L.A.M.A. Spring Hill",
+              "L.A.M.A. St. Augustine",
+              "L.A.M.A. Atlanta",
+              "L.A.M.A. Atlanta South",
+              "L.A.M.A. Savannah",
+              "L.A.M.A. Colubia",
+             ]
+            },
+            {
+               "title":"West Events",
+               "icon":"icon-martini",
+               "items":[
+                "L.A.M.A. Los Angeles",
+                "L.A.M.A. San Jose"
+               ]
+            },
+            {
+            "title":"International Events",
+            "icon":"icon-martini",
+            "items":[
+                "Caffes",
+                "Bars",
+                "Pubs",
+                "Clubs"
+            ]
+          },
+          {
+            "title":"All Events",
+            "icon":"icon-map-marker-radius",
+            "items":[
+                "Monuments",
+                "Sightseeing",
+                "Historical",
+                "Sport"
+            ]
+          }
  ]
   };
 
