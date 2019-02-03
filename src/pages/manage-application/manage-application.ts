@@ -1193,16 +1193,20 @@ export class ManageApplicationPage {
             this.formdata.approversignaturePic = "data:image/png;base64," + decoded_response[2]["approversignaturepic"];
             this.formdata.approved_by = decoded_response[2]["approved_by"];
             this.formdata.dttmaccepted = decoded_response[2]["dttmaccepted"];
-
-            var d = new Date(this.formdata.dttmaccepted.replace(/-/g,'/'));
-            var hours = d.getHours();
-            var minutes = d.getMinutes();
-            var ampm = hours >= 12 ? 'pm' : 'am';
-            hours = hours % 12;
-            hours = hours ? hours : 12; // the hour '0' should be '12'
-            var minutes1 = minutes < 10 ? '0' + minutes.toString() : minutes.toString();
-            var strTime = hours + ':' + minutes1 + ' ' + ampm;
-            this.formdata.approval_date_time = d.getMonth()+1 + '-' + d.getDate() + '-' + d.getFullYear() + ' ' + strTime;
+            if((this.formdata.dttmaccepted != undefined) && (this.formdata.dttmaccepted != null) && (this.formdata.dttmaccepted != 'null')) {
+              var d = new Date(this.formdata.dttmaccepted.replace(/-/g,'/'));
+              var hours = d.getHours();
+              var minutes = d.getMinutes();
+              var ampm = hours >= 12 ? 'pm' : 'am';
+              hours = hours % 12;
+              hours = hours ? hours : 12; // the hour '0' should be '12'
+              var minutes1 = minutes < 10 ? '0' + minutes.toString() : minutes.toString();
+              var strTime = hours + ':' + minutes1 + ' ' + ampm;
+              this.formdata.approval_date_time = d.getMonth()+1 + '-' + d.getDate() + '-' + d.getFullYear() + ' ' + strTime;
+            }
+            else {
+              this.formdata.approval_date_time = '';
+            }
 
             this.formdata.dttmcreated = decoded_response[2]["dttmcreated"];
 
