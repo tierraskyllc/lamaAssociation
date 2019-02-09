@@ -4,6 +4,7 @@ import { Http } from "@angular/http";
 import { AlertController } from 'ionic-angular';
 import { LoadingController, Loading } from 'ionic-angular'
 import { PhotoViewer } from '@ionic-native/photo-viewer';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Injectable()
 export class ShareProvider {
@@ -30,7 +31,8 @@ export class ShareProvider {
     private alertCtrl: AlertController, 
     public actionSheetCtrl: ActionSheetController, 
     public loadingCtrl: LoadingController,
-    private photoViewer: PhotoViewer
+    private photoViewer: PhotoViewer,
+    private iab: InAppBrowser
   ) {
   	this.curentpage = 'StarterPage';
 
@@ -224,6 +226,11 @@ export class ShareProvider {
         this.loading.dismissAll();
       }
     );
+  }
+
+  openURL(url: string) {
+    const browser = this.iab.create(url);
+    //browser.show();
   }
 
 }

@@ -18,6 +18,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
 //import { Transfer } from '@ionic-native/transfer';
 import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
     QRScanner,
     PhotoViewer,
     SignaturePadModule,
+    InAppBrowser,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

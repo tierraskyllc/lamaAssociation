@@ -6,7 +6,12 @@
 
 <ion-content padding>
   <ion-grid>
-    <ion-row padding>
+    <ion-row>
+      <ion-col style="text-align: right;">
+        <ion-label color="light" style="font-weight: bold;" (click)="shareProvider.openURL('https://lama.tierrasky.com/privacy-policy.html')">Privacy Policy</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
       <ion-col col-12 col-sm-12 col-md-12 offset-lg-3 col-lg-6 offset-xl-3 col-xl-6>
         <!--Logo-->
         <div class="logo">
