@@ -155,7 +155,7 @@ export class LoginPage {
         );
     }
     else {
-      if((!this.loginForm.get('email').dirty) || (!this.loginForm.get('password').dirty)) {
+      if((this.submitAttempt) && (this.loginForm.controls.email.value.trim() == '' || this.loginForm.controls.password.value.trim() == '')) {
         this.data.error = 'Please enter Email and Password.';
       }
       //this.loading.dismissAll();

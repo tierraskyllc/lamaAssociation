@@ -121,7 +121,7 @@
             <ion-col>
               <ion-item>
                 <ion-label>National</ion-label>
-                <ion-radio float-right value="usa" (click)="selectNational()"></ion-radio>
+                <ion-radio mode="md" float-right value="usa" (click)="selectNational()"></ion-radio>
               </ion-item>
             </ion-col>
 
@@ -133,7 +133,7 @@
             <ion-col>
               <ion-item>
                 <ion-label>International</ion-label>
-                <ion-radio value="international" (click)="selectInternational()"></ion-radio>
+                <ion-radio mode="md" value="international" (click)="selectInternational()"></ion-radio>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -149,20 +149,21 @@
                 <ion-option (ionSelect)="populateUSAStatesByRegion()" *ngFor="let curregion of data.usaregions" [value]="curregion.id">{{curregion.name}}</ion-option>
               </ion-select>
             </ion-item>
-
+            <p class="invalidmsg" *ngIf="(submitAttempt && !joinUsForm.controls.region.valid)">You must select Region.</p>
             <ion-item [class.invalid]="!joinUsForm.controls.state.valid && (joinUsForm.get('state').dirty || submitAttempt)">
               <ion-label>State</ion-label>
               <ion-select formControlName="state" interface=popover>
                 <ion-option (ionSelect)="populateUSAChaptersByState()" *ngFor="let curstate of data.usastates" [value]="curstate.id">{{curstate.name}}</ion-option>
               </ion-select>
             </ion-item>
-
+            <p class="invalidmsg" *ngIf="(submitAttempt && !joinUsForm.controls.state.valid)">You must select State.</p>
             <ion-item [class.invalid]="!joinUsForm.controls.chapter.valid && (joinUsForm.get('chapter').dirty || submitAttempt)">
               <ion-label>Chapter</ion-label>
               <ion-select formControlName="chapter" interface=popover>
                 <ion-option (ionSelect)="checkChapterCategory(curchap.name, curchap.chapter_category)" *ngFor="let curchap of data.usachapters" [value]="curchap.id">{{curchap.name}}</ion-option>
               </ion-select>
             </ion-item>
+            <p class="invalidmsg" *ngIf="(submitAttempt && !joinUsForm.controls.chapter.valid)">You must select Chapter.</p>
           </ion-list>
         </div>
 
@@ -174,13 +175,14 @@
                 <ion-option (ionSelect)="populateIntlChaptersByReg()" *ngFor="let curcountry of data.countries" [value]="curcountry.id">{{curcountry.name}}</ion-option>
               </ion-select>
             </ion-item>
-
+            <p class="invalidmsg" *ngIf="(submitAttempt && !joinUsForm.controls.country.valid)">You must select Country.</p>
             <ion-item [class.invalid]="!joinUsForm.controls.intlchapter.valid && (joinUsForm.get('intlchapter').dirty || submitAttempt)">
               <ion-label>Chapter</ion-label>
               <ion-select formControlName="intlchapter" interface=popover>
                 <ion-option (ionSelect)="checkChapterCategory(curintlchap.name, curintlchap.chapter_category)" *ngFor="let curintlchap of data.intlchapters" [value]="curintlchap.id">{{curintlchap.name}}</ion-option>
               </ion-select>
             </ion-item>
+            <p class="invalidmsg" *ngIf="(submitAttempt && !joinUsForm.controls.intlchapter.valid)">You must select Chapter.</p>
           </ion-list>
         </div>
         <ion-row *ngIf="data.chapter_related_message_flag" style="border-style: solid; border-color: #FCD736; border-radius: 7px; border-width: 1px;">
@@ -190,22 +192,41 @@
         </ion-row>
         <ion-row>
           <ion-col width="100%" align="center">
-            <button ion-button small round (click)="presubmit(invisible);">Sign UP</button>
+            <img [src]="data.captcha">
+            <ion-buttons end><button style="background: transparent;" (click)="refreshCaptcha()"><ion-icon color="secondary" name="refresh" style="zoom:2;"></ion-icon></button></ion-buttons>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col width="100%" align="center">
+            <ion-item no-padding color="accent">
+              <ion-label floating>Enter above text for VERIFICATION.</ion-label>
+              <ion-input formControlName="captcha_text" type="text"></ion-input>
+            </ion-item>
+            <ng-container *ngFor="let validation of validation_messages.captcha_text">
+              <div class="error-message" *ngIf="joinUsForm.get('captcha_text').hasError(validation.type) && (joinUsForm.get('captcha_text').dirty || joinUsForm.get('captcha_text').touched || submitAttempt)">
+                {{ validation.message }}
+              </div>
+            </ng-container>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col width="100%" align="center">
+            <button ion-button small round (click)="submit()">Sign UP</button>
           </ion-col>
         </ion-row>
       </form>
     </div>
     <!---Register button-->
     <!-- <button ion-button float-right clear button-clear (click)="onEvent('onRegister')">{{data.submit}}</button> -->
-    <ion-row>
-      <ion-col>
+    <!--ion-row-->
+      <!--ion-col-->
         <!--h3>Invisible CAPTCHA</h3-->
-        <re-captcha size="invisible" #invisible (resolved)="$event && submit($event)"></re-captcha>
+        <!--re-captcha size="invisible" #invisible (resolved)="$event && submit($event)"></re-captcha-->
         <!--button (click)="invisible.execute()">Execute</button>
         <button (click)="invisible.reset()">Reset</button>
         <h4>Invisible captcha response</h4>
         <pre>{{ response || '[empty]' }}</pre-->
-      </ion-col>
-    </ion-row>
+      <!--/ion-col-->
+    <!--/ion-row-->
   </ion-grid>
 </ion-content>

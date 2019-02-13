@@ -4,8 +4,8 @@ import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms"
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
 import { PasswordValidator } from './../../validators/password.validator';
-import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings, RecaptchaComponent } from 'ng-recaptcha';
-import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
+//import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings, RecaptchaComponent } from 'ng-recaptcha';
+//import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 
 @IonicPage()
 @Component({
@@ -57,7 +57,8 @@ export class JoinUsPage {
       state: ["", Validators.compose([Validators.required])],
       chapter: ["", Validators.compose([Validators.required])],
       country: ["", Validators.compose([Validators.required])],
-      intlchapter: ["", Validators.compose([Validators.required])]
+      intlchapter: ["", Validators.compose([Validators.required])],
+      captcha_text: ["", Validators.compose([Validators.required, Validators.maxLength(10), Validators.pattern("[a-zA-Z0-9]+")])]
     });
 
   }
@@ -80,6 +81,10 @@ export class JoinUsPage {
     'matching_passwords': [
       { type: 'areEqual', message: 'Password mismatch' }
     ],
+    captcha_text: [
+      { type: "required", message: "Please enter text displayed in picture above." },
+      { type: "pattern", message: "Text you entered is not valid." }
+    ]
   };
 
   selectNational() {
@@ -118,15 +123,16 @@ export class JoinUsPage {
     this.joinUsForm.get("chapter").updateValueAndValidity();
   }
 
-  presubmit(invisible) {
+  /*presubmit(invisible) {
     this.submitAttempt = true;
     if(this.joinUsForm.valid) {
       invisible.reset();
       invisible.execute();
     }
-  }
+  }*/
 
-  submit(captchaResponse: string) {
+  //submit(captchaResponse: string) {
+    submit() {
     //console.log('captchaResponse: ' + captchaResponse);
     this.submitAttempt = true;
     //console.log(this.joinUsForm.valid);
@@ -150,7 +156,9 @@ export class JoinUsPage {
       var body = new FormData();
       var json_encoded_response = "";
       var decoded_response = "";
-      body.append("captchaResponse", captchaResponse);
+      //body.append("captchaResponse", captchaResponse);
+      body.append('sessionid', this.shareProvider.sessionid);
+      body.append('captcha_text', this.joinUsForm.controls.captcha_text.value);
       body.append("email", this.joinUsForm.controls.email.value);
       body.append("firstname", this.joinUsForm.controls.firstname.value);
       body.append("lastname", this.joinUsForm.controls.lastname.value);
@@ -162,6 +170,7 @@ export class JoinUsPage {
         .post(this.shareProvider.server + "signup/signup.php", body)
         .subscribe(
           data => {
+            //console.log(data["_body"]);
             json_encoded_response = data["_body"];
             decoded_response = JSON.parse(json_encoded_response);
             if (decoded_response[0] === "error") {
@@ -201,6 +210,7 @@ export class JoinUsPage {
           =====*/
           },
           error => {
+            //console.log(error);
             this.data.error = "Problem signing up for LAMA.  Please check your internet connection.  Contact administrator if problem persists.";
             this.content.scrollToTop();
             this.loading.dismissAll();
@@ -389,6 +399,7 @@ export class JoinUsPage {
   ionViewDidLoad() {
     this.populateUSARegions();
     this.populateCountries();
+    this.createSignUpSession();
     console.log("ionViewDidLoad JoinUsPage");
   }
 
@@ -402,5 +413,82 @@ export class JoinUsPage {
       this.data.chapter_related_message_flag = false;
       this.data.chapter_related_message = '';
     }
+  }
+
+  createSignUpSession() {
+    var json_encoded_response = '';
+    var decoded_response = '';
+    var body = new FormData();
+    this.http
+        .post(this.shareProvider.server + "signup/start_signup.php", body)
+        .subscribe(
+          data => {
+            json_encoded_response = data["_body"];
+            decoded_response = JSON.parse(json_encoded_response);
+            if (decoded_response[0] === "true") {
+              this.shareProvider.sessionid = decoded_response[1];
+              //console.log('this.shareProvider.sessionid = ' + this.shareProvider.sessionid);
+              json_encoded_response = '';
+              decoded_response = '';
+              var body = new FormData();
+              body.append('sessionid', this.shareProvider.sessionid);
+              this.http
+                .post(this.shareProvider.server + "captcha/getcaptcha.php", body)
+                .subscribe(
+                  data => {
+                    json_encoded_response = data["_body"];
+                    decoded_response = JSON.parse(json_encoded_response);
+                    if(decoded_response[0] == "true") {
+                      //console.log(decoded_response[1]);
+                      this.data.captcha = "data:image/png;base64," + decoded_response[1];
+                    }
+                    else {
+                      this.data.error = 'System problem.  Please contact administrator.';
+                      console.log('System problem.  Please contact administrator-JoinUs-003');
+                    }
+                  },
+                  error => {
+                    this.data.error = 'System problem.  Please contact administrator.';
+                    console.log('System problem.  Please contact administrator-JoinUs-004');
+                  }
+                )
+            }
+            else {
+              this.data.error = 'System problem.  Please contact administrator.';
+              console.log('System problem.  Please contact administrator-JoinUs-001');
+            }
+          },
+          error => {
+            this.data.error = 'System problem.  Please contact administrator.';
+            console.log('System problem.  Please contact administrator-JoinUs-002');
+          }
+        )
+  }
+
+  refreshCaptcha() {
+              var json_encoded_response = '';
+              var decoded_response = '';
+              var body = new FormData();
+              body.append('sessionid', this.shareProvider.sessionid);
+              this.http
+                .post(this.shareProvider.server + "captcha/getcaptcha.php", body)
+                .subscribe(
+                  data => {
+                    json_encoded_response = data["_body"];
+                    decoded_response = JSON.parse(json_encoded_response);
+                    if(decoded_response[0] == "true") {
+                      //console.log(decoded_response[1]);
+                      this.data.captcha = "data:image/png;base64," + decoded_response[1];
+                    }
+                    else {
+                      this.data.error = 'System problem.  Please contact administrator.';
+                      console.log('System problem.  Please contact administrator-JoinUs-005');
+                    }
+                  },
+                  error => {
+                    this.data.error = 'System problem.  Please contact administrator.';
+                    console.log('System problem.  Please contact administrator-JoinUs-006');
+                  }
+                )
   }
 }

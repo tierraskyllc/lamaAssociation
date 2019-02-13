@@ -16,8 +16,8 @@ import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { IonicSelectableModule } from 'ionic-selectable';
 import { SignaturePadModule } from 'angular2-signaturepad';
 //import { Transfer } from '@ionic-native/transfer';
-import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
-import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
+//import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
+//import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @NgModule({
@@ -29,8 +29,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
     HttpModule,
     IonicSelectableModule,
     SignaturePadModule,
-    RecaptchaModule,
-    RecaptchaFormsModule,
+    //RecaptchaModule,
+    //RecaptchaFormsModule,
     IonicModule.forRoot(MyApp)
 
   ],
