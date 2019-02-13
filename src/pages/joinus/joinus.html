@@ -191,11 +191,11 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col width="90%" align="center" style="vertical-align: middle">
+          <ion-col col-8 style="vertical-align: middle; text-align: right;">
             <img [src]="data.captcha">
           </ion-col>
-          <ion-col width="10%" align="center" style="vertical-align: middle">
-            <ion-buttons><button style="background: transparent;" (click)="refreshCaptcha()"><ion-icon color="secondary" name="refresh"></ion-icon></button></ion-buttons>
+          <ion-col col-4 style="vertical-align: middle; text-align: left;">
+            <ion-buttons style="vertical-align: middle; text-align: left;"><button style="background: transparent; vertical-align: middle; text-align: center;" (click)="refreshCaptcha()"><ion-icon color="secondary" name="refresh" style="font-size: 30px; vertical-align: middle; text-align: center;"></ion-icon></button></ion-buttons>
           </ion-col>
         </ion-row>
         <ion-row>
