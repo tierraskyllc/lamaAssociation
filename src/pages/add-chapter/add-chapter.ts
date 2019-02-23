@@ -71,7 +71,7 @@ export class AddChapterPage {
   }
 
   ionViewWillLoad() {
-    this.chapter_categories = ["Organized Chapter", "Establishing Chapter", "Brother Chapter"];
+    this.chapter_categories = ["Organizing Chapter", "Official Chapter", "Brother Chapter"];
     this.chapterForm = this.formBuilder.group({
       name: ["", Validators.compose([Validators.required, Validators.maxLength(100)])],
       description: ["", Validators.compose([Validators.maxLength(200)])],

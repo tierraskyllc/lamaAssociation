@@ -4,26 +4,33 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="transparent-header">
+<ion-content padding>
   <div id="content">
     <ion-grid no-padding>
-        <ion-row>
-          <ion-col>
-            <ion-card text-center>
-              <div card-image>
-                <hr><h2 card-title>{{member.titleHeader}}</h2>
-              </div>
-              <ion-card-content>
-                <!-- <ion-card-title>
-                  <h1 card-subtitle>{{member.title}}</h1>
-                </ion-card-title> -->
-                <p card-body-text>{{member.signUpMessageA}}</p>
-                <button ion-button default-button medium (click)="loginPage()">CLICK HERE</button>
-                <p card-body-text>{{member.signUpMessageB}}</p>
-              </ion-card-content>
-            </ion-card>
+      <ion-row>
+        <ion-col style="text-align: center; vertical-align:middle; color: red; font-weight: bold;">
+          NEXT STEPS:
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col style="text-align: left; vertical-align:middle; font-size: larger;">
+            <p style="color: #FCD736;">1.  Please check your emails.  You should receive a verification email shortly from support@tierrasky.com</p>
+        </ion-col>
+      </ion-row>
+      <ion-row><ion-col></ion-col></ion-row>
+      <ion-row>
+          <ion-col style="text-align: left; vertical-align:middle; font-size: larger;">
+              <p style="color: #FCD736;">2.  Click verification link.</p>
           </ion-col>
-        </ion-row>
-      </ion-grid>
+      </ion-row>
+      <ion-row><ion-col></ion-col></ion-row>
+      <ion-row>
+          <ion-col style="text-align: left; vertical-align:middle; color: #FCD736; font-size: larger;">
+            3.  Then
+            <a (click)="loginPage()" style="color: green; font-weight: bold;">CLICK HERE</a>
+            to login.
+          </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
 </ion-content>

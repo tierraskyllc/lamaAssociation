@@ -27,7 +27,8 @@ export class SignUpSuccessPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   loginPage() {
-    this.navCtrl.push("LoginPage")
+    //this.navCtrl.push("LoginPage");
+    this.navCtrl.popToRoot();
   }
 
   ionViewDidLoad() {

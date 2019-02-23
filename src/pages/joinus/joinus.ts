@@ -404,7 +404,7 @@ export class JoinUsPage {
   }
 
   checkChapterCategory(chapter_name, chapter_category) {
-    if(chapter_category === 'Establishing Chapter') {
+    if(chapter_category === 'Organizing Chapter') {
       //console.log('Selected Establishing Chapter');
       this.data.chapter_related_message_flag = true;
       this.data.chapter_related_message = chapter_name + ' is an ' + chapter_category + ' which means it is in probation period.  Please contact us at support@tierrasky.com for additional informaton.';

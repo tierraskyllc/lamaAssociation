@@ -151,6 +151,7 @@ export class ApplicationPage {
 
   ionViewDidLoad() {
     //this.populateCountries();
+    this.navCtrl.swipeBackEnabled = false;
     this.data.blankSignature = this.signaturePad.toDataURL();
     console.log('ionViewDidLoad ApplicationPage');
     //this.photoViewer.show('http://images5.fanpop.com/image/photos/28700000/Random-wallpapers-random-28702284-500-313.jpg', 'My image title', {share: false});
