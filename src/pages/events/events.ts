@@ -16,8 +16,9 @@ export class EventsPage {
     "items":[
       {
          "title":"Local Events",
+         "show": false,
          "icon":"icon-map-marker-radius",
-         "items":[
+         "chapters":[
             "Monuments",
             "Sightseeing",
             "Historical",
@@ -26,8 +27,9 @@ export class EventsPage {
       },
       {
          "title":"Mid West Events",
+         "show": false,
          "icon":"icon-silverware-variant",
-         "items":[
+         "chapters":[
           "L.A.M.A. Illinois",
           "L.A.M.A. Indiana",
           "L.A.M.A. Missouri",
@@ -48,8 +50,9 @@ export class EventsPage {
       },
       {
          "title":"North East Events",
+         "show": false,
          "icon":"icon-martini",
-         "items":[
+         "chapters":[
             "L.A.M.A. Keansburg",
             "L.A.M.A. Newark",
             "L.A.M.A. Pennsauken",
@@ -59,8 +62,9 @@ export class EventsPage {
         },
         {
            "title":"South East Events",
+           "show": false,
            "icon":"icon-martini",
-           "items":[
+           "chapters":[
             "L.A.M.A. Ft Worth",
             "L.A.M.A. New Mexico",
             "L.A.M.A. Dallas",
@@ -70,8 +74,9 @@ export class EventsPage {
           },
           {
              "title":"South West Events",
+             "show": false,
              "icon":"icon-martini",
-             "items":[
+             "chapters":[
               "L.A.M.A. Florida",
               "L.A.M.A. Georgia",
               "L.A.M.A. North Carolina",
@@ -102,16 +107,18 @@ export class EventsPage {
             },
             {
                "title":"West Events",
+               "show": false,
                "icon":"icon-martini",
-               "items":[
+               "chapters":[
                 "L.A.M.A. Los Angeles",
                 "L.A.M.A. San Jose"
                ]
             },
             {
             "title":"International Events",
+            "show": false,
             "icon":"icon-martini",
-            "items":[
+            "chapters":[
                 "Caffes",
                 "Bars",
                 "Pubs",
@@ -120,8 +127,9 @@ export class EventsPage {
           },
           {
             "title":"All Events",
+            "show": false,
             "icon":"icon-map-marker-radius",
-            "items":[
+            "chapters":[
                 "Monuments",
                 "Sightseeing",
                 "Historical",
@@ -147,6 +155,10 @@ isGroupShown(group: any) {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EventsPage');
+  }
+
+  chapterEventsPage() {
+    this.navCtrl.push("ChapterEventsPage");
   }
 
 }
