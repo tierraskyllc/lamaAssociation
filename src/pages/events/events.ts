@@ -141,24 +141,31 @@ export class EventsPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-
-
 }
 
+// group = "North East => 2"
 toggleGroup(group: any) {
-  group.show = !group.show;
+  for(var i=0; i<this.mockMeetingsAndEvents.items.length; i++) {
+    if(this.mockMeetingsAndEvents.items[i] == group) {
+      group.show = !group.show;
+    }
+    else {
+      this.mockMeetingsAndEvents.items[i].show = false;
+    }
+  }
+  //group.show = !group.show;
 }
 
 isGroupShown(group: any) {
   return group.show;
 }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EventsPage');
-  }
+ionViewDidLoad() {
+  console.log('ionViewDidLoad EventsPage');
+}
 
-  chapterEventsPage() {
-    this.navCtrl.push("ChapterEventsPage");
-  }
+chapterEventsPage() {
+  this.navCtrl.push("ChapterEventsPage");
+}
 
 }
