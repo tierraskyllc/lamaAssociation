@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>manage members</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+<ion-grid no-padding>
+<ion-row>
+    <ion-col width="100%" align="center">
+        <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="search()"></ion-searchbar>
+    </ion-col>
+</ion-row>
+
+
+<ion-row style="">
+  <ion-col width="40%" style="text-align: left; color: #FCD736; font-weight: bold;">
+    Chapter
+  </ion-col>
+  <ion-col width="25%" style="text-align: left; color: #FCD736; font-weight: bold;">
+    Member
+  </ion-col>
+  <ion-col width="25%" style="text-align: left; color: #FCD736; font-weight: bold;">
+    Title
+  </ion-col>
+  <ion-col width="10%" style="text-align: left; color: #FCD736; font-weight: bold;">
+    Miles
+  </ion-col>
+</ion-row>
+
+<ion-row *ngFor="let item of mockMangeMembers.members">
+  <ion-col width="40%" style="text-align: left; color: #FCD736;">
+    {{ item.chapter }}
+  </ion-col>
+  <ion-col width="25%" style="text-align: left; color: #FCD736;">
+    {{ item.member }}
+  </ion-col>
+  <ion-col width="25%" style="text-align: left; color: #FCD736;">
+    {{ item.title }}
+  </ion-col>
+  <ion-col width="10%" style="text-align: left; color: #FCD736;">
+    {{ item.miles }}
+  </ion-col>
+</ion-row>
+
+
+
+
+</ion-grid>
+
+</ion-content>
