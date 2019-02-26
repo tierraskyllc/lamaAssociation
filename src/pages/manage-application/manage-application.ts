@@ -157,6 +157,7 @@ export class ManageApplicationPage {
     }
 
   ionViewDidLoad() {
+    this.navCtrl.swipeBackEnabled = false;
     this.setValidationForMotorcycleInfo();
     console.log('ionViewDidLoad ManageApplicationPage');
     //this.getApplicationDetails();
@@ -182,7 +183,7 @@ export class ManageApplicationPage {
     this.maritalStatus = ["Married", "Single", "Divorced", "Widowed" ];
     this.annualSalary = ["Retired", "$20,000 ~ $40,000", "$50,000 ~ $70,000", "$80,000 +", "UnEmployed"];
     this.highestEducation = ["Self Taught", "Home Schooled", "High School", "Vocational School", "College"];
-    this.bloodTypes = ["O+", "A+", "B+", "AB+", "O-", "A-", "B-", "AB-"];
+    this.bloodTypes = ["O+", "A+", "B+", "AB+", "O-", "A-", "B-", "AB-", "N/A"];
     this.memberTitles = ["No Title", "President", "Vice President", "Treasurer", "Secretary", "Business Manager", "Motor Touring Officer", "Sgt of Arms", "Road Captain", "Retired"];
     this.typeOfMemberships = ["Riding Member", "DAMA", "Spousal/Pareja", "Prospect", "Probate", "Associate/Asociado"];
     this.typeOfChapters = ["Organized Chapter/Capitulo", "Establishing Chapter/Capitulo Estableciendo", "Brother Chapter/Capítulo hermano"];
@@ -241,6 +242,7 @@ export class ManageApplicationPage {
       typeOfMembership: ["", Validators.compose([Validators.required])],
       //typeOfChapter: ["", Validators.compose([Validators.required])],
       applicationStatus: ["", Validators.compose([Validators.required])],
+      start_date: [''],
       approved_by: [''],
       approval_date_time: [''],
       note: [''],
@@ -333,7 +335,8 @@ export class ManageApplicationPage {
     'make': [{type: 'required', message: 'Required.'}],
     'model': [{type: 'required', message: 'Required.'}],
     'licensePlate': [{type: 'required', message: 'Required.'}],
-    'currentMileage': [{type: 'required', message: 'Required.'}]
+    'currentMileage': [{type: 'required', message: 'Required.'}],
+    'start_date': [{ type: 'required', message: 'Start Date is required.' }]
   }
 
   onEvent(event: string, item: any, e: any) {
@@ -587,20 +590,21 @@ export class ManageApplicationPage {
           body.append('registrationexpdt'+i, motorcyclesobjects[i]['registrationexpdt']);
           body.append('insurancePic'+i, this.data.motorcyclesobjects[i]['insurancePic']);
           body.append('insuranceexpdt'+i, motorcyclesobjects[i]['insuranceexpdt']);
-          if(this.applicationForm.controls['applicationStatus'].value == 'Approved') {
-            if(this.signaturePad.isEmpty()) {
-              body.append('signaturepic', '');
-            }
-            else {
-              body.append('signaturepic', this.signaturePad.toDataURL());
-            }
-          }
-          else {
-            body.append('signaturepic', '');
-          }
         }
       }
       //-----
+      if(this.applicationForm.controls['applicationStatus'].value == 'Approved') {
+        body.append('start_date', this.applicationForm.controls['start_date'].value);
+        if(this.signaturePad.isEmpty()) {
+          body.append('signaturepic', '');
+        }
+        else {
+          body.append('signaturepic', this.signaturePad.toDataURL());
+        }
+      }
+      else {
+        body.append('signaturepic', '');
+      }
       this.http.post(this.shareProvider.server + "application/update.php", body).subscribe(
         data => {
           decoded_response = JSON.parse(data["_body"]);
@@ -1183,6 +1187,14 @@ export class ManageApplicationPage {
             //console.log(this.formdata.signaturePic);
             this.formdata.application_status = decoded_response[2]["application_status"];
             this.applicationForm.controls['applicationStatus'].setValue(decoded_response[2]["application_status"]);
+            if((decoded_response[2]["start_date"] == null) || (decoded_response[2]["start_date"] == 'null')) {
+              this.formdata.start_date = '';
+              this.applicationForm.controls['start_date'].setValue('');
+            }
+            else {
+              this.formdata.start_date = decoded_response[2]["start_date"];
+              this.applicationForm.controls['start_date'].setValue(decoded_response[2]["start_date"]);
+            }
             if((decoded_response[2]["note"] == null) || (decoded_response[2]["note"] == 'null')) {
               this.formdata.note = '';
             }
@@ -1335,5 +1347,14 @@ export class ManageApplicationPage {
     this.signaturePad.clear();
     //console.log('After Clearing Signature Image');
     //console.log(this.signaturePad.toDataURL());
+  }
+
+  processMe() {
+    if(this.applicationForm.controls['applicationStatus'].value == 'Approved') {
+      this.applicationForm.controls['start_date'].setValidators([Validators.required]);
+    }
+    else {
+      this.applicationForm.controls['start_date'].setValidators([]);
+    }
   }
 }

@@ -784,7 +784,7 @@
                 <ion-item no-padding color="accent">
                   <ion-label floating>Application Status</ion-label>
                   <ion-select formControlName="applicationStatus" interface="popover" cancelText="Cancel" okText="OK" [disabled]="formdata.application_status == 'Approved'">
-                    <ion-option *ngFor="let st of appStatus" [value]="st" [selected]="applicationForm.controls['applicationStatus'].value == st">{{ st }}</ion-option>
+                    <ion-option (ionSelect)="processMe()" *ngFor="let st of appStatus" [value]="st" [selected]="applicationForm.controls['applicationStatus'].value == st">{{ st }}</ion-option>
                   </ion-select>
                 </ion-item>
                 <ng-container *ngFor="let validation of validation_messages.applicationStatus">
@@ -792,6 +792,24 @@
                     {{ validation.message }}
                   </div>
                 </ng-container>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="applicationForm.controls['applicationStatus'].value == 'Approved'">
+            <ion-col>
+              <div>
+                <ion-item no-padding color="accent">
+                  <ion-label floating>Member's Start Date</ion-label>
+                  <ion-datetime formControlName="start_date" custom-datetime></ion-datetime>
+                </ion-item>
+                <div class="validation-errors" *ngIf="applicationForm.get('start_date').value=='' && (applicationForm.get('start_date').dirty || applicationForm.get('start_date').touched || submitAttempt)">
+                    <ng-container>
+                        <div class="error-message" *ngIf="applicationForm.get('start_date').value=='' && (applicationForm.get('start_date').dirty || applicationForm.get('start_date').touched || submitAttempt)">
+                          Member's Start Date is required.
+                        </div>
+                    </ng-container>
+                  </div>
               </div>
             </ion-col>
           </ion-row>

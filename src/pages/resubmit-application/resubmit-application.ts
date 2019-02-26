@@ -157,6 +157,7 @@ export class ResubmitApplicationPage {
     }
 
   ionViewDidLoad() {
+    this.navCtrl.swipeBackEnabled = false;
     this.setValidationForMotorcycleInfo();
     this.data.blankSignature = this.signaturePad.toDataURL();
     console.log('ionViewDidLoad ResubmitApplicationPage');
@@ -182,7 +183,7 @@ export class ResubmitApplicationPage {
     this.maritalStatus = ["Married", "Single", "Divorced", "Widowed" ];
     this.annualSalary = ["Retired", "$20,000 ~ $40,000", "$50,000 ~ $70,000", "$80,000 +", "UnEmployed"];
     this.highestEducation = ["Self Taught", "Home Schooled", "High School", "Vocational School", "College"];
-    this.bloodTypes = ["O+", "A+", "B+", "AB+", "O-", "A-", "B-", "AB-"];
+    this.bloodTypes = ["O+", "A+", "B+", "AB+", "O-", "A-", "B-", "AB-", "N/A"];
     this.memberTitles = ["No Title", "President", "Vice President", "Treasurer", "Secretary", "Business Manager", "Motor Touring Officer", "Sgt of Arms", "Road Captain", "Retired"];
     this.typeOfMemberships = ["Riding Member", "DAMA", "Spousal/Pareja", "Prospect", "Probate", "Associate/Asociado"];
     this.typeOfChapters = ["Organized Chapter/Capitulo", "Establishing Chapter/Capitulo Estableciendo", "Brother Chapter/Capítulo hermano"];
