@@ -5,34 +5,55 @@
 </ion-header>
 
 <ion-content padding>
-
-
   <ion-grid no-padding>
     <ion-row>
       <ion-col col-12 no-padding no-margin>
         <ion-list>
           <!---HEADER-->
-          <ion-list-header no-margin no-padding no-lines background-size
-          [ngStyle]="{'background-image': 'url(' + mockMeetingsAndEvents.headerImage + ')'}">
-            <h2 item-title text-center>{{mockMeetingsAndEvents.title}}</h2>
+          <ion-list-header
+            no-margin
+            no-padding
+            no-lines
+            background-size
+            [ngStyle]="{
+              'background-image':
+                'url(' + mockMeetingsAndEvents.headerImage + ')'
+            }"
+          >
+            <h2 item-title text-center>{{ mockMeetingsAndEvents.title }}</h2>
           </ion-list-header>
           <!--CONTENT-->
           <ul no-margin no-padding class="collapsible">
             <li no-margin *ngFor="let group of mockMeetingsAndEvents.items">
               <!-- Expandable Centered with header Header-->
-              <div class="collapsible-header" no-margin no-padding (click)="toggleGroup(group)">
+              <div
+                class="collapsible-header"
+                no-margin
+                no-padding
+                (click)="toggleGroup(group)"
+              >
                 <ion-item text-center no-lines>
                   <ion-icon icon-small>
-                    <i class="icon {{group.icon}}"></i>
+                    <i class="icon {{ group.icon }}"></i>
                   </ion-icon>
-                  <h2 text-center item-title>{{group.title}}</h2>
+                  <h2 text-center item-title>{{ group.title }}</h2>
                 </ion-item>
               </div>
               <!-- Expandable Centered with header Body -->
-              <div class="item-accordion" [ngClass]="{'active': isGroupShown(group)}"
-              [hidden]="!isGroupShown(group)">
-                <ion-item no-lines no-padding transparent *ngFor="let item of group.items">
-                  <h2 text-center subitem-title>{{item}}</h2>
+              <div
+                class="chapter-accordion"
+                [ngClass]="{ active: isGroupShown(group) }"
+                [hidden]="!isGroupShown(group)"
+              >
+                <ion-item
+                  no-lines
+                  no-padding
+                  transparent
+                  *ngFor="let item of group.chapters"
+                >
+                  <h2 text-center subitem-title (click)="chapterEventsPage()">
+                    {{ item }}
+                  </h2>
                 </ion-item>
               </div>
               <!--end-->
@@ -42,10 +63,6 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
-
   <!-- <expandable-layout-3 [data]="params.data" [events]="params.events">
   </expandable-layout-3> -->
-
-
 </ion-content>

@@ -4,13 +4,6 @@ import { LoadingController, Loading } from 'ionic-angular'
 import { Http } from "@angular/http";
 import { ShareProvider } from "../../services/share";
 
-/**
- * Generated class for the ChapterMembersPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-chapter-members',

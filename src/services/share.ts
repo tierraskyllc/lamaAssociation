@@ -68,6 +68,12 @@ export class ShareProvider {
           var mybutton = {};
           var tmphandler = null;
           for(var i=0; i<tmparr.length; i++) {
+            if(tmparr[i] == 'Manage Members') {
+              tmphandler = () => {
+                myNavCtrl.push("ManageMembersPage");
+                console.log('Manage Members' + ' clicked');
+              }
+            }
             if(tmparr[i] == 'Edit Profile') {
               tmphandler = () => {
                 myNavCtrl.push("EditProfilePage");
