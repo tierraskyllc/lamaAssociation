@@ -7,7 +7,7 @@
 
   <ion-content padding>
       <ion-grid>
-          <ion-row>
+          <ion-row *ngIf="data.cancreateevent">
               <ion-col width="100%" align="center">
                   <ion-buttons end><button style="background: transparent;" (click)="addEvent()"><ion-icon color="secondary" name="add-circle" style="zoom:2;"></ion-icon></button></ion-buttons>
               </ion-col>

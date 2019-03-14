@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { LoadingController, Loading } from 'ionic-angular'
+import { Http } from "@angular/http";
+import { ShareProvider } from "../../services/share";
 
 @IonicPage()
 @Component({
@@ -8,135 +11,166 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ManageMembersPage {
 
-  mockMangeMembers= {
-    "members":[{
-      "chapter": "Chicago West",
-      "member": "Nikita Vlasyev",
-      "title": "Probate",
-      "miles": 312096
-    }, {
-      "chapter": "Midway",
-      "member": "Portia Cowdry",
-      "title": "Dama",
-      "miles": 303329
-    }, {
-      "chapter": "Indianapolis",
-      "member": "Elisabeth Pendrid",
-      "title": "Vice-President",
-      "miles": 138185
-    }, {
-      "chapter": "Indianapolis",
-      "member": "Fredrika Mathevet",
-      "title": "Sgt of Arms",
-      "miles": 878634
-    }, {
-      "chapter": "Chicago HQ",
-      "member": "Ken Howling",
-      "title": "Treasury",
-      "miles": 726294
-    }, {
-      "chapter": "Crown Point",
-      "member": "Dido Copeland",
-      "title": "Vice-President",
-      "miles": 28813
-    }, {
-      "chapter": "Crown Point",
-      "member": "Catlin Dominka",
-      "title": "Dama",
-      "miles": 424764
-    }, {
-      "chapter": "Chicago South",
-      "member": "Effie Mateu",
-      "title": "President",
-      "miles": 342551
-    }, {
-      "chapter": "Missouri",
-      "member": "Hardy Minocchi",
-      "title": "Probate",
-      "miles": 87432
-    }, {
-      "chapter": "Illinois",
-      "member": "Valentia Mankowski",
-      "title": "Business Manager",
-      "miles": 331252
-    }, {
-      "chapter": "Crown Point",
-      "member": "Ximenez Fowlie",
-      "title": "President",
-      "miles": 213862
-    }, {
-      "chapter": "Illinois",
-      "member": "Cynthea Bodleigh",
-      "title": "Riding Member",
-      "miles": 89695
-    }, {
-      "chapter": "Northwest",
-      "member": "Koralle Leacock",
-      "title": "Business Manager",
-      "miles": 992173
-    }, {
-      "chapter": "Chicago HQ",
-      "member": "Johnathon Pitfield",
-      "title": "Sgt of Arms",
-      "miles": 694965
-    }, {
-      "chapter": "Chicago HQ",
-      "member": "Zia Pitchford",
-      "title": "Probate",
-      "miles": 652017
-    }, {
-      "chapter": "Will County",
-      "member": "Bibby Brodway",
-      "title": "Probate",
-      "miles": 650588
-    }, {
-      "chapter": "Crown Point",
-      "member": "Allis McIlmorow",
-      "title": "Riding Member",
-      "miles": 172149
-    }, {
-      "chapter": "Wisconsin",
-      "member": "Shanna Halsho",
-      "title": "President",
-      "miles": 780632
-    }, {
-      "chapter": "Chicago West",
-      "member": "Moyna Rising",
-      "title": "Vice-President",
-      "miles": 355009
-    }, {
-      "chapter": "Midway",
-      "member": "Tarah Wortt",
-      "title": "Treasury",
-      "miles": 211055
-    }, {
-      "chapter": "Wisconsin",
-      "member": "Marylinda Mossom",
-      "title": "Sgt of Arms",
-      "miles": 933029
-    }, {
-      "chapter": "Chicago HQ",
-      "member": "Oliviero Seedman",
-      "title": "Dama",
-      "miles": 917426
-    }, {
-      "chapter": "Crown Point",
-      "member": "Aurilia Tieraney",
-      "title": "Dama",
-      "miles": 631433
-    }, {
-      "chapter": "Chicago South",
-      "member": "Tabor Nestor",
-      "title": "M/T Officer",
-      "miles": 591707
-    }]
-  }
+  loading: Loading;
+
+  data: any = {};
+
+  searchTerm: string = '';
+  searchTimer: any;
+  items: any;
+  searcheditems: any;
   
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private http: Http,
+    private shareProvider: ShareProvider,
+    public loadingCtrl: LoadingController
+  ) {
+    this.data.pendingmemflag = true;
+    this.data.pendingmemtitle = "List of Members";
+    this.data.searchmemflag = false;
+    this.data.searchmemtitle = "";
+    this.items = [];
+    this.searcheditems = [];
+  }
+
+  ionViewWillLoad() {
+    this.getMembers();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ManageMembersPage');
+  }
+
+  getMembers() {
+    this.loading = this.loadingCtrl.create({
+      content: '',
+    });
+    this.loading.present();
+
+    var decoded_response = "";
+    var body = new FormData();
+    body.append('sessionid', this.shareProvider.sessionid);
+    this.http
+      .post(this.shareProvider.server + "members/getmembers.php", body)
+      .subscribe(
+        data => {
+          //console.log(data["_body"]);
+          decoded_response = JSON.parse(data["_body"]);
+          if (decoded_response[0] == "true") {
+            this.items = decoded_response[2];
+            if(this.items.length > 0) {
+              this.data.pendingapptitle = "List of Members"
+            }
+            else {
+              this.data.pendingapptitle = "NO Members"
+            }
+            this.loading.dismissAll();
+          }
+          else {
+            if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
+              this.navCtrl.push("LoginPage", { data: 'Please login again.' });
+              this.loading.dismissAll();
+            }
+            else {
+              this.data.error = "Unknown problem occured.  Please contact administrator.";
+              this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
+              console.log("Unknown problem occured.  Please contact administrator.  Code: Manage-Members-001");
+              this.loading.dismissAll();
+            }
+          }
+        },
+        error => {
+          this.data.error = "Unknown problem occured.  Please contact administrator.";
+          this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: Manage-Members-002");
+          this.loading.dismissAll();
+        }
+      );
+  }
+
+  openMember(lama_members_id: number) {
+    //console.log(lama_applications_id);
+    this.navCtrl.push("ManageMemberPage", { lama_members_id: lama_members_id });
+  }
+
+  search() {
+    clearTimeout(this.searchTimer);
+    this.searchTimer = setTimeout(() => {      
+      //console.log('timer');
+      this.searchMembers();
+      },1500);
+  }
+
+  searchMembers() {
+    //console.log(this.searchTerm);
+    if(this.searchTerm == '') {
+      this.data.searchmemflag = false;
+      this.data.pendingmemflag = true;
+    }
+    else {
+      //===============================
+      this.loading = this.loadingCtrl.create({
+        content: '',
+      });
+      this.loading.present();
+  
+      var decoded_response = "";
+      var body = new FormData();
+      body.append('sessionid', this.shareProvider.sessionid);
+      body.append('search_text', this.searchTerm);
+      this.http
+        .post(this.shareProvider.server + "members/searchmembers.php", body)
+        .subscribe(
+          data => {
+            //console.log(data["_body"]);
+            //console.log(data["_body"]);
+            decoded_response = JSON.parse(data["_body"]);
+            if (decoded_response[0] == "true") {
+              this.searcheditems = decoded_response[2];
+              if(this.searcheditems.length > 0) {
+                this.data.searchmemtitle = "Members for search term: "+this.searchTerm;
+              }
+              else {
+                this.data.searchmemtitle = "NO Members Found for search term: "+this.searchTerm;
+              }
+              this.data.searchmemflag = true;
+              this.data.pendingmemflag = false;
+              this.loading.dismissAll();
+            }
+            else if(decoded_response[0] == "false") {
+              this.data.searchmemtitle = decoded_response[1];
+              this.data.searchmemflag = true;
+              this.data.pendingmemflag = false;
+              this.loading.dismissAll();
+            }
+            else {
+              if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
+                this.navCtrl.push("LoginPage", { data: 'Please login again.' });
+                this.loading.dismissAll();
+              }
+              else {
+                this.data.error = "Unknown problem occured.  Please contact administrator.";
+                this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
+                console.log("Unknown problem occured.  Please contact administrator.  Code: Manage-Members-003");
+                this.loading.dismissAll();
+              }
+            }
+          },
+          error => {
+            this.data.error = "Unknown problem occured.  Please contact administrator.";
+            this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
+            console.log("Unknown problem occured.  Please contact administrator.  Code: Manage-Members-004");
+            this.loading.dismissAll();
+          }
+        );
+      //===============================
+    }
+  }
+
+  public ionViewWillEnter() {
+    this.getMembers();
+    this.searchMembers();
   }
 
 }

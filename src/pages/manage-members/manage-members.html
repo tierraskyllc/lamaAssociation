@@ -5,48 +5,61 @@
 </ion-header>
 
 <ion-content padding>
-
-<ion-grid no-padding>
-<ion-row>
-    <ion-col width="100%" align="center">
-        <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="search()"></ion-searchbar>
-    </ion-col>
-</ion-row>
-
-
-<ion-row style="">
-  <ion-col width="40%" style="text-align: left; color: #FCD736; font-weight: bold;">
-    Chapter
-  </ion-col>
-  <ion-col width="25%" style="text-align: left; color: #FCD736; font-weight: bold;">
-    Member
-  </ion-col>
-  <ion-col width="25%" style="text-align: left; color: #FCD736; font-weight: bold;">
-    Title
-  </ion-col>
-  <ion-col width="10%" style="text-align: left; color: #FCD736; font-weight: bold;">
-    Miles
-  </ion-col>
-</ion-row>
-
-<ion-row *ngFor="let item of mockMangeMembers.members">
-  <ion-col width="40%" style="text-align: left; color: #FCD736;">
-    {{ item.chapter }}
-  </ion-col>
-  <ion-col width="25%" style="text-align: left; color: #FCD736;">
-    {{ item.member }}
-  </ion-col>
-  <ion-col width="25%" style="text-align: left; color: #FCD736;">
-    {{ item.title }}
-  </ion-col>
-  <ion-col width="10%" style="text-align: left; color: #FCD736;">
-    {{ item.miles }}
-  </ion-col>
-</ion-row>
-
-
-
-
-</ion-grid>
-
+  <ion-grid>
+    <ion-row>
+        <ion-col width="100%" align="center">
+            <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="search()"></ion-searchbar>
+        </ion-col>
+    </ion-row>
+    <div *ngIf="data.pendingmemflag">
+        <ion-row>
+            <ion-col width="100%" align="center">
+                <h3>{{data.nomemtitle}}</h3>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="(items.length > 0)">
+            <ion-col align="left" col-9>
+            <h4>Member's Name & Chapter Name</h4>
+            </ion-col>
+            <ion-col align="center" col-3>
+            <h4>View</h4>    
+            </ion-col>
+        </ion-row>
+        <ion-row *ngFor="let item of items">
+            <ion-col align="left" col-9 style="color: #FCD736;">
+            {{item["first_name"]}}&nbsp;{{item["last_name"]}}
+            <br>
+            {{item["chapter_name"]}}
+            </ion-col>
+            <ion-col align="center" col-3>
+                <ion-buttons end><button style="background: transparent;" (click)="openMember(item['id'])"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+            </ion-col>
+        </ion-row>
+    </div>
+    <div *ngIf="data.searchmemflag">
+        <ion-row>
+            <ion-col width="100%" align="center">
+                <h3>{{data.searchmemtitle}}</h3>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="(searcheditems.length > 0)">
+            <ion-col align="left" col-9>
+                <h4>Member's Name & Chapter Name</h4>
+            </ion-col>
+            <ion-col align="center" col-3>
+                <h4>View</h4>    
+            </ion-col>
+        </ion-row>
+        <ion-row *ngFor="let item of searcheditems">
+            <ion-col align="left" col-9 style="color: #FCD736;">
+                {{item["first_name"]}}&nbsp;{{item["last_name"]}}
+                <br>
+                {{item['chapter_name']}}
+            </ion-col>
+            <ion-col align="center" col-3>
+                <ion-buttons end><button style="background: transparent;" (click)="openMember(item['id'])"><ion-icon color="secondary" name="open" style="zoom:1.3;"></ion-icon></button></ion-buttons>
+            </ion-col>
+        </ion-row>
+    </div>
+  </ion-grid>
 </ion-content>

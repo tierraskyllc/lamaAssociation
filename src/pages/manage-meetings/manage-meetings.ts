@@ -28,6 +28,7 @@ export class ManageMeetingsPage {
     private shareProvider: ShareProvider,
     public loadingCtrl: LoadingController) {
       this.items = [];
+      this.data.isallowedtocreatemeeting = false;
   }
 
   ionViewWillLoad() {
@@ -35,6 +36,7 @@ export class ManageMeetingsPage {
   }
 
   public ionViewWillEnter() {
+    this.getPermissionToCreateMeetings();
     this.getMeetings();
   }
 
@@ -111,6 +113,40 @@ export class ManageMeetingsPage {
   openMeetingAttendees(lama_meetings_id: number) {
     console.log('openMeetingAttendees clicked');
     this.navCtrl.push("MeetingattendeesPage", { lama_meetings_id: lama_meetings_id });
+  }
+
+  getPermissionToCreateMeetings() {
+    var decoded_response = "";
+    var body = new FormData();
+    body.append('sessionid', this.shareProvider.sessionid);
+    this.http
+      .post(this.shareProvider.server + "meetings/cancreatemeeting.php", body)
+      .subscribe(
+        data => {
+          //console.log(data["_body"]);
+          var mydt, mm, dd, yyyy = null;
+          decoded_response = JSON.parse(data["_body"]);
+          if(decoded_response[0] == "true") {
+            this.data.cancreatemeeting = true;
+            //console.log("cancreatemeeting: "+this.data.cancreatemeeting);
+          }
+          else {
+            if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
+              this.navCtrl.push("LoginPage", { data: 'Please login again.' });
+            }
+            else {
+              this.data.error = "Unknown problem occured.  Please contact administrator.";
+              this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
+              console.log("Unknown problem occured.  Please contact administrator.  Code: Manage-Meetings-003");
+            }
+          }
+        },
+        error => {
+          this.data.error = "Unknown problem occured.  Please contact administrator.";
+          this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: Manage-Meetings-004");
+        }
+      );
   }
 
 }

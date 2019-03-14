@@ -28,9 +28,11 @@ export class ManageEventsPage {
     private shareProvider: ShareProvider,
     public loadingCtrl: LoadingController) {
       this.items = [];
+      this.data.cancreateevent = false;
   }
 
   ionViewWillLoad() {
+    this.getPermissionToCreateEvents();
     this.getEvents();
   }
 
@@ -111,6 +113,40 @@ export class ManageEventsPage {
   openEventAttendees(lama_events_id: number) {
     console.log('openEventAttendees clicked');
     this.navCtrl.push("EventattendeesPage", { lama_events_id: lama_events_id });
+  }
+
+  getPermissionToCreateEvents() {
+    var decoded_response = "";
+    var body = new FormData();
+    body.append('sessionid', this.shareProvider.sessionid);
+    this.http
+      .post(this.shareProvider.server + "events/cancreateevent.php", body)
+      .subscribe(
+        data => {
+          //console.log(data["_body"]);
+          var mydt, mm, dd, yyyy = null;
+          decoded_response = JSON.parse(data["_body"]);
+          if(decoded_response[0] == "true") {
+            this.data.cancreateevent = true;
+            //console.log("cancreateevent: "+this.data.cancreateevent);
+          }
+          else {
+            if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
+              this.navCtrl.push("LoginPage", { data: 'Please login again.' });
+            }
+            else {
+              this.data.error = "Unknown problem occured.  Please contact administrator.";
+              this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
+              console.log("Unknown problem occured.  Please contact administrator.  Code: Manage-Meetings-003");
+            }
+          }
+        },
+        error => {
+          this.data.error = "Unknown problem occured.  Please contact administrator.";
+          this.shareProvider.presentMessageOnlyAlert("Unknown problem occured.  Please contact administrator.");
+          console.log("Unknown problem occured.  Please contact administrator.  Code: Manage-Meetings-004");
+        }
+      );
   }
 
 }

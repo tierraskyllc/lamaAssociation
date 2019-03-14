@@ -15,7 +15,7 @@
       
       <ion-content padding>
           <ion-grid>
-              <ion-row>
+              <ion-row *ngIf="data.cancreatemeeting">
                   <ion-col width="100%" align="center">
                       <ion-buttons end><button style="background: transparent;" (click)="addMeeting()"><ion-icon color="secondary" name="add-circle" style="zoom:2;"></ion-icon></button></ion-buttons>
                   </ion-col>
