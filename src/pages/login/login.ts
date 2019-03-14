@@ -207,5 +207,8 @@ export class LoginPage {
   trimEmail() {
     this.loginForm.controls['email'].setValue(this.loginForm.controls.email.value.trim());
   }
+  changePassword() {
+    this.navCtrl.push("ForgotpasswordPage");
+  }
 }
 
