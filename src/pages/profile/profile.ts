@@ -347,7 +347,32 @@ export class ProfilePage {
       //console.log(thisDate2);
       //if((event.start_dttm >= thisDate1) && (event.end_dttm >= thisDate1) && (event.end_dttm >= thisDate2)) {
       if(((event.start_dttm >= thisDate1) && (event.end_dttm <= thisDate2)) || ((thisDate2 >= event.start_dttm) && (thisDate2 <= event.end_dttm)) || ((thisDate1 >= event.start_dttm) && (thisDate1 <= event.end_dttm))) {
-        hasEvent = true;
+        if(event.type ==='event') {
+          hasEvent = true;
+        }
+      }
+      //console.log(hasEvent);
+    });
+    return hasEvent;
+  }
+
+  checkMeeting(day) {
+    //console.log(day);
+    var hasEvent = false;
+    var thisDate1 = new Date(this.date.getFullYear()+"/"+(this.date.getMonth()+1)+"/"+day+" 00:00:00");
+    var thisDate2 = new Date(this.date.getFullYear()+"/"+(this.date.getMonth()+1)+"/"+day+" 23:59:59");
+    this.eventList.forEach(event => {
+      //var eventStartDate = new Date(event.start_dttm);
+      //var eventEndDate = new Date(event.end_dttm);
+      //console.log(event.start_dttm);
+      //console.log(event.end_dttm);
+      //console.log(thisDate1);
+      //console.log(thisDate2);
+      //if((event.start_dttm >= thisDate1) && (event.end_dttm >= thisDate1) && (event.end_dttm >= thisDate2)) {
+      if(((event.start_dttm >= thisDate1) && (event.end_dttm <= thisDate2)) || ((thisDate2 >= event.start_dttm) && (thisDate2 <= event.end_dttm)) || ((thisDate1 >= event.start_dttm) && (thisDate1 <= event.end_dttm))) {
+        if(event.type ==='meeting') {
+          hasEvent = true;
+        }
       }
       //console.log(hasEvent);
     });

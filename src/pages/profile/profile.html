@@ -104,7 +104,10 @@
             <span class="otherDate">{{day}}</span>
           </ng-template>
           <br>
-          <div class="event-bullet" *ngIf="checkEvent(day)"></div>
+          <div class="event-bullet" *ngIf="checkMeeting(day) && checkEvent(day)" style="margin: 2px auto auto 12px; float: left;"></div>
+          <div class="event-bullet" *ngIf="checkMeeting(day) && checkEvent(day)" style="margin: 2px auto auto 3px; background-color: blue; float: left;"></div>
+          <div class="event-bullet" *ngIf="checkEvent(day) && !checkMeeting(day)"></div>
+          <div class="event-bullet" *ngIf="!checkEvent(day) && checkMeeting(day)" style="background-color: blue;"></div>
         </ion-col>
         <ion-col col-1 *ngFor="let nextDay of daysInNextMonth" class="next-month"(click)="goToNextMonth()">{{nextDay}}</ion-col>
       </ion-row>
