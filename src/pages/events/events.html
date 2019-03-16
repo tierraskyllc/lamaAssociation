@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>events lists</ion-title>
+    <ion-title>EVENTS LISTS</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -24,7 +24,7 @@
           </ion-list-header>
           <!--CONTENT-->
           <ul no-margin no-padding class="collapsible">
-            <li no-margin *ngFor="let group of mockMeetingsAndEvents.items">
+            <li no-margin *ngFor="let group of mockMeetingsAndEvents.myevents">
               <!-- Expandable Centered with header Header-->
               <div
                 class="collapsible-header"
@@ -49,10 +49,10 @@
                   no-lines
                   no-padding
                   transparent
-                  *ngFor="let item of group.chapters"
+                  *ngFor="let item of group.events"
                 >
-                  <h2 text-center subitem-title (click)="chapterEventsPage()">
-                    {{ item }}
+                  <h2 text-center subitem-title (click)="chapterEventsPage(item.id)">
+                    {{ item.title }}
                   </h2>
                 </ion-item>
               </div>
