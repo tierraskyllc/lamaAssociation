@@ -183,6 +183,9 @@ export class ApplicationPage {
 
     let country = new FormControl(this.countries[0], Validators.required);
     let phone = new FormControl('', Validators.compose([Validators.required, PhoneValidator.validCountryPhone(country)]));
+
+    this.country_phone_group = new FormGroup({
+      country: country,
       phone: phone
     });
 
