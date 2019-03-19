@@ -38,8 +38,9 @@
       </ion-grid>
 
       <h3 id="profile-name" style="color: #FCD736;">{{member.name}}</h3>
+      <p style="color: #FCD736;">ID: {{member.easyid}}</p>
       <p style="color: #FCD736;">{{member.chapter}} Chapter &bull; {{member.status}}</p>
-      <p class="profile-description" style="color: #FCD736;">{{member.title}}</p>
+      <p *ngIf="member.title !== 'No Title' && member.title!== ''" class="profile-description" style="color: #FCD736;">{{member.title}}</p>
 
       <!-- Buttons  -->
       <ion-row nowrap justify-content-center>

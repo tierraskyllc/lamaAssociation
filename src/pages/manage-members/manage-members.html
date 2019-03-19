@@ -19,7 +19,7 @@
         </ion-row>
         <ion-row *ngIf="(items.length > 0)">
             <ion-col align="left" col-9>
-            <h4>Member's Name & Chapter Name</h4>
+            <h4>Members</h4>
             </ion-col>
             <ion-col align="center" col-3>
             <h4>View</h4>    
@@ -27,7 +27,7 @@
         </ion-row>
         <ion-row *ngFor="let item of items">
             <ion-col align="left" col-9 style="color: #FCD736;">
-            {{item["first_name"]}}&nbsp;{{item["last_name"]}}
+            {{item["first_name"]}}&nbsp;{{item["last_name"]}}&nbsp;(ID:&nbsp;{{item["easyid"]}})
             <br>
             {{item["chapter_name"]}}
             </ion-col>
@@ -44,7 +44,7 @@
         </ion-row>
         <ion-row *ngIf="(searcheditems.length > 0)">
             <ion-col align="left" col-9>
-                <h4>Member's Name & Chapter Name</h4>
+                <h4>Members</h4>
             </ion-col>
             <ion-col align="center" col-3>
                 <h4>View</h4>    
@@ -52,7 +52,7 @@
         </ion-row>
         <ion-row *ngFor="let item of searcheditems">
             <ion-col align="left" col-9 style="color: #FCD736;">
-                {{item["first_name"]}}&nbsp;{{item["last_name"]}}
+                {{item["first_name"]}}&nbsp;{{item["last_name"]}}&nbsp;(ID:&nbsp;{{item["easyid"]}})
                 <br>
                 {{item['chapter_name']}}
             </ion-col>

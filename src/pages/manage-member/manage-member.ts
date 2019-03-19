@@ -610,6 +610,7 @@ export class ManageMemberPage {
           if (decoded_response[0] == "true") {
             this.formdata.lama_profiles_id = decoded_response[2]["lama_profiles_id"];
             this.formdata.lama_members_id = decoded_response[2]["lama_members_id"];
+            this.formdata.easyid = decoded_response[2]["easyid"];
             this.formdata.chapter_name = decoded_response[2]["chapter_name"];
             this.formdata.first_name = decoded_response[2]["first_name"];
             this.formdata.last_name = decoded_response[2]["last_name"];

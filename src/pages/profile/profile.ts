@@ -26,18 +26,19 @@ export class ProfilePage {
   signingIn = false;
   underConstruction = false;
   member = {
-    name: "Name from Server",
+    name: "",
     //profileImage: "assets/images/avatar/girl-avatar.png",
     profileImage: "assets/images/avatar/nopic.png",
     profileQrImage: "assets/images/qr-code.png",
     coverImage: "assets/images/background/background-5.jpg",
-    chapter: "L.A.M.A. Newark",
-    status: "Full Pathed Member",
-    title: "Road Captain",
+    chapter: "",
+    status: "",
+    title: "",
     profile_pic: null,
     followers: 456,
     following: 1051,
-    memberSince: 2003
+    memberSince: 2003,
+    easyid: ""
   };
 
   posts = [
@@ -194,6 +195,7 @@ export class ProfilePage {
                   " " +
                   decoded_response[2]["last_name"];
                 this.member.chapter = decoded_response[2]["chapter_name"];
+                this.member.easyid = decoded_response[2]["easyid"];
               }
               this.loading.dismissAll();
             }
