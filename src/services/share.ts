@@ -239,4 +239,16 @@ export class ShareProvider {
     //browser.show();
   }
 
+  startLoading(loadingCtrl, message) {
+    var loading = loadingCtrl.create({
+      content: message,
+    });
+    loading.present();
+    return loading;
+  }
+
+  stopLoading(loading) {
+    loading.dismissAll();
+  }
+
 }

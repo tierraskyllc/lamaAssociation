@@ -35,6 +35,11 @@
     </div>
 
     <div *ngIf="!data.isappsubmited" class="form">
+      <ion-row>
+        <ion-col style="color: #FCD736; text-align: left; vertical-align:middle; font-weight: bold;">
+          Please fill out below application accurately including signature and submit for review.
+        </ion-col>
+      </ion-row>
       <ion-label primary>{{data.error}}</ion-label>
       <!--Form-->
       <form [formGroup]="applicationForm">
@@ -197,12 +202,12 @@
           <ion-col>
             <ion-item no-padding color="accent">
               <ion-label floating>Gender</ion-label>
-              <ion-select formControlName="gender" interface=popover cancelText="Cancel" okText="OK">
+              <ion-select formControlName="gender" interface=popover cancelText="Cancel" okText="OK" (ionChange)="populateMembershipTypes()">
                 <ion-option *ngFor="let gender of genders" [value]="gender">{{ gender }}</ion-option>
               </ion-select>
             </ion-item>
             <ng-container *ngFor="let validation of validation_messages.gender">
-              <div class="error-message" *ngIf="applicationForm.get('gender').hasError(validation.type) && (applicationForm.get('gender').dirty || applicationForm.get('gender').touched || submitAttempt)">
+              <div class="error-message" *ngIf="applicationForm.get('gender').hasError(validation.type) && (applicationForm.get('gender').dirty || applicationForm.get('gender').touched || submitAttempt || applicationForm.get('typeOfMembership').touched)">
                 {{ validation.message }}
               </div>
             </ng-container>
@@ -236,7 +241,7 @@
           </ion-col>
         </ion-row>
 
-        <ion-row>
+        <ion-row *ngIf="applicationForm.controls['gender'].value == 'Male' || applicationForm.controls['gender'].value == 'Female'">
             <ion-col>
               <div>
                 <ion-item no-padding color="accent">
@@ -253,6 +258,49 @@
               </div>
             </ion-col>
         </ion-row>
+
+        <ion-row *ngIf="applicationForm.controls['typeOfMembership'].value === 'Spousal'">
+            <ion-col>
+              <div>
+                <ion-item no-padding color="accent">
+                  <ion-label floating>Spouse's ID</ion-label>
+                  <ion-input type="text" formControlName="spouse_id" (ionChange)="searchSpouse()"></ion-input>
+                </ion-item>
+                <ng-container *ngFor="let validation of validation_messages.spouse_id">
+                  <div class="error-message" *ngIf="applicationForm.get('spouse_id').hasError(validation.type) && (applicationForm.get('spouse_id').dirty || applicationForm.get('spouse_id').touched || submitAttempt)">
+                    {{ validation.message }}
+                  </div>
+                </ng-container>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="applicationForm.controls['typeOfMembership'].value === 'Spousal' && data.spouse_details !== null && data.spouse_details !== '' && data.spouse_details !== 'null' && data.spouse_details !== 'NULL'">
+              <ion-col style="color:red; text-align: left; vertical-align:middle;" *ngIf="data.spouse_details === 'error'">
+                Problem retrieving your spouse's details for Spouse's ID you provided.
+              </ion-col>
+              <ion-col style="color: #FCD736; text-align: left; vertical-align:middle;" *ngIf="data.spouse_details !== 'error'">
+                Your Spouse's Details: &nbsp; {{ data.spouse_details }} 
+              </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="applicationForm.controls['typeOfMembership'].value === 'Spousal' && data.spouse_details !== 'error' && data.spouse_details !== null && data.spouse_details !== NULL && data.spouse_details !== 'null'">
+              <ion-col>
+                <div>
+                  <ion-item no-padding color="accent">
+                    <ion-label floating>Is your spouse's information above correct?</ion-label>
+                    <ion-select formControlName="vrfy_spouse_info" interface="popover" cancelText="Cancel" okText="OK">
+                      <ion-option *ngFor="let ans of yesOrNo" [value]="ans">{{ ans }}</ion-option>
+                    </ion-select>
+                  </ion-item>
+                  <ng-container *ngFor="let validation of validation_messages.vrfy_spouse_info">
+                    <div class="error-message" *ngIf="applicationForm.get('vrfy_spouse_info').hasError(validation.type) && (applicationForm.get('vrfy_spouse_info').dirty || applicationForm.get('vrfy_spouse_info').touched || submitAttempt)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+              </ion-col>
+            </ion-row>
 
         <div *ngIf="applicationForm.get('typeOfMembership').dirty && applicationForm.controls['typeOfMembership'].value != 'Associate/Asociado'">
         <ion-row>

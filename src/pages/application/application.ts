@@ -44,6 +44,7 @@ export class ApplicationPage {
   lastImageFullPath: string = "";
   isUploadImageRunning: boolean = false;
   loading: Loading;
+  searchTimer: any;
 
   mockMember = {
     firstName : "",
@@ -106,7 +107,7 @@ export class ApplicationPage {
       this.data.usastates = [];
       this.data.usacities = [];
       this.data.maxyear = new Date().getFullYear() + 25;
-
+      this.data.spouse_details = null;
       /*this.loading = this.loadingCtrl.create({
         content: '',
       });
@@ -178,7 +179,7 @@ export class ApplicationPage {
     this.highestEducation = ["Self Taught", "Home Schooled", "High School", "Vocational School", "College"];
     this.bloodTypes = ["O+", "A+", "B+", "AB+", "O-", "A-", "B-", "AB-", "N/A"];
     this.memberTitles = ["No Title", "President", "Vice President", "Treasurer", "Secretary", "Business Manager", "Motor Touring Officer", "Sgt of Arms", "Road Captain", "Retired"];
-    this.typeOfMemberships = ["Full Riding Member", "DAMA", "Spousal", "Associate"];
+    this.typeOfMemberships = [];
     this.typeOfChapters = ["Organized Chapter/Capitulo", "Establishing Chapter/Capitulo Estableciendo", "Brother Chapter/Capítulo hermano"];
 
     let country = new FormControl(this.countries[0], Validators.required);
@@ -232,6 +233,8 @@ export class ApplicationPage {
       organDonar: ["", Validators.compose([Validators.required])],
       memberTitle: ["", Validators.compose([Validators.required])],
       typeOfMembership: ["", Validators.compose([Validators.required])],
+      spouse_id: ['', Validators.compose([])],
+      vrfy_spouse_info: ['', Validators.compose([])],
       //typeOfChapter: ["", Validators.compose([Validators.required])],
       motorcycles: this.formBuilder.array([])
     });
@@ -311,6 +314,8 @@ export class ApplicationPage {
     'organDonar': [{ type: 'required', message: 'Please select Yes or No.' }],
     'memberTitle': [{type: 'required', message: 'Member Title is required.'}],
     'typeOfMembership': [{type: 'required', message: 'Type of Membership is required.'}],
+    'spouse_id': [{type: 'required', message: 'ID Number of Your Spouse is required.'}],
+    'vrfy_spouse_info': [{type: 'required', message: 'Please indicate whether your spouse information displayed above is correct or not.'}],
     //'typeOfChapter': [{type: 'required', message: 'Type of Chapter is required.'}],
     'year': [{type: 'required', message: 'Required.'}],
     'make': [{type: 'required', message: 'Required.'}],
@@ -524,6 +529,9 @@ export class ApplicationPage {
       body.append('organDonar', this.applicationForm.controls['organDonar'].value);
       body.append('memberTitle', this.applicationForm.controls['memberTitle'].value);
       body.append('typeOfMembership', this.applicationForm.controls['typeOfMembership'].value);
+      if(this.applicationForm.controls['typeOfMembership'].value === 'Spousal') {
+        body.append('spouse_id', this.applicationForm.controls['spouse_id'].value);
+      }
       //body.append('typeOfChapter', this.applicationForm.controls['typeOfChapter'].value);
       body.append('typeOfChapter', 'Not Needed');
       body.append('licenseexpdt', this.applicationForm.controls['licenseexpdt'].value);
@@ -1137,6 +1145,8 @@ export class ApplicationPage {
   }
 
   setValidationForMotorcycleInfo() {
+    this.applicationForm.controls.spouse_id.setValue(null);
+    this.applicationForm.controls.vrfy_spouse_info.setValue(null);
     if(this.applicationForm.controls.typeOfMembership.value == 'Associate/Asociado') {
       var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
       var looplen = motorcyclesobjects.length - 1;
@@ -1163,6 +1173,14 @@ export class ApplicationPage {
       this.applicationForm.get("yearsRiding").updateValueAndValidity();
       this.applicationForm.get("licenseexpdt").setValidators([Validators.compose([Validators.required])]);
       this.applicationForm.get("licenseexpdt").updateValueAndValidity();
+    }
+    if(this.applicationForm.controls.typeOfMembership.value == 'Spousal') {
+      this.applicationForm.get("spouse_id").setValidators([Validators.compose([Validators.required])]);
+      this.applicationForm.get("vrfy_spouse_info").setValidators([Validators.compose([Validators.required])]);
+    }
+    else {
+      this.applicationForm.get("spouse_id").setValidators([]);
+      this.applicationForm.get("vrfy_spouse_info").setValidators([]);
     }
   }
 
@@ -1191,6 +1209,62 @@ export class ApplicationPage {
     this.signaturePad.clear();
     //console.log('After Clearing Signature Image');
     //console.log(this.signaturePad.toDataURL());
+  }
+
+  populateMembershipTypes() {
+    this.applicationForm.controls['typeOfMembership'].setValue(null);
+    if(this.applicationForm.controls["gender"].value === 'Male') {
+      this.typeOfMemberships = ["Full Riding Member", "Spousal", "Associate"];
+    }
+    if(this.applicationForm.controls["gender"].value === 'Female') {
+      this.typeOfMemberships = ["DAMA", "Spousal", "Associate"];
+    }
+  }
+
+  searchSpouse() {
+    clearTimeout(this.searchTimer);
+    this.searchTimer = setTimeout(() => {      
+      //console.log('timer');
+      this.getSpouseInfo();
+      },2000);
+  }
+
+  getSpouseInfo() {
+    //console.log('getSpouseInfo function called.');
+    this.applicationForm.controls["vrfy_spouse_info"].setValue(null);
+    var decoded_response = "";
+      var body = new FormData();
+      body.append('sessionid', this.shareProvider.sessionid);
+      body.append('spouse_id', this.applicationForm.controls['spouse_id'].value);
+      this.loading = this.shareProvider.startLoading(this.loadingCtrl, 'Searching for your spouse\'s information...');
+      this.http
+      .post(this.shareProvider.server + "application/spouseinfo.php", body)
+      .subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          if (decoded_response[0] === "true") {
+            this.data.spouse_details = decoded_response[1];
+            this.shareProvider.stopLoading(this.loading);
+          }
+          else {
+            if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
+              this.data.spouse_details = 'error';
+              this.shareProvider.stopLoading(this.loading);
+              this.navCtrl.push('LoginPage');
+            }
+            else {
+              this.data.spouse_details = 'error';
+              console.log("Unknown problem occured.  Please contact administrator.  Code: APP-00111");
+              this.shareProvider.stopLoading(this.loading);
+            }
+          }
+        },
+        error => {
+          this.data.spouse_details = 'error';
+          console.log("Unknown problem occured.  Please contact administrator.  Code: APP-00222");
+          this.shareProvider.stopLoading(this.loading);
+        }
+      );
   }
 
 }

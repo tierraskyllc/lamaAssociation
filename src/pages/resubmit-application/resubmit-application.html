@@ -25,6 +25,11 @@
     </div>
 
     <div *ngIf="!data.isappsubmited" class="form">
+        <ion-row>
+            <ion-col style="color: #FCD736; text-align: left; vertical-align:middle; font-weight: bold;">
+              Please make requested changes in application below, sign and resubmit for review.
+            </ion-col>
+          </ion-row>
       <ion-label primary>{{data.error}}</ion-label>
       <!--Form-->
       <form [formGroup]="applicationForm">
