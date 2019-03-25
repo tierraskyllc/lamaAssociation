@@ -1170,6 +1170,7 @@ export class ManageApplicationPage {
             this.formdata.any_other_club = decoded_response[2]["any_other_club"];
             this.applicationForm.controls['anyOtherClub'].setValue(decoded_response[2]["any_other_club"]);
             this.formdata.name_of_other_club = decoded_response[2]["name_of_other_club"];
+            this.applicationForm.controls['nameOfOtherClub'].setValue(decoded_response[2]["name_of_other_club"]);
             this.formdata.marital_status = decoded_response[2]["marital_status"];
             this.applicationForm.controls['maritalStatus'].setValue(decoded_response[2]["marital_status"]);
             this.formdata.number_of_children = decoded_response[2]["number_of_children"];
