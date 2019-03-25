@@ -51,6 +51,7 @@ export class ManageApplicationPage {
   lastImageFullPath: string = "";
   isUploadImageRunning: boolean = false;
   loading: Loading;
+  searchTimer: any;
 
   mockMember = {
     firstName : "",
@@ -116,7 +117,10 @@ export class ManageApplicationPage {
       this.data.usastates = [];
       this.data.usacities = [];
       this.data.maxyear = new Date().getFullYear() + 25;
-
+      this.data.spouse_details = null;
+      this.data.today = new Date().toISOString();
+      this.data.isAllergiesTextFieldVisible = false;
+      
       /*this.loading = this.loadingCtrl.create({
         content: '',
       });
@@ -185,7 +189,7 @@ export class ManageApplicationPage {
     this.highestEducation = ["Self Taught", "Home Schooled", "High School", "Vocational School", "College"];
     this.bloodTypes = ["O+", "A+", "B+", "AB+", "O-", "A-", "B-", "AB-", "N/A"];
     this.memberTitles = ["No Title", "President", "Vice President", "Treasurer", "Secretary", "Business Manager", "Motor Touring Officer", "Sgt of Arms", "Road Captain", "Retired"];
-    this.typeOfMemberships = ["Riding Member", "DAMA", "Spousal/Pareja", "Prospect", "Probate", "Associate/Asociado"];
+    this.typeOfMemberships = [];
     this.typeOfChapters = ["Organized Chapter/Capitulo", "Establishing Chapter/Capitulo Estableciendo", "Brother Chapter/Capítulo hermano"];
     this.appStatus = ['Review', 'Rejected', 'Approved'];
 
@@ -236,10 +240,13 @@ export class ManageApplicationPage {
       skillsPastimes: ['', Validators.compose([Validators.required, Validators.maxLength(200)])],
       // bloodType: ['', new FormControl(this.bloodTypes[0], Validators.required)],
       bloodType: ["", Validators.compose([Validators.required])],
+      alrgy_que: ['', Validators.compose([])],
       allergies: ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
       organDonar: ["", Validators.compose([Validators.required])],
       memberTitle: ["", Validators.compose([Validators.required])],
       typeOfMembership: ["", Validators.compose([Validators.required])],
+      spouse_id: ['', Validators.compose([])],
+	    vrfy_spouse_info: ['', Validators.compose([])],
       //typeOfChapter: ["", Validators.compose([Validators.required])],
       applicationStatus: ["", Validators.compose([Validators.required])],
       start_date: [''],
@@ -324,10 +331,12 @@ export class ManageApplicationPage {
     'skillsPastimes': [{type: 'required', message: 'SkillsPastimes is required.'}, {type: 'pattern', message: 'Skiils pastimes is invalid.'}],
     'highestEducation': [{type: 'required', message: 'Highest Education is required.'}],
     'bloodType': [{type: 'required', message: 'Blood Type is required.'}],
-    'allergies': [{type: 'required', message: 'Do you have any alergies?  If yes, please specify.  If no, then write "no alergies".'}, {type: 'pattern', message: 'Allergies is invalid.'}],
+    'allergies': [{type: 'required', message: 'Please specify allergie(s).'}, {type: 'pattern', message: 'Allergies is invalid.'}],
     'organDonar': [{ type: 'required', message: 'Please select Yes or No.' }],
     'memberTitle': [{type: 'required', message: 'Member Title is required.'}],
     'typeOfMembership': [{type: 'required', message: 'Type of Membership is required.'}],
+    'spouse_id': [{type: 'required', message: 'ID Number of Your Spouse is required.'}],
+	  'vrfy_spouse_info': [{type: 'required', message: 'Please indicate whether your spouse information displayed above is correct or not.'}],
     //'typeOfChapter': [{type: 'required', message: 'Type of Chapter is required.'}],
     'applicationStatus': [{ type: 'required', message: 'Application Status is required.' }],
     'note': [{ type: 'required', message: 'Note is required.' }],
@@ -567,6 +576,9 @@ export class ManageApplicationPage {
       body.append('organDonar', this.applicationForm.controls['organDonar'].value);
       body.append('memberTitle', this.applicationForm.controls['memberTitle'].value);
       body.append('typeOfMembership', this.applicationForm.controls['typeOfMembership'].value);
+      if(this.applicationForm.controls['typeOfMembership'].value === 'Spousal') {
+        body.append('spouse_id', this.applicationForm.controls['spouse_id'].value);
+      }
       //body.append('typeOfChapter', this.applicationForm.controls['typeOfChapter'].value);
       body.append('typeOfChapter', 'Not Needed');
       body.append('licenseexpdt', this.applicationForm.controls['licenseexpdt'].value);
@@ -764,7 +776,8 @@ export class ManageApplicationPage {
     let toast = this.toastCtrl.create({
       message: text,
       duration: 10000,
-      position: 'top'
+      position: 'middle',
+      cssClass: 'myCSSForToast'
     });
     toast.present();
   }
@@ -1171,12 +1184,22 @@ export class ManageApplicationPage {
             this.formdata.blood_type = decoded_response[2]["blood_type"];
             this.applicationForm.controls['bloodType'].setValue(decoded_response[2]["blood_type"]);
             this.formdata.allergies = decoded_response[2]["allergies"];
+            if(decoded_response[2]["allergies"] === 'No') {
+              this.data.isAllergiesTextFieldVisible = false;
+              this.applicationForm.controls['alrgy_que'].setValue('No');
+            }
+            else {
+              this.data.isAllergiesTextFieldVisible = true;
+              this.applicationForm.controls['alrgy_que'].setValue('Yes');
+            }
             this.formdata.organ_donar = decoded_response[2]["organ_donar"];
             this.applicationForm.controls['organDonar'].setValue(decoded_response[2]["organ_donar"]);
             this.formdata.member_title = decoded_response[2]["member_title"];
             this.applicationForm.controls['memberTitle'].setValue(decoded_response[2]["member_title"]);
             this.formdata.type_of_membership = decoded_response[2]["type_of_membership"];
             this.applicationForm.controls['typeOfMembership'].setValue(decoded_response[2]["type_of_membership"]);
+            this.formdata.spouse_id = decoded_response[2]["spouse_id"];
+            this.applicationForm.controls['spouse_id'].setValue(decoded_response[2]["spouse_id"]);
             this.formdata.type_of_chapter = decoded_response[2]["type_of_chapter"];
             //this.applicationForm.controls['typeOfChapter'].setValue(decoded_response[2]["type_of_chapter"]);
             this.formdata.licensepic = decoded_response[2]["licensepic"];
@@ -1222,6 +1245,23 @@ export class ManageApplicationPage {
 
             this.formdata.dttmcreated = decoded_response[2]["dttmcreated"];
 
+            if(this.formdata.type_of_membership === 'Spousal') {
+              this.getSpouseInfo();
+            }
+            if(this.applicationForm.controls["gender"].value === 'Male') {
+              this.typeOfMemberships = ["Full Riding Member", "Spousal", "Associate"];
+            }
+            if(this.applicationForm.controls["gender"].value === 'Female') {
+              this.typeOfMemberships = ["DAMA", "Spousal", "Associate"];
+            }
+
+            if((decoded_response[2]["lama_chapter_president_first_name"]) && (decoded_response[2]["lama_chapter_president_last_name"])) {
+              this.data.lama_chapter_president = decoded_response[2]["lama_chapter_president_first_name"] + ' ' + decoded_response[2]["lama_chapter_president_last_name"];
+            }
+            else {
+              this.data.lama_chapter_president = 'Not In System';
+            }
+
             for (var i = 0; i < decoded_response[2]["motorcycles"].length; i++) {
               this.displayMotorcycle(decoded_response[2]["motorcycles"][i]['color'], decoded_response[2]["motorcycles"][i]['year'], decoded_response[2]["motorcycles"][i]['make'], decoded_response[2]["motorcycles"][i]['model'], decoded_response[2]["motorcycles"][i]['license_plate'], decoded_response[2]["motorcycles"][i]['current_mileage'], decoded_response[2]["motorcycles"][i]['odometerpic'], decoded_response[2]["motorcycles"][i]['registrationexpdt'], decoded_response[2]["motorcycles"][i]['registrationpic'], decoded_response[2]["motorcycles"][i]['insuranceexpdt'], decoded_response[2]["motorcycles"][i]['insurancepic']);
             }
@@ -1255,7 +1295,9 @@ export class ManageApplicationPage {
   }
   
   setValidationForMotorcycleInfo() {
-    if(this.applicationForm.controls.typeOfMembership.value == 'Associate/Asociado') {
+    this.applicationForm.controls.spouse_id.setValue(null);
+	  this.applicationForm.controls.vrfy_spouse_info.setValue(null);
+    if(this.applicationForm.controls.typeOfMembership.value == 'Associate') {
       var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
       var looplen = motorcyclesobjects.length - 1;
       for (var i = looplen; i >= 0; i--) {
@@ -1279,6 +1321,14 @@ export class ManageApplicationPage {
       this.applicationForm.get("yearsRiding").updateValueAndValidity();
       this.applicationForm.get("licenseexpdt").setValidators([Validators.compose([Validators.required])]);
       this.applicationForm.get("licenseexpdt").updateValueAndValidity();
+    }
+    if(this.applicationForm.controls.typeOfMembership.value == 'Spousal') {
+      this.applicationForm.get("spouse_id").setValidators([Validators.compose([Validators.required])]);
+      this.applicationForm.get("vrfy_spouse_info").setValidators([Validators.compose([Validators.required])]);
+    }
+    else {
+      this.applicationForm.get("spouse_id").setValidators([]);
+      this.applicationForm.get("vrfy_spouse_info").setValidators([]);
     }
   }
   
@@ -1357,4 +1407,95 @@ export class ManageApplicationPage {
       this.applicationForm.controls['start_date'].setValidators([]);
     }
   }
+
+  populateMembershipTypes() {
+    this.applicationForm.controls['typeOfMembership'].setValue(null);
+    if(this.applicationForm.controls["gender"].value === 'Male') {
+      this.typeOfMemberships = ["Full Riding Member", "Spousal", "Associate"];
+    }
+    if(this.applicationForm.controls["gender"].value === 'Female') {
+      this.typeOfMemberships = ["DAMA", "Spousal", "Associate"];
+    }
+  }
+
+  searchSpouse() {
+    clearTimeout(this.searchTimer);
+    this.searchTimer = setTimeout(() => {      
+      //console.log('timer');
+      this.getSpouseInfo();
+      },2000);
+  }
+
+  getSpouseInfo() {
+    //console.log('getSpouseInfo function called.');
+    this.applicationForm.controls["vrfy_spouse_info"].setValue(null);
+    var decoded_response = "";
+      var body = new FormData();
+      body.append('sessionid', this.shareProvider.sessionid);
+      body.append('spouse_id', this.applicationForm.controls['spouse_id'].value);
+      this.loading = this.shareProvider.startLoading(this.loadingCtrl, 'Searching for your spouse\'s information...');
+      this.http
+      .post(this.shareProvider.server + "application/spouseinfo.php", body)
+      .subscribe(
+        data => {
+          decoded_response = JSON.parse(data["_body"]);
+          if (decoded_response[0] === "true") {
+            this.data.spouse_details = decoded_response[1];
+            this.shareProvider.stopLoading(this.loading);
+          }
+          else {
+            if((decoded_response[1] == 'Session Expired.') || (decoded_response[1] == 'Invalid Session.')) {
+              this.data.spouse_details = 'error';
+              this.shareProvider.stopLoading(this.loading);
+              this.navCtrl.push('LoginPage');
+            }
+            else {
+              this.data.spouse_details = 'error';
+              console.log("Unknown problem occured.  Please contact administrator.  Code: APP-00111");
+              this.shareProvider.stopLoading(this.loading);
+            }
+          }
+        },
+        error => {
+          this.data.spouse_details = 'error';
+          console.log("Unknown problem occured.  Please contact administrator.  Code: APP-00222");
+          this.shareProvider.stopLoading(this.loading);
+        }
+      );
+  }
+
+  setValidationForLicenseExpDate() {
+    if(this.applicationForm.controls['haveMotorcycleLicense'].value === 'No') {
+      if((this.applicationForm.controls['typeOfMembership'].value === 'Full Riding Member') || (this.applicationForm.controls['typeOfMembership'].value === 'DAMA')) {
+        this.typeOfMemberships = ["Spousal", "Associate"];
+        this.applicationForm.controls['typeOfMembership'].setValue(null);
+      }
+      this.applicationForm.get("licenseexpdt").setValidators([]);
+      this.applicationForm.get("licenseexpdt").updateValueAndValidity();
+    }
+    else {
+      if(this.applicationForm.controls["gender"].value === 'Male') {
+        this.typeOfMemberships = ["Full Riding Member", "Spousal", "Associate"];
+      }
+      if(this.applicationForm.controls["gender"].value === 'Female') {
+        this.typeOfMemberships = ["DAMA", "Spousal", "Associate"];
+      }
+      this.applicationForm.get("licenseexpdt").setValidators([Validators.compose([Validators.required])]);
+      this.applicationForm.get("licenseexpdt").updateValueAndValidity();
+    }
+  }
+
+  changeValueOfAllergies(allergies) {
+    if(allergies === 'No') {
+      this.applicationForm.controls['allergies'].setValue('No');
+      this.formdata.allergies = 'No';
+      this.data.isAllergiesTextFieldVisible = false;
+    }
+    else {
+      this.applicationForm.controls['allergies'].setValue('');
+      this.formdata.allergies = '';
+      this.data.isAllergiesTextFieldVisible = true;
+    }
+  }
+
 }

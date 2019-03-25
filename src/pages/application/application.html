@@ -207,7 +207,7 @@
               </ion-select>
             </ion-item>
             <ng-container *ngFor="let validation of validation_messages.gender">
-              <div class="error-message" *ngIf="applicationForm.get('gender').hasError(validation.type) && (applicationForm.get('gender').dirty || applicationForm.get('gender').touched || submitAttempt || applicationForm.get('typeOfMembership').touched)">
+              <div class="error-message" *ngIf="applicationForm.get('gender').hasError(validation.type)">
                 {{ validation.message }}
               </div>
             </ng-container>
@@ -288,7 +288,7 @@
               <ion-col>
                 <div>
                   <ion-item no-padding color="accent">
-                    <ion-label floating>Is your spouse's information above correct?</ion-label>
+                    <ion-label floating>Is your spouse's info correct?</ion-label>
                     <ion-select formControlName="vrfy_spouse_info" interface="popover" cancelText="Cancel" okText="OK">
                       <ion-option *ngFor="let ans of yesOrNo" [value]="ans">{{ ans }}</ion-option>
                     </ion-select>
@@ -302,7 +302,7 @@
               </ion-col>
             </ion-row>
 
-        <div *ngIf="applicationForm.get('typeOfMembership').dirty && applicationForm.controls['typeOfMembership'].value != 'Associate/Asociado'">
+        <div *ngIf="applicationForm.get('typeOfMembership').dirty && applicationForm.controls['typeOfMembership'].value != 'Associate'">
         <ion-row>
           <ion-col width="100%" align="center">
             <ion-label>Motorcycle Information</ion-label>
@@ -314,7 +314,7 @@
             <div>
               <ion-item no-padding color="accent">
                 <ion-label floating>Do you have a License?</ion-label>
-                <ion-select formControlName="haveMotorcycleLicense" interface="popover" cancelText="Cancel" okText="OK">
+                <ion-select formControlName="haveMotorcycleLicense" interface="popover" cancelText="Cancel" okText="OK" (ionChange)="setValidationForLicenseExpDate()">
                   <ion-option *ngFor="let haveMotorcycleLicense of yesOrNo" [value]="haveMotorcycleLicense">{{ haveMotorcycleLicense }}</ion-option>
                 </ion-select>
               </ion-item>
@@ -327,12 +327,12 @@
           </ion-col>
         </ion-row>
 
-        <ion-row>
+        <ion-row *ngIf="applicationForm.controls['haveMotorcycleLicense'].value == 'Yes'">
             <ion-col>
               <div>
                 <ion-item no-padding color="accent">
                   <ion-label floating>License Expiration Date</ion-label>
-                  <ion-datetime formControlName="licenseexpdt" max="{{ data.maxyear }}" custom-datetime></ion-datetime>
+                  <ion-datetime formControlName="licenseexpdt" max="{{ data.maxyear }}" custom-datetime min="{{ data.today }}"></ion-datetime>
                 </ion-item>
                 <ng-container *ngFor="let validation of validation_messages.licenseexpdt">
                   <div class="error-message" *ngIf="applicationForm.get('licenseexpdt').hasError(validation.type) && (applicationForm.get('licenseexpdt').dirty || applicationForm.get('licenseexpdt').touched || submitAttempt)">
@@ -342,6 +342,12 @@
               </div>
             </ion-col>
           </ion-row>
+        
+        <ion-row *ngIf="applicationForm.controls['haveMotorcycleLicense'].value == 'No'">
+          <ion-col style="color:red; text-align: left; vertical-align:middle;">
+            Note: You can not become Full Riding Member if you do not have a valid license.
+          </ion-col>
+        </ion-row>  
 
         <ion-row *ngIf="applicationForm.controls['haveMotorcycleLicense'].value == 'Yes'">
           <ion-col width="100%" align="center">
@@ -497,7 +503,7 @@
                         <div>
                           <ion-item no-padding color="accent">
                             <ion-label floating>Registration Expiration Date</ion-label>
-                            <ion-datetime formControlName="registrationexpdt" max="{{ data.maxyear }}" custom-datetime></ion-datetime>
+                            <ion-datetime formControlName="registrationexpdt" max="{{ data.maxyear }}" custom-datetime min="{{ data.today }}"></ion-datetime>
                           </ion-item>
                           <div class="validation-errors" *ngIf="applicationForm1.get('registrationexpdt').value=='' && (applicationForm1.get('registrationexpdt').dirty || applicationForm1.get('registrationexpdt').touched || submitAttempt)">
                             <ng-container>
@@ -523,7 +529,7 @@
                         <div>
                           <ion-item no-padding color="accent">
                             <ion-label floating>Insurance Expiration Date</ion-label>
-                            <ion-datetime formControlName="insuranceexpdt" max="{{ data.maxyear }}" custom-datetime></ion-datetime>
+                            <ion-datetime formControlName="insuranceexpdt" max="{{ data.maxyear }}" custom-datetime min="{{ data.today }}"></ion-datetime>
                           </ion-item>
                           <div class="validation-errors" *ngIf="applicationForm1.get('insuranceexpdt').value=='' && (applicationForm1.get('insuranceexpdt').dirty || applicationForm1.get('insuranceexpdt').touched || submitAttempt)">
                               <ng-container>
@@ -585,11 +591,20 @@
         <ng-template #thenBlock>
 
         <ion-row>
+          <ion-col style="color:red; text-align: left; vertical-align:middle;">
+            Note: Only HOGS and AMA members are allowed to have dual membership (membership with LAMA and the other club - HOGS, AMA.)
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
           <ion-col>
             <div>
               <ion-item no-padding color="accent">
                 <ion-label floating>Name of other Club?</ion-label>
-                <ion-input type="text" formControlName="nameOfOtherClub"></ion-input>
+                <ion-select formControlName="nameOfOtherClub" interface="popover">
+                    <ion-option value="HOGS">HOGS</ion-option>
+                    <ion-option value="AMA">AMA</ion-option>
+                </ion-select>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.nameOfOtherClub">
                 <div class="error-message" *ngIf="applicationForm.get('nameOfOtherClub').hasError(validation.type) && (applicationForm.get('nameOfOtherClub').dirty || applicationForm.get('nameOfOtherClub').touched || submitAttempt)">
@@ -747,8 +762,17 @@
             </div>
 
             <div>
+                <ion-item no-padding color="accent">
+                    <ion-label floating>Do you have any allergies?</ion-label>
+                    <ion-select interface="popover" cancelText="Cancel" okText="OK" (ionChange)="changeValueOfAllergies($event.target.value)">
+                        <ion-option *ngFor="let ans of yesOrNo" [value]="ans" [selected]="(!data.isAllergiesTextFieldVisible && (ans === 'No')) ? true : false">{{ ans }}</ion-option>
+                    </ion-select>
+                </ion-item>
+            </div>
+
+            <div *ngIf="data.isAllergiesTextFieldVisible">
               <ion-item no-padding color="accent">
-                <ion-label floating>Allergies</ion-label>
+                <ion-label floating>Please specify allergies</ion-label>
                 <ion-input type="text" formControlName="allergies"></ion-input>
               </ion-item>
               <ng-container *ngFor="let validation of validation_messages.allergies">
@@ -771,7 +795,7 @@
               </ng-container>
             </div>
 
-            <div>
+            <!--div>
               <ion-item no-padding color="accent">
                 <ion-label floating>Member's Title</ion-label>
                 <ion-select formControlName="memberTitle" interface="popover" cancelText="Cancel" okText="OK">
@@ -783,7 +807,7 @@
                   {{ validation.message }}
                 </div>
               </ng-container>
-            </div>
+            </div-->
 
             <!--div>
               <ion-item no-padding color="accent">

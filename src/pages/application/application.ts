@@ -108,6 +108,8 @@ export class ApplicationPage {
       this.data.usacities = [];
       this.data.maxyear = new Date().getFullYear() + 25;
       this.data.spouse_details = null;
+      this.data.today = new Date().toISOString();
+      this.data.isAllergiesTextFieldVisible = false;
       /*this.loading = this.loadingCtrl.create({
         content: '',
       });
@@ -238,6 +240,7 @@ export class ApplicationPage {
       //typeOfChapter: ["", Validators.compose([Validators.required])],
       motorcycles: this.formBuilder.array([])
     });
+    this.applicationForm.controls['memberTitle'].setValue("No Title");
 
     setInterval(() => {
       //console.log('timer');
@@ -310,7 +313,7 @@ export class ApplicationPage {
     'skillsPastimes': [{type: 'required', message: 'SkillsPastimes is required.'}, {type: 'pattern', message: 'Skiils pastimes is invalid.'}],
     'highestEducation': [{type: 'required', message: 'Highest Education is required.'}],
     'bloodType': [{type: 'required', message: 'Blood Type is required.'}],
-    'allergies': [{type: 'required', message: 'Do you have any alergies?  If yes, please specify.  If no, then write "no alergies".'}, {type: 'pattern', message: 'Allergies is invalid.'}],
+    'allergies': [{type: 'required', message: 'Please specify allergie(s).'}, {type: 'pattern', message: 'Allergies is invalid.'}],
     'organDonar': [{ type: 'required', message: 'Please select Yes or No.' }],
     'memberTitle': [{type: 'required', message: 'Member Title is required.'}],
     'typeOfMembership': [{type: 'required', message: 'Type of Membership is required.'}],
@@ -720,7 +723,8 @@ export class ApplicationPage {
     let toast = this.toastCtrl.create({
       message: text,
       duration: 10000,
-      position: 'top'
+      position: 'middle',
+      cssClass: 'myCSSForToast'
     });
     toast.present();
   }
@@ -1147,7 +1151,7 @@ export class ApplicationPage {
   setValidationForMotorcycleInfo() {
     this.applicationForm.controls.spouse_id.setValue(null);
     this.applicationForm.controls.vrfy_spouse_info.setValue(null);
-    if(this.applicationForm.controls.typeOfMembership.value == 'Associate/Asociado') {
+    if(this.applicationForm.controls.typeOfMembership.value == 'Associate') {
       var motorcyclesobjects = this.applicationForm.controls['motorcycles'].value;
       var looplen = motorcyclesobjects.length - 1;
       for (var i = looplen; i >= 0; i--) {
@@ -1265,6 +1269,38 @@ export class ApplicationPage {
           this.shareProvider.stopLoading(this.loading);
         }
       );
+  }
+
+  setValidationForLicenseExpDate() {
+    if(this.applicationForm.controls['haveMotorcycleLicense'].value === 'No') {
+      if((this.applicationForm.controls['typeOfMembership'].value === 'Full Riding Member') || (this.applicationForm.controls['typeOfMembership'].value === 'DAMA')) {
+        this.typeOfMemberships = ["Spousal", "Associate"];
+        this.applicationForm.controls['typeOfMembership'].setValue(null);
+      }
+      this.applicationForm.get("licenseexpdt").setValidators([]);
+      this.applicationForm.get("licenseexpdt").updateValueAndValidity();
+    }
+    else {
+      if(this.applicationForm.controls["gender"].value === 'Male') {
+        this.typeOfMemberships = ["Full Riding Member", "Spousal", "Associate"];
+      }
+      if(this.applicationForm.controls["gender"].value === 'Female') {
+        this.typeOfMemberships = ["DAMA", "Spousal", "Associate"];
+      }
+      this.applicationForm.get("licenseexpdt").setValidators([Validators.compose([Validators.required])]);
+      this.applicationForm.get("licenseexpdt").updateValueAndValidity();
+    }
+  }
+
+  changeValueOfAllergies(allergies) {
+    if(allergies === 'No') {
+      this.applicationForm.controls['allergies'].setValue('No');
+      this.data.isAllergiesTextFieldVisible = false;
+    }
+    else {
+      this.applicationForm.controls['allergies'].setValue('');
+      this.data.isAllergiesTextFieldVisible = true;
+    }
   }
 
 }
