@@ -764,8 +764,8 @@
             <div>
                 <ion-item no-padding color="accent">
                     <ion-label floating>Do you have any allergies?</ion-label>
-                    <ion-select interface="popover" cancelText="Cancel" okText="OK" (ionChange)="changeValueOfAllergies($event.target.value)">
-                        <ion-option *ngFor="let ans of yesOrNo" [value]="ans" [selected]="(!data.isAllergiesTextFieldVisible && (ans === 'No')) ? true : false">{{ ans }}</ion-option>
+                    <ion-select interface="popover" cancelText="Cancel" okText="OK">
+                        <ion-option *ngFor="let ans of yesOrNo" [value]="ans" [selected]="((data.isAllergiesTextFieldVisible) && (ans === 'Yes'))" (ionSelect)="changeValueOfAllergies(ans)">{{ ans }}</ion-option>
                     </ion-select>
                 </ion-item>
             </div>
