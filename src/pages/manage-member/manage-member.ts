@@ -102,7 +102,7 @@ export class ManageMemberPage {
     this.highestEducation = ["Self Taught", "Home Schooled", "High School", "Vocational School", "College"];
     this.bloodTypes = ["O+", "A+", "B+", "AB+", "O-", "A-", "B-", "AB-", "N/A"];
     this.memberTitles = ["No Title", "President", "Vice President", "Treasurer", "Secretary", "Business Manager", "Motor Touring Officer", "Sgt of Arms", "Road Captain", "Retired"];
-    this.typeOfMemberships = ["Riding Member", "DAMA", "Spousal/Pareja", "Prospect", "Probate", "Associate/Asociado"];
+    this.typeOfMemberships = ["Full Riding Member", "DAMA", "Spousal", "Prospect", "Probate", "Associate"];
     this.typeOfChapters = ["Organized Chapter/Capitulo", "Establishing Chapter/Capitulo Estableciendo", "Brother Chapter/Capítulo hermano"];
 
     let country = new FormControl(this.countries[0], Validators.required);
