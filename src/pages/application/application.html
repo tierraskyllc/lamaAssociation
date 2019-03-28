@@ -302,7 +302,7 @@
               </ion-col>
             </ion-row>
 
-        <div *ngIf="applicationForm.get('typeOfMembership').dirty && applicationForm.controls['typeOfMembership'].value != 'Associate'">
+        <div *ngIf="(applicationForm.get('typeOfMembership').dirty && applicationForm.controls['typeOfMembership'].value != 'Associate') || (applicationForm.get('typeOfMembership').value === 'Full Riding Member') || (applicationForm.get('typeOfMembership').value === 'DAMA')">
         <ion-row>
           <ion-col width="100%" align="center">
             <ion-label>Motorcycle Information</ion-label>

@@ -19,6 +19,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
 //import { RecaptchaModule, RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
 //import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
@@ -31,8 +32,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
     SignaturePadModule,
     //RecaptchaModule,
     //RecaptchaFormsModule,
-    IonicModule.forRoot(MyApp)
-
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

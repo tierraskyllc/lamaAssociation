@@ -16,6 +16,7 @@ import { FilePath } from '@ionic-native/file-path';
 import { Camera } from '@ionic-native/camera';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { SignaturePad } from 'angular2-signaturepad/signature-pad';
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -91,7 +92,8 @@ export class ApplicationPage {
     public platform: Platform,
     public loadingCtrl: LoadingController,
     private photoViewer: PhotoViewer,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    private storage: Storage
     ) {
 
       this.data.response = "";
@@ -241,6 +243,17 @@ export class ApplicationPage {
       motorcycles: this.formBuilder.array([])
     });
     this.applicationForm.controls['memberTitle'].setValue("No Title");
+
+    //this.data.tmpjson = '{ "address":"65 Asd H ", "city":"", "state":"", "usastate":"New Jersey", "usacity":"Buena", "zipCode":"09876", "country":"United States", "phone":"5512211216", "dateofbirth":"19800327", "gender":"Male", "age":"38", "placeOfBirth":"", "yearsRiding":"", "haveMotorcycleLicense":"Yes", "licenseexpdt":"20191231", "haveMotorcycleInsurance":"", "anyOtherClub":"Yes", "nameOfOtherClub":"HOGS", "maritalStatus":"Married", "numberOfChildren":"2", "nameOfEmployer":"", "yearsEmployed":"", "occupation":"", "annualSalary":"Retired", "highestEducation":"Self Taught", "skillsPastimes":"", "bloodType":"O", "allergies":"", "organDonar":"Yes", "memberTitle":"No Title", "typeOfMembership":"Full Riding Member", "spouse_id":"null", "vrfy_spouse_info":"null", "motorcycles":[ { "color":"", "year":"", "make":"", "model":"", "licensePlate":"", "currentMileage":"12500", "registrationexpdt":"", "insuranceexpdt":"" } ] }';
+    this.storage.get('application').then((val) => {
+      console.log('Recovered application: ', val);
+      this.recoverApplicationForm(val);
+    });
+
+    setInterval(() => {
+      //console.log('timer');
+      this.saveApplicationForm(this.applicationForm);
+      },5000);
 
     setInterval(() => {
       //console.log('timer');
@@ -1293,6 +1306,7 @@ export class ApplicationPage {
   }
 
   changeValueOfAllergies(allergies) {
+    //this.getAllFormFields(this.applicationForm);
     if(allergies === 'No') {
       this.applicationForm.controls['allergies'].setValue('No');
       this.data.isAllergiesTextFieldVisible = false;
@@ -1300,6 +1314,102 @@ export class ApplicationPage {
     else {
       this.applicationForm.controls['allergies'].setValue('');
       this.data.isAllergiesTextFieldVisible = true;
+    }
+  }
+
+  saveApplicationForm(formGroup: FormGroup) {
+    var myjson = '{';
+    var count = 0;
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      //console.log(field + ': ' + JSON.stringify(control.value));
+      if((control.value !== '') && (control.value !== null) && (control.value !== 'null') && (control.value !== 'NULL') && (control.value !== 0)) {
+        if(count > 0) {
+          myjson = myjson + ',';
+        }
+        if((field === 'country_phone') || (field === 'motorcycles')) {
+          if(field === 'country_phone') {
+            myjson = myjson + '"country": "' + String(this.applicationForm.controls['country_phone'].value['country']['name']).replace(/[\"]/gi, '') + '"';
+            myjson = myjson + ',';
+            myjson = myjson + '"phone": "' + String(this.applicationForm.controls['country_phone'].value['phone']).replace(/[\"]/gi, '') + '"';
+          }
+          else {
+            myjson = myjson + '"' + field + '": ' + JSON.stringify(control.value);
+          }
+        }
+        else {
+          myjson = myjson + '"' + field + '": "' + String(control.value).replace(/[\"]/gi, '') + '"';
+        }
+        count = count + 1;
+      }
+    });
+    myjson = myjson + '}';
+    //console.log(myjson);
+    this.storage.set('application', myjson);
+    //return myjson;
+    console.log('Saved Application Form: ' + myjson);
+  }
+
+  getMotorcycle(color, year, make, model, licensePlate, currentMileage, odometerPic, registrationexpdt, registrationPic, insuranceexpdt, insurancePic) {
+    this.data.motorcyclesobjects.push({"odometerPic":odometerPic, "registrationPic":registrationPic, "insurancePic":insurancePic});
+    return this.formBuilder.group({
+      color: [color],
+      year: [year],
+      make: [make],
+      model: [model],
+      licensePlate: [licensePlate],
+      currentMileage: [currentMileage],
+      registrationexpdt: [registrationexpdt],
+      insuranceexpdt: [insuranceexpdt]
+    });
+  }
+
+  displayMotorcycle(color, year, make, model, licensePlate, currentMileage, odometerPic, registrationexpdt, registrationPic, insuranceexpdt, insurancePic) {
+    const control = <FormArray>this.applicationForm.controls['motorcycles'];
+    control.push(this.getMotorcycle(color, year, make, model, licensePlate, currentMileage, odometerPic, registrationexpdt, registrationPic, insuranceexpdt, insurancePic));
+    //this.displayMotorCycles();
+  }
+
+  recoverApplicationForm(recovered_application_json) {
+    //console.log(recovered_application_json);
+    if(recovered_application_json != undefined) {
+      this.data.tmpjsobj = JSON.parse(recovered_application_json);
+      for(var key in this.data.tmpjsobj){
+          //console.log(key + ' : ' + this.data.tmpjsobj[key]);
+          if(key === 'country') {
+            this.applicationForm.controls['country_phone'].value['country']['name'] = this.data.tmpjsobj[key];
+            //this.applicationForm.controls['country_phone'].get('country').setValue(this.data.tmpjsobj[key]);
+          }
+          else if(key === 'phone') {
+            //this.applicationForm.controls['country_phone'].value['phone'] = this.data.tmpjsobj[key];
+            //var tmpcntrl = this.applicationForm.controls['country_phone'];
+            this.applicationForm.controls['country_phone'].get('phone').setValue(this.data.tmpjsobj[key]);
+            
+          }
+          else if(key === 'gender') {
+            if(this.data.tmpjsobj[key] === 'Male') {
+              this.typeOfMemberships = ["Full Riding Member", "Spousal", "Associate"];
+            }
+            if(this.data.tmpjsobj[key] === 'Female') {
+              this.typeOfMemberships = ["DAMA", "Spousal", "Associate"];
+            }
+            this.applicationForm.controls[key].setValue(this.data.tmpjsobj[key]);
+          }
+          else if(key === 'motorcycles') {
+            for(var key1 in this.data.tmpjsobj[key]){
+              this.displayMotorcycle(this.data.tmpjsobj[key][key1]['color'], this.data.tmpjsobj[key][key1]['year'], this.data.tmpjsobj[key][key1]['make'], this.data.tmpjsobj[key][key1]['model'], this.data.tmpjsobj[key][key1]['licensePlate'], this.data.tmpjsobj[key][key1]['currentMileage'], this.data.tmpjsobj[key][key1]['odometerPic'], this.data.tmpjsobj[key][key1]['registrationexpdt'], this.data.tmpjsobj[key][key1]['registrationPic'], this.data.tmpjsobj[key][key1]['insuranceexpdt'], this.data.tmpjsobj[key][key1]['insurancePic']);
+            }
+          }
+          else {
+              this.applicationForm.controls[key].setValue(this.data.tmpjsobj[key]);
+              if((key === 'allergies') && (this.data.tmpjsobj[key] !== 'No')) {
+                this.data.isAllergiesTextFieldVisible = true;
+              }
+              if((key === 'usastate') && (this.data.tmpjsobj[key] !== null) && (this.data.tmpjsobj[key] !== '')) {
+                this.populateCitiesByUSAState();
+              }
+          }
+      }
     }
   }
 
