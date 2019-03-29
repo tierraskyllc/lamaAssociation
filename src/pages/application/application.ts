@@ -1408,6 +1408,9 @@ export class ApplicationPage {
               if((key === 'usastate') && (this.data.tmpjsobj[key] !== null) && (this.data.tmpjsobj[key] !== '')) {
                 this.populateCitiesByUSAState();
               }
+              if((key === 'spouse_id') && (this.data.tmpjsobj[key] !== null) && (this.data.tmpjsobj[key] !== '')) {
+                this.getSpouseInfo();
+              }
           }
       }
     }
