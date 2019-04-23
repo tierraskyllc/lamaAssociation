@@ -25,8 +25,8 @@
                   <ion-row>
                     <ion-col>
                       <ion-item no-padding color="accent">
-                        <ion-label floating>License Expiration Date</ion-label>
-                        <ion-datetime formControlName="licenseexpdt" max="{{ data.maxyear }}" custom-datetime [disabled]="data.license_exp_alert_msg == 'In Review'"></ion-datetime>
+                        <ion-label floating><ion-icon name="add-circle"></ion-icon>Add License Expiration Date</ion-label>
+                        <ion-datetime formControlName="licenseexpdt" min="2020" max="{{ data.maxyear }}" custom-datetime [disabled]="data.license_exp_alert_msg == 'In Review'"></ion-datetime>
                       </ion-item>
                       <ng-container *ngFor="let validation of validation_messages.licenseexpdt">
                           <div class="error-message" *ngIf="garageForm.get('licenseexpdt').hasError(validation.type)">
@@ -144,8 +144,8 @@
                           <ion-row>
                             <ion-col>
                               <ion-item no-padding color="accent">
-                                <ion-label floating>Registration Expiration Date</ion-label>
-                                <ion-datetime formControlName="registrationexpdt" max="{{ data.maxyear }}" custom-datetime [disabled]="motorcycleInfo['registration_exp_alert_msg'] == 'In Review'"></ion-datetime>
+                                <ion-label floating><ion-icon name="add-circle"></ion-icon>Add Registration Expiration Date</ion-label>
+                                <ion-datetime formControlName="registrationexpdt" min="2020" max="{{ data.maxyear }}" custom-datetime [disabled]="motorcycleInfo['registration_exp_alert_msg'] == 'In Review'"></ion-datetime>
                               </ion-item>
                               <ng-container>
                                   <div class="error-message" *ngIf="data.motorcycleformgroups[i].get('registrationexpdt').hasError('required')">
@@ -190,8 +190,8 @@
                             <ion-row>
                               <ion-col>
                                 <ion-item no-padding color="accent">
-                                  <ion-label floating>Insurance Expiration Date</ion-label>
-                                  <ion-datetime formControlName="insuranceexpdt" max="{{ data.maxyear }}" custom-datetime [disabled]="motorcycleInfo['insurance_exp_alert_msg'] == 'In Review'"></ion-datetime>
+                                  <ion-label floating><ion-icon name="add-circle"></ion-icon>Add Insurance Expiration Date</ion-label>
+                                  <ion-datetime formControlName="insuranceexpdt" min="2020" max="{{ data.maxyear }}" custom-datetime [disabled]="motorcycleInfo['insurance_exp_alert_msg'] == 'In Review'"></ion-datetime>
                                 </ion-item>
                                 <ng-container>
                                     <div class="error-message" *ngIf="data.motorcycleformgroups[i].get('insuranceexpdt').hasError('required')">
@@ -343,8 +343,8 @@
     <ion-col>
       <div>
         <ion-item no-padding color="accent">
-          <ion-label floating>Registration Expiration Date</ion-label>
-          <ion-datetime formControlName="registrationexpdt" max="{{ data.maxyear }}" custom-datetime></ion-datetime>
+          <ion-label floating><ion-icon name="add-circle"></ion-icon>Add Registration Expiration Date</ion-label>
+          <ion-datetime formControlName="registrationexpdt" min="2020" max="{{ data.maxyear }}" custom-datetime></ion-datetime>
         </ion-item>
         <div class="validation-errors" *ngIf="newMotorcycleForm.get('registrationexpdt').value=='' && (newMotorcycleForm.get('registrationexpdt').dirty || newMotorcycleForm.get('registrationexpdt').touched || submitAttempt)">
           <ng-container>
@@ -374,8 +374,8 @@
     <ion-col>
       <div>
         <ion-item no-padding color="accent">
-          <ion-label floating>Insurance Expiration Date</ion-label>
-          <ion-datetime formControlName="insuranceexpdt" max="{{ data.maxyear }}" custom-datetime></ion-datetime>
+          <ion-label floating><ion-icon name="add-circle"></ion-icon>Add Insurance Expiration Date</ion-label>
+          <ion-datetime formControlName="insuranceexpdt" min="2020" max="{{ data.maxyear }}" custom-datetime></ion-datetime>
         </ion-item>
         <div class="validation-errors" *ngIf="newMotorcycleForm.get('insuranceexpdt').value=='' && (newMotorcycleForm.get('insuranceexpdt').dirty || newMotorcycleForm.get('insuranceexpdt').touched || submitAttempt)">
             <ng-container>
