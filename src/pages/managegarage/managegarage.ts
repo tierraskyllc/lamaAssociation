@@ -58,7 +58,7 @@ export class ManagegaragePage {
     private http: Http,
     private shareProvider: ShareProvider,
     public navCtrl: NavController,
-    public toastCtrl: ToastService,
+    //public toastCtrl: ToastService,
     public modalCtrl: ModalController,
     public actionSheetCtrl: ActionSheetController,
     public loadingCtrl: LoadingController,
@@ -67,7 +67,7 @@ export class ManagegaragePage {
     public platform: Platform,
     private filePath: FilePath,
     private file: File,
-    public toastCtrl1: ToastController,
+    public toastCtrl: ToastController,
     private transfer: FileTransfer,
     public navParams: NavParams,
   ) {
@@ -77,6 +77,7 @@ export class ManagegaragePage {
       this.data.error = "";
       this.data.licensepic = "";
       this.data.motorcyclesobjects = [];
+      this.data.minyear = new Date().getFullYear();
       this.data.maxyear = new Date().getFullYear() + 25;
       this.data.motorcycleformgroups = [];
       //this.data.isNewMotorcycleHidden = false;
@@ -703,10 +704,11 @@ export class ManagegaragePage {
   }
   
   private presentToast(text) {
-    let toast = this.toastCtrl1.create({
+    let toast = this.toastCtrl.create({
       message: text,
       duration: 10000,
-      position: 'top'
+      position: 'middle',
+      cssClass: 'myCSSForToast'
     });
     toast.present();
   }
@@ -750,7 +752,7 @@ export class ManagegaragePage {
       // Use the FileTransfer to upload the image
       fileTransfer.upload(this.lastImageFullPath, url, options).then((data) => {
         this.loading.dismissAll();
-        this.presentToast('Image succesful uploaded.');
+        this.presentToast('Image succesfully uploaded.');
         this.lastImage = "";
         this.lastImageFullPath = "";
         this.isUploadImageRunning = false;
