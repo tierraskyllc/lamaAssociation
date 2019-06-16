@@ -88,22 +88,27 @@ export class ProfilePage {
     private alertCtrl: AlertController
   ) {
   }
+  garagePage() {
+    this.navCtrl.push("GaragePage");
+  }
+
+  membersPage() {
+    this.navCtrl.push("ChapterMembersPage");
+  }
 
   eventsPage() {
     this.navCtrl.push("EventsPage");
   }
 
-  garagePage() {
-    this.navCtrl.push("GaragePage");
+  chatRoomPage() {
+    // this.navCtrl.push("chatRoomPage");
   }
 
   chaptersPage() {
     this.navCtrl.push("ChaptersPage");
   }
 
-  membersPage() {
-    this.navCtrl.push("ChapterMembersPage");
-  }
+
 
   openQrCodeModal() {
     this.openModal("QrCodeModalPage");
@@ -131,7 +136,7 @@ export class ProfilePage {
     this.date = new Date();
     this.getCalendarMonth(this.date.getFullYear(), this.date.getMonth()+1);
     this.getDaysOfMonth();
-    setInterval(() => {      
+    setInterval(() => {
       //console.log('timer');
       this.uploadImage();
       },2000);
@@ -296,18 +301,18 @@ export class ProfilePage {
     } else {
       this.currentDate = 999;
     }
-  
+
     var firstDayThisMonth = new Date(this.date.getFullYear(), this.date.getMonth(), 1).getDay();
     var prevNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth(), 0).getDate();
     for(var i = prevNumOfDays-(firstDayThisMonth-1); i <= prevNumOfDays; i++) {
       this.daysInLastMonth.push(i);
     }
-  
+
     var thisNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth()+1, 0).getDate();
     for (var i = 0; i < thisNumOfDays; i++) {
       this.daysInThisMonth.push(i+1);
     }
-  
+
     var lastDayThisMonth = new Date(this.date.getFullYear(), this.date.getMonth()+1, 0).getDay();
     var nextNumOfDays = new Date(this.date.getFullYear(), this.date.getMonth()+2, 0).getDate();
     for (var i = 0; i < (6-lastDayThisMonth); i++) {
@@ -484,7 +489,7 @@ export class ProfilePage {
       saveToPhotoAlbum: false,
       correctOrientation: true
     };
-   
+
     // Get the data of an image
     this.camera.getPicture(options).then((imagePath) => {
       // Special handling for Android library
@@ -523,7 +528,7 @@ export class ProfilePage {
     //this.presentMessageOnlyAlert(newFileName);
     return newFileName;
   }
-  
+
   // Copy the image to a local folder
   private copyFileToLocalDir(namePath, currentName, newFileName) {
     //this.presentMessageOnlyAlert(this.file.dataDirectory);
@@ -535,7 +540,7 @@ export class ProfilePage {
       console.log('Error while storing file.  This error can be safely ignored.');
     });
   }
-  
+
   private presentToast(text) {
     let toast = this.toastCtrl.create({
       message: text,
@@ -544,7 +549,7 @@ export class ProfilePage {
     });
     toast.present();
   }
-  
+
   // Always get the accurate path to your apps folder
   public pathForImage(img) {
     if (img === null) {
@@ -563,13 +568,13 @@ export class ProfilePage {
       //this.presentToast(this.lastImageFullPath);
     // Destination URL
       var url = this.shareProvider.server + "application/upload.php";
-    
+
       // File for Upload
       var targetPath = this.pathForImage(this.lastImage);
-    
+
       // File name only
       var filename = this.lastImage;
-    
+
       var options = {
         fileKey: "file",
         fileName: filename,
@@ -577,14 +582,14 @@ export class ProfilePage {
         mimeType: "multipart/form-data",
         params : {'fileName': filename, 'sessionid': this.shareProvider.sessionid}
       };
-    
+
       const fileTransfer: FileTransferObject = this.transfer.create();
-    
+
       this.loading = this.loadingCtrl.create({
         content: 'Uploading...',
       });
       this.loading.present();
-    
+
       // Use the FileTransfer to upload the image
       fileTransfer.upload(this.lastImageFullPath, url, options).then((data) => {
         this.updateProfilePicInDB(this.lastImage);
@@ -631,7 +636,7 @@ export class ProfilePage {
                 this.displayProfilePic(lastImage);
                 //this.presentMessageOnlyAlert(decoded_response[2]);
                 //this.navCtrl.pop();
-              } 
+              }
               else if (!decoded_response[0]) {
                 this.data.error = decoded_response[2];
                 this.presentMessageOnlyAlert(decoded_response[2]);

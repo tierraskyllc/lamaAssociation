@@ -4,10 +4,10 @@
   </ion-navbar>
 </ion-header>
 
-
 <ion-content padding>
   <ion-grid>
-<ion-list radio-group>
+    <!-- commenting out thinking about not using this feature and place it in the manage members ares for the board -->
+    <!-- <ion-list radio-group>
   <ion-row>
     <ion-col>
       <ion-item>
@@ -23,19 +23,35 @@
         </ion-item>
       </ion-col>
   </ion-row>
-</ion-list>
-
+</ion-list> -->
     <ion-row style="">
-      <ion-col width="75%" style="text-align: center; color: #FCD736; font-weight: bold;">
-        Member's Name
+      <ion-col
+        width="50%"
+        style="text-align: center; color: #FCD736; font-weight: bold;">
+        Member
       </ion-col>
-      <ion-col width="25%" style="text-align: center; color: #FCD736; font-weight: bold;">
-        Miles (Year to Date)
+
+      <ion-col
+        width="25%"
+        style="text-align: center; color: #FCD736; font-weight: bold;">
+        On Map
+      </ion-col>
+
+      <ion-col
+        width="25%"
+        style="text-align: center; color: #FCD736; font-weight: bold;">
+        Miles (YTD)
       </ion-col>
     </ion-row>
     <ion-row *ngFor="let item of items">
-      <ion-col width="75%" style="text-align: left; color: #FCD736;">
-        {{ item["first_name"]}}&nbsp;{{item["last_name"] }}
+      <ion-col width="50%" style="text-align: left; color: #FCD736;">
+        {{ item["first_name"] }}&nbsp;{{ item["last_name"] }}
+      </ion-col>
+      <ion-col width="25%" style="text-align: center;">
+
+<ion-item color="accent"><ion-toggle checked="true"></ion-toggle> </ion-item>
+
+
       </ion-col>
       <ion-col width="25%" style="text-align: center; color: #FCD736;">
         {{ item["miles"] }}
