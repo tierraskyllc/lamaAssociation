@@ -6,56 +6,48 @@
 
 <ion-content padding>
   <ion-grid>
-    <!-- commenting out thinking about not using this feature and place it in the manage members ares for the board -->
-    <!-- <ion-list radio-group>
-  <ion-row>
-    <ion-col>
-      <ion-item>
-        <ion-label>Events</ion-label>
-        <ion-radio value="events_miles" checked></ion-radio>
-      </ion-item>
-    </ion-col>
-
-      <ion-col>
-        <ion-item>
-          <ion-label>Miles</ion-label>
-          <ion-radio value="miles" unchecked></ion-radio>
-        </ion-item>
-      </ion-col>
-  </ion-row>
-</ion-list> -->
-    <ion-row style="">
+    <ion-row>
       <ion-col
-        width="50%"
-        style="text-align: center; color: #FCD736; font-weight: bold;">
+        width="60%"
+        style="text-align: center; color: #FCD736; font-weight: bold;"
+      >
         Member
       </ion-col>
 
       <ion-col
-        width="25%"
-        style="text-align: center; color: #FCD736; font-weight: bold;">
-        On Map
+        width="20%"
+        style="text-align: center; color: #FCD736; font-weight: bold;"
+      >
+        Miles (YTD)
       </ion-col>
 
       <ion-col
-        width="25%"
-        style="text-align: center; color: #FCD736; font-weight: bold;">
-        Miles (YTD)
+        width="20%"
+        style="text-align: right; color: #FCD736; font-weight: bold;"
+      >
+        Share Location
       </ion-col>
+
+
+
+
     </ion-row>
-    <ion-row *ngFor="let item of items">
-      <ion-col width="50%" style="text-align: left; color: #FCD736;">
-        {{ item["first_name"] }}&nbsp;{{ item["last_name"] }}
-      </ion-col>
-      <ion-col width="25%" style="text-align: center;">
 
-<ion-item color="accent"><ion-toggle checked="true"></ion-toggle> </ion-item>
+    <ion-list>
+      <ion-item *ngFor="let item of items">
 
 
-      </ion-col>
-      <ion-col width="25%" style="text-align: center; color: #FCD736;">
-        {{ item["miles"] }}
-      </ion-col>
-    </ion-row>
+
+        <ion-avatar item-start><img images-filter [src]="" /></ion-avatar>
+
+        <ion-label item-title  text-wrap>{{ item["first_name"] }} {{ item["last_name"] }}</ion-label>
+
+        <ion-label item-title>{{ item["miles"] }}</ion-label>
+
+        <ion-toggle checked="false"></ion-toggle>
+
+
+      </ion-item>
+    </ion-list>
   </ion-grid>
 </ion-content>

@@ -1,40 +1,59 @@
 //////////////////////////////////////////////////
-// YELLOW DARK THEME
 
-//  Font Style
-//  Font sizes
-//  Global Colors
-//  Global Opacity
-//  Color Function
-//  Gradients
-//  Changing Background Images in Black&White Mode
-//  Blend Mode Colors
-//  Dividers Settings
-//  Border Radius
-//  Content Color Settings
-//  Shadows
-//  Icon Sizes
-//  Icon Settings
-//  Social Icons Color
-//  Span Settings
-//  LIST VIEWS - Header
-//  LIST VIEWS - Item Parameters
-//  LIST VIEWS - Subitem Parameters
-//  Button Settings
-//  Google Cards Settings
-//  Swipe Item
-//  Parallax Settings
-//  Checkbox
-//  Wizard Settings
-//  Input Field Settings
-//  Search Bar Settings
-//  Google Maps
-//  Animations
-//  Background Sizes
-//  Default Overview Ionic
+// Theme: Ionic 3 UI Theme/Template App - Material Design - Yellow Dark
+// Web Site: https://csform.com/
+// Author: CSFORM
+// Email support:  dev@csform.com
+
+//////////////////////////////////////////////////
+/* 1# Global Settings Font Style
+/* 2# Global Settings Font Size
+/* 3# Global Colors Setting
+/* 4# Global Opacity
+/* 5# Function to print color
+/* 6# Gradient Settings
+/* 7# Changing Background Images in Black&White Mode
+/*  8# Blend Mode Colors
+/* 9# Images Settings Black&White Mode
+/* 10# Divider Settings
+/* 11# Border Radius Settings
+/* 12# List Color Settings
+/* 13# List Activated Button
+/* 14# Settings Background Your App
+/* 15# Settings Border Color Border Item
+/* 16# Settings Shadows
+/* 17# Settings Icon Size
+/* 18# Icon Settings Section
+/* 19# Social Icons Color
+/* 20# Settings Span Section
+/* 21# Header Section Settings
+/* 22# LIST VIEWS - Item Parameters
+/* 23# LIST VIEWS - Subitem Parameters
+/* 24# Button Settings Section
+/* 25# Fab Button Settings Section
+/* 26# Google Cards Settings Section
+/* 27# Swipe Settings Section
+/* 28# Parallax Settings Section
+/* 29# Checkbox Settings Section
+/* 30# Toggle Settings Section
+/* 31# Radio Button Settings Section
+/* 32# Wizard Settings Section
+/* 33# Input Field Settings
+/* 34# Range Field Settings
+/* 35# Tabs Section Settings
+/* 36# Search Bar Setting
+/* 37# Google Maps Setting
+/* 38# Settings Loading Setting
+/* 39# Settings Loading Setting
+/* 40# Action Sheet Settings
+/* 41# Alert message Setting
+/* 42# Alert with input settings
+/* 43# Alert with radio button settings
+/* 44# Default Overview Ionic
 //////////////////////////////////////////////////
 
-// Settings Font Style
+/* 1# Global Settings Font Style
+================================================*/
 $font-name: "Roboto", sans-serif;
 $font-weight-value: 300 !default;
 
@@ -69,7 +88,8 @@ p {
   font-weight: $font-weight-value;
 }
 
-// Settings Font Size
+/* 2# Global Settings Font Size
+================================================*/
 $h1-font-size: 26px;
 $h2-font-size: 20px;
 $h3-font-size: 16px;
@@ -82,25 +102,27 @@ $text-font-size: 14px;
   background-color: transparent !important;
 }
 
-// Global Colors
+/* 3# Global Colors Setting
+================================================*/
 $palettes: (
   mainColors: (
     // Also used for backgrounds.
       primary: #424242,
-    // Used for toolbars
+    // Used for list color, list activated button, list border item color, header-title, header-subtitle, button-clear-outline, swipe, checkbox, tabs, search-bar, map-header, maps-title, maps-subtitle, toolbar, action-sheet, Loading, alert
       secondary: #fcd736,
-    // Used for various small elements
+    // Used for icon, item-divider, span, header-bcg, header-divider, button, fab button, checkbox, toggle, radio button, wizard-bcg, input field, range, search-bar, map-header, map-content, toolbar-background, alert, spiner
       accent: #202020,
-    //Used for icon-search-bar, loaders-spinners, checkbox-item, icon, button, span, input-field-icons
+    //Used for background your app, list border item color, button, fab button, checkbox, action-sheet, alert
+      accentLight: #fefefe //Used for toggle
   ),
   textColors: (
     // Used for text colors in all screens
       primary: #fcd736,
-    // Used for text colors in: item-title, item-subtitle, header-title, header-subtitle
+    // Used for text colors in: item-title, button-clear, card-title, parallax-title, parallax-subtitle, tabs-title, tabs-subtitle, search-bar, loading, action-sheet, alert, wizard-body-text, wizard-title
       secondary: #fefefe,
-    // Used for text colors in: buttons, header-title, subitem-title, subitem-subtitle
+    // Used for text colors in: card-subtitle, item-subtitle, card-body-text, description, alert
       accent: #ffffff,
-    // Used for text colors in: header-title, header-subtitle
+    // Used for text colors in: subitem-title, swiped-item-title, subitem-subtitle
       danger: #e91536,
     background-selection: #ffffff//background-selection of the datetime
   ),
@@ -111,7 +133,8 @@ $palettes: (
   )
 );
 
-// Global Opacity
+/*  4# Global Opacity
+================================================*/
 $global-opacity: (
   "opacity0": 0,
   "opacity10": 0.1,
@@ -126,7 +149,8 @@ $global-opacity: (
   "opacity100": 1
 );
 
-// Function to print color
+/*  5# Function to print color
+================================================*/
 @function theme-colors($name: "blendModes", $variant: "primary", $opacity: 1) {
   // Get the color spectrum
   $color-spectrum: map-get($palettes, $name);
@@ -145,7 +169,8 @@ $global-opacity: (
   @return $color;
 }
 
-// Gradient
+/*  6# Gradient Settings
+================================================*/
 @mixin gradient-accent {
   background: #fcb64e;
   background: -moz-linear-gradient(left, #fcb64e 0%, #f1582c 50%, #b72025 100%);
@@ -159,12 +184,15 @@ $global-opacity: (
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr=  '#fcb64e', endColorstr='#b72025',GradientType=1 );
 }
 
-// Changing Background Images in Black&White Mode
+/*  7# Changing Background Images in Black&White Mode
+=======================================================*/
 @mixin black-white-mode {
   background-color: theme-colors("blendModes", "primary");
   background-blend-mode: luminosity;
 }
-// Darkening and Black&White Blend Mode
+
+/*  8# Blend Mode Colors
+=======================================================*/
 @mixin darkening-blend-mode {
   @include black-white-mode;
   &::before {
@@ -181,6 +209,8 @@ $global-opacity: (
   }
 }
 
+/* 9# Images Settings Black&White Mode
+=======================================================*/
 [images-filter] {
   -webkit-filter: grayscale(100%);
   filter: grayscale(100%);
@@ -199,37 +229,56 @@ $global-opacity: (
   }
 }
 
-// Divider Settings
+/* 10# Divider Settings
+=======================================================*/
 $item-divider-small: 1px solid theme-colors("mainColors", "secondary");
 $item-divider-medium: 2px solid theme-colors("mainColors", "secondary");
 $item-divider-large: 4px solid theme-colors("mainColors", "secondary");
 
-// Border Radius
+/* 11# Border Radius Settings
+=======================================================*/
 $border-radius: 4px;
 
-// List Color Settings
+/* 12# List Color Settings
+=======================================================*/
 $list-background-color: theme-colors("mainColors", "primary");
-// List Activated Button
+
+/* 13# List Activated Button
+=======================================================*/
 $list-md-activated-background-color: theme-colors("mainColors", "primary");
 $list-ios-activated-background-color: theme-colors("mainColors", "primary");
 
-// Settings Border Color Border Item
+/* 14# Settings Background Your App
+=======================================================*/
+// Settings for Android
+$background-color: theme-colors("mainColors", "accent");
+// Settings for ios
+$content-ios-outer-background: theme-colors("mainColors", "accent");
+
+/* 15# Settings List Border Item Color
+=======================================================*/
+// Settings for Android
 $list-md-border-color: theme-colors("mainColors", "accent");
 $item-md-divider-border-bottom: 1px solid $list-md-border-color;
-$item-ios-divider-background: theme-colors("mainColors", "primary");
 $item-md-divider-background: theme-colors("mainColors", "primary");
+// Settings for ios
+$item-ios-divider-background: theme-colors("mainColors", "primary");
+$list-ios-border-color: theme-colors("mainColors", "accent");
 
 // Content Color Settings
 $content-bcg: red !important; // TESTIRAJ
 
 // Settings Background Your App
 $background-color: theme-colors("mainColors", "accent");
-// Shadows
+
+/* 16# Settings Shadows
+=======================================================*/
 $box-shadow-z1: 0 2px 10px rgba(0, 0, 0, 0.2);
 $box-shadow-z2: 0 4px 10px rgba(0, 0, 0, 0.2);
 $box-shadow-z3: 0 6px 10px rgba(0, 0, 0, 0.2);
 
-// Icon Sizes
+/* 17# Settings Icon Size
+=======================================================*/
 $icon-size: (
   "icon-small": 20px,
   "icon-medium": 32px,
@@ -239,7 +288,8 @@ $icon-size: (
   @return map-get($icon-size, $key);
 }
 
-// Icon Settings
+/* 18# Icon Settings Section
+================================================*/
 [icon-small] {
   color: theme-colors("mainColors", "secondary", "opacity60") !important;
   font-size: icon-size("icon-small") !important;
@@ -254,7 +304,8 @@ $icon-size: (
   font-size: icon-size("icon-large") !important;
 }
 
-//  Social Icons Color
+/* 19# Social Icons Color
+================================================*/
 @mixin social {
   @if & {
     i.icon {
@@ -265,7 +316,8 @@ $icon-size: (
   }
 }
 
-// Span Settings
+/* 20# Settings Span Section
+================================================*/
 [span-small] {
   color: theme-colors("mainColors", "secondary");
   font-size: $h5-font-size;
@@ -281,7 +333,12 @@ $icon-size: (
   font-size: $h1-font-size;
 }
 
-// LIST VIEWS - Header
+[font-bold] {
+  font-weight: bold;
+}
+
+/* 21# Header Section Settings
+================================================*/
 [header-title] {
   color: theme-colors("mainColors", "primary");
   font-size: $h1-font-size;
@@ -303,18 +360,24 @@ $icon-size: (
   border: none;
 }
 
-// LIST VIEWS - Item Parameters
+/* 22# LIST VIEWS - Item Parameters
+================================================*/
 [item-title] {
   color: theme-colors("textColors", "primary") !important;
   font-size: $h2-font-size !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 [item-subtitle] {
   color: theme-colors("textColors", "secondary", "opacity60") !important;
   font-size: $h5-font-size !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-// LIST VIEWS - Subitem Parameters
+/* 23# LIST VIEWS - Subitem Parameters
+================================================*/
 [subitem-title] {
   color: theme-colors("textColors", "accent");
   font-size: $h4-font-size;
@@ -326,7 +389,8 @@ $icon-size: (
   font-size: $h5-font-size;
 }
 
-// Button Settings
+/* 24# Button Settings Section
+================================================*/
 [default-button] {
   background-color: theme-colors("mainColors", "secondary") !important;
   color: theme-colors("mainColors", "accent") !important;
@@ -346,7 +410,26 @@ $icon-size: (
   border: 1px solid theme-colors("mainColors", "primary") !important;
 }
 
-// Fab Button Settings
+[button-icon] {
+  background: theme-colors("mainColors", "primary") !important;
+  color: theme-colors("textColors", "primary") !important;
+  font-size: $h5-font-size !important;
+  height: auto !important;
+  box-shadow: none !important;
+  border-radius: $border-radius !important;
+  text-transform: capitalize !important;
+  padding: 6px 10px 6px 8px !important;
+}
+
+[button-icon-clear] {
+  background-color: transparent !important;
+  color: theme-colors("textColors", "accent") !important;
+  font-size: $h4-font-size !important;
+  font-weight: 400 !important;
+}
+
+/* 25# Fab Button Settings Section
+================================================*/
 [button-ion-fab] {
   background-color: theme-colors("mainColors", "secondary") !important;
   color: theme-colors("mainColors", "accent") !important;
@@ -382,10 +465,13 @@ $icon-size: (
   }
 }
 
-//Google Cards Settings
+/* 26# Google Cards Settings Section
+================================================*/
 [card-title] {
   color: theme-colors("textColors", "primary") !important;
   font-size: $h2-font-size !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 [card-subtitle] {
@@ -412,6 +498,8 @@ $icon-size: (
 //   background-color: theme-colors('mainColors', 'primary', 'opacity60')!important;
 // }
 
+/* 27# Swipe Settings Section
+================================================*/
 $item-md-sliding-content-background: theme-colors("mainColors", "primary");
 
 [swiped-item-title] {
@@ -421,7 +509,8 @@ $item-md-sliding-content-background: theme-colors("mainColors", "primary");
   text-transform: initial;
 }
 
-// Parallax Settings
+/* 28# Parallax Settings Section
+================================================*/
 [parallax-title] {
   color: theme-colors("textColors", "primary");
   font-size: $h1-font-size !important;
@@ -431,7 +520,11 @@ $item-md-sliding-content-background: theme-colors("mainColors", "primary");
   color: theme-colors("textColors", "primary");
   font-size: $h4-font-size !important;
 }
-//// I  experimenting but I'm not getting it
+
+[parallax-description] {
+  color: theme-colors("textColors", "secondary", "opacity80") !important;
+}
+
 // Settings for Android
 $card-content-md-color-on: theme-colors("mainColors", "secondary");
 $card-content-md-color-off: theme-colors("mainColors", "secondary");
@@ -504,7 +597,8 @@ $radio-ios-color-off: theme-colors("mainColors", "accent");
   color: #fff;
 }
 
-// Checkbox
+/* 29# Checkbox Settings Section
+================================================*/
 // Settings for ios
 $checkbox-ios-background-color-on: theme-colors("mainColors", "secondary");
 $checkbox-ios-background-color-off: theme-colors("mainColors", "primary");
@@ -520,17 +614,31 @@ $checkbox-md-icon-border-radius: 4px;
 $checkbox-md-icon-size: 18px;
 $checkbox-md-icon-checkmark-color: theme-colors("mainColors", "accent");
 
-// Toggle
-// $toggle-ios-width: 36px;
-// $toggle-md-track-width: 36px;
-// $toggle-md-track-height: 36px;
-// $toggle-md-handle-width:	20px;
-// $toggle-md-handle-height: 20px;
-$toggle-md-track-background-color-on: #69BB7B;
-$toggle-md-track-background-color-off: #f53d3d;
+/* 30# Toggle Settings Section
+================================================*/
+// Settings for android
+$toggle-md-track-background-color-on: theme-colors("mainColors", "secondary");
+$toggle-md-handle-background-color-off: theme-colors(
+  "mainColors",
+  "accentLight"
+);
+$toggle-md-handle-background-color-on: theme-colors(
+  "mainColors",
+  "accentLight"
+);
+// Settings for ios
+$toggle-ios-background-color-on: theme-colors("mainColors", "secondary");
+$toggle-ios-handle-background-color: theme-colors("mainColors", "accentLight");
 
+/* 31# Radio Button Settings Section
+================================================*/
+// Settings for android
+$radio-md-color-on: theme-colors("mainColors", "secondary");
+// Settings for ios
+$radio-ios-color-on: theme-colors("mainColors", "secondary");
 
-// Wizard Setting
+/* 32# Wizard Settings Section
+================================================*/
 [wizard-bcg] {
   background-color: theme-colors("mainColors", "secondary");
 }
@@ -543,7 +651,9 @@ $toggle-md-track-background-color-off: #f53d3d;
   font-size: $h4-font-size !important;
 }
 
-// Input Field Settings
+/* 33# Input Field Settings
+================================================*/
+// Settings for Android
 $text-input-md-highlight-color: theme-colors(
   "mainColors",
   "secondary"
@@ -552,13 +662,13 @@ $text-inpu-highlight-color-valid: theme-colors(
   "mainColors",
   "secondary"
 ) !important;
+
 $text-input-highlight-color-invalid: red !important;
 $text-input-md-background-color: theme-colors(
   "mainColors",
   "secondary"
 ) !important;
-
-// Input Field Settings IOS
+// Settings for Ios
 $text-input-ios-highlight-color: theme-colors(
   "mainColors",
   "secondary"
@@ -568,8 +678,26 @@ $text-input-ios-background-color: theme-colors(
   "secondary"
 ) !important;
 
-// Tabs Setting
+//Settings text-input
+.text-input {
+  color: theme-colors("textColors", "primary") !important;
+}
 
+/* 34# Range Field Settings
+================================================*/
+// Settings for Android
+$range-md-bar-active-background-color: theme-colors("mainColors", "secondary");
+$range-md-tick-background-color: theme-colors("mainColors", "secondary");
+$range-md-tick-width: 2px;
+$range-md-tick-height: 8px;
+$range-md-tick-border-radius: 0px !important;
+// Settings for Ios
+$range-ios-bar-active-background-color: theme-colors("mainColors", "secondary");
+$range-ios-tick-background-color: theme-colors("mainColors", "secondary");
+$range-ios-knob-background-color: theme-colors("mainColors", "secondary");
+
+/* 35# Tabs Section Settings
+================================================*/
 [tabs-bcg] {
   background-color: theme-colors("mainColors", "primary");
 }
@@ -584,34 +712,57 @@ $text-input-ios-background-color: theme-colors(
   font-size: $h2-font-size !important;
 }
 
-// Search Bar Setting
-
-// For ios
+/* 36# Search Bar Setting
+================================================*/
+// Settings for Ios
 $searchbar-ios-input-background-color: theme-colors(
   "mainColors",
   "primary"
 ) !important;
-$searchbar-ios-input-placeholder-color: theme-colors("mainColors", "secondary");
+$searchbar-ios-input-placeholder-color: theme-colors("textColors", "primary");
+$searchbar-ios-input-text-color: theme-colors("textColors", "primary");
 $searchbar-ios-input-search-icon-color: theme-colors("mainColors", "secondary");
 $searchbar-ios-input-clear-icon-color: theme-colors("mainColors", "secondary");
-$searchbar-ios-input-text-color: #fcd736;
-// For android
+$searchbar-ios-background-color: transparent;
+// Settings for Android
 $searchbar-md-input-background-color: theme-colors(
   "mainColors",
   "primary"
 ) !important;
-$searchbar-md-input-placeholder-color: theme-colors("mainColors", "secondary");
+$searchbar-md-input-placeholder-color: theme-colors("textColors", "primary");
 $searchbar-md-input-search-icon-color: theme-colors("mainColors", "secondary");
 $searchbar-md-input-clear-icon-color: theme-colors("mainColors", "secondary");
-$searchbar-md-input-text-color: #fcd736;
+$searchbar-md-input-text-color: theme-colors(
+  "textColors",
+  "primary"
+) !important;
 
 [search-bar-title] {
   color: theme-colors("textColors", "primary");
   font-size: $h1-font-size !important;
 }
 
-//  Google Maps
+/* Settings Seggments Section
+================================================
+================================================*/
+$segment-button-md-border-bottom-color: theme-colors(
+  "mainColors",
+  "secondary"
+) !important;
+$segment-button-md-border-color-activated: theme-colors(
+  "mainColors",
+  "accent"
+) !important;
+$segment-button-md-text-color-activated: theme-colors(
+  "mainColors",
+  "primary"
+) !important;
+$segment-button-md-height: 56px;
+$segment-button-md-padding-top: 7px;
+$segment-button-md-font-size: $h2-font-size;
 
+/* 37# Google Maps Setting
+================================================*/
 [map-header] {
   background-color: theme-colors("mainColors", "secondary");
   ion-icon {
@@ -654,7 +805,6 @@ $searchbar-md-input-text-color: #fcd736;
   }
 }
 
-//Animations
 @mixin animation {
   -webkit-animation: fadeInRight 500ms;
   -moz-animation: fadeInRight 500ms;
@@ -662,13 +812,214 @@ $searchbar-md-input-text-color: #fcd736;
   animation: fadeInRight 500ms;
 }
 
-//Background Size
+/* 38# Settings Loading Setting
+================================================*/
+$toolbar-md-height: 56px !important;
+$toolbar-background: theme-colors("mainColors", "secondary");
+// Settings for Android
+$toolbar-md-title-text-color: theme-colors("mainColors", "primary");
+$toolbar-md-inactive-color: theme-colors("mainColors", "primary");
+// Settings for Android
+$toolbar-ios-button-color: theme-colors("mainColors", "primary");
+$toolbar-ios-inactive-color: theme-colors("mainColors", "primary");
+
+/* 39# Settings Loading Setting
+================================================*/
+// Settings for Android
+$loading-md-background: theme-colors("mainColors", "primary");
+$loading-md-text-color: theme-colors("textColors", "primary");
+$loading-md-spinner-color: theme-colors("textColors", "primary");
+// Settings for Ios
+$loading-md-background: theme-colors("mainColors", "primary");
+$loading-md-text-color: theme-colors("textColors", "primary");
+$loading-md-spinner-color: theme-colors("textColors", "primary");
+
+/* 40# Action Sheet Settings
+================================================*/
+// Settings for Android
+$action-sheet-md-title-color: theme-colors("textColors", "primary");
+$action-sheet-md-title-font-size: 25px;
+$action-sheet-md-background: theme-colors("mainColors", "primary");
+$action-sheet-md-button-text-color: theme-colors("textColors", "primary");
+$action-sheet-md-button-background-activated: theme-colors(
+  "mainColors",
+  "primary",
+  "opacity60"
+);
+// Settings for Ios
+$action-sheet-ios-title-color: theme-colors("textColors", "primary");
+$action-sheet-ios-title-font-size: 25px;
+$action-sheet-ios-background: theme-colors("mainColors", "primary");
+$action-sheet-ios-border-color: theme-colors("mainColors", "accent");
+$action-sheet-ios-button-cancel-background: theme-colors(
+  "mainColors",
+  "primary"
+);
+$action-sheet-ios-button-text-color: theme-colors("textColors", "primary");
+$action-sheet-ios-button-background-activated: theme-colors(
+  "mainColors",
+  "primary",
+  "opacity60"
+);
+$action-sheet-ios-button-destructive-text-color: theme-colors(
+  "textColors",
+  "primary",
+  "opacity50"
+);
+.action-sheet-ios .action-sheet-selected {
+  font-weight: bold;
+  background: theme-colors("mainColors", "secondary", "opacity10") !important;
+}
+
+/* 41# Alert message Setting
+================================================*/
+// Alert with checkbox button settings for ANDROID
+$alert-md-checkbox-label-text-color: theme-colors(
+  "textColors",
+  "secondary",
+  "opacity40"
+);
+$alert-md-checkbox-label-text-color-checked: theme-colors(
+  "mainColors",
+  "secondary"
+);
+$alert-md-checkbox-border-color-off: theme-colors("mainColors", "secondary");
+$alert-md-message-text-color: theme-colors("mainColors", "secondary");
+// Settings for Ios
+$alert-ios-checkbox-label-text-color: theme-colors(
+  "textColors",
+  "secondary",
+  "opacity40"
+);
+$alert-ios-checkbox-label-text-color-checked: theme-colors(
+  "textColors",
+  "primary"
+);
+$alert-ios-checkbox-background-color-on: theme-colors("textColors", "primary");
+
+/* 42# Alert with input settings
+================================================*/
+// Settings for Android
+$alert-md-input-border-color: theme-colors("mainColors", "secondary");
+$alert-md-input-text-color: theme-colors("mainColors", "secondary") !important;
+$alert-md-input-border-color: theme-colors("mainColors", "secondary");
+$alert-md-input-border-color-focused: theme-colors("mainColors", "secondary");
+$alert-md-title-font-size: 20px;
+// Settings for Ios
+$alert-ios-message-text-color: theme-colors(
+  "mainColors",
+  "secondary"
+) !important;
+$alert-ios-input-background-color: transparent;
+$alert-ios-button-background-color-activated: theme-colors(
+  "mainColors",
+  "secondary",
+  "opacity40"
+) !important;
+$alert-ios-input-border: transparent;
+.alert-title {
+  color: theme-colors("textColors", "primary") !important;
+  font-weight: normal;
+}
+.alert-radio-label {
+  font-size: 18px;
+  font-weight: 300;
+}
+
+.select-text {
+  color: theme-colors("textColors", "secondary", "opacity60");
+  font-weight: 300;
+}
+
+.item-radio ion-label {
+  color: theme-colors("textColors", "secondary", "opacity60");
+  font-weight: 300;
+}
+
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: theme-colors("textColors", "primary") !important;
+}
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: theme-colors("textColors", "primary") !important;
+}
+
+:-ms-input-placeholder {
+  /* IE 10+ */
+  color: theme-colors("textColors", "primary") !important;
+}
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  color: theme-colors("textColors", "primary") !important;
+}
+
+/* 43# Alert with radio button settings
+================================================*/
+// Settings for Android
+$alert-md-radio-label-text-color: theme-colors(
+  "textColors",
+  "secondary",
+  "opacity60"
+);
+$alert-md-radio-border-color-on: theme-colors("mainColors", "secondary");
+$alert-md-radio-label-text-color-checked: theme-colors(
+  "mainColors",
+  "secondary"
+);
+$alert-md-background-color: theme-colors("mainColors", "accent");
+$alert-md-list-border-bottom: 1px solid theme-colors("mainColors", "primary");
+$alert-md-list-border-top: 1px solid theme-colors("mainColors", "primary");
+$alert-md-button-text-color: theme-colors("mainColors", "secondary");
+$alert-md-radio-border-color-off: theme-colors("mainColors", "secondary");
+// Settings for Ios
+$alert-ios-background: theme-colors("mainColors", "accent");
+$alert-ios-radio-label-text-color: theme-colors(
+  "textColors",
+  "secondary",
+  "opacity60"
+);
+$alert-ios-radio-label-text-color-checked: theme-colors(
+  "textColors",
+  "primary"
+);
+$alert-ios-radio-label-text-color: theme-colors(
+  "textColors",
+  "secondary",
+  "opacity60"
+);
+$alert-ios-radio-icon-border-color: theme-colors("textColors", "primary");
+$alert-ios-button-text-color: theme-colors("textColors", "primary");
+
+/* 44# Default Overview Ionic
+================================================*/
+
+// Spiner View
+.spinner-view {
+  img {
+    width: 100px !important;
+    height: 100px !important;
+    margin: 0 auto;
+  }
+
+  .swiper-pagination-bullet {
+    background: theme-colors("mainColors", "secondary") !important;
+  }
+}
+
+[transparent] {
+  background-color: transparent !important;
+}
+
+//Settings Background Size
 [background-size] {
   background-size: cover !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
 }
-//Default Overview Ionic
+// Default Overview Ionic
 ion-list > .item:last-child,
 ion-list > .item-wrapper:last-child .item {
   border-bottom: 1px solid theme-colors("mainColors", "accent") !important;
@@ -697,7 +1048,7 @@ ion-list > .item-wrapper:first-child .item {
     margin-bottom: 0 !important;
   }
   [has-header] .scroll-content {
-    top: 60px;
+    top: 64px;
   }
 
   [header-bcg] {
@@ -714,7 +1065,6 @@ ion-header {
     text-transform: uppercase;
   }
 }
-
 //Settings Loading For Android
 $loading-md-background: theme-colors("mainColors", "primary");
 $loading-md-text-color: theme-colors("textColors", "primary");
@@ -779,4 +1129,89 @@ $loading-md-spinner-color: theme-colors("textColors", "primary");
     /* Firefox 18- */
     color: theme-colors("textColors", "primary") !important;
   }
+}
+
+
+/* Settings Alert Info
+  ================================================
+  ================================================*/
+.info-dialog {
+  .alert-head,
+  .alert-message {
+    text-align: center !important;
+  }
+
+  .alert-message {
+    color: theme-colors("textColors", "primary") !important;
+  }
+
+  .alert-sub-title {
+    color: theme-colors("textColors", "accent");
+  }
+}
+
+/* Settings Alert Warning
+  ================================================
+  ================================================*/
+.alert-warning {
+  .alert-head,
+  .alert-message {
+    text-align: center !important;
+  }
+
+  .alert-message {
+    color: theme-colors("textColors", "primary") !important;
+  }
+
+  .alert-sub-title {
+    color: theme-colors("textColors", "accent");
+  }
+
+  .alert-button-group {
+    padding: 8px 0 8px 8px !important;
+  }
+
+  .alert-button {
+    width: 100%;
+    margin-bottom: 20px;
+    background: theme-colors("mainColors", "accent") !important;
+    text-align: center;
+    color: theme-colors("textColors", "primary") !important;
+    display: block;
+
+    .button-inner {
+      justify-content: center !important;
+    }
+  }
+}
+
+/* Settings Alert Subscribe
+  ================================================
+  ================================================*/
+.alert-subscribe {
+  .alert-head,
+  .alert-message {
+    text-align: center !important;
+  }
+
+  .alert-message {
+    color: theme-colors("textColors", "primary") !important;
+  }
+
+  .alert-sub-title {
+    color: theme-colors("textColors", "accent");
+  }
+}
+
+/* Data Picker
+  ================================================
+  ================================================*/
+.picker-opt {
+  color: theme-colors("textColors", "secondary") !important;
+}
+.picker-opt-selected {
+  color: theme-colors("textColors", "primary") !important;
+}
+.picker-button {
+  color: theme-colors("textColors", "primary") !important;
 }
