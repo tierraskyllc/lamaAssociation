@@ -104,6 +104,10 @@ export class ProfilePage {
     // this.navCtrl.push("chatRoomPage");
   }
 
+  mapPage() {
+    // this.navCtrl.push("mapPage");
+  }
+
   chaptersPage() {
     this.navCtrl.push("ChaptersPage");
   }
